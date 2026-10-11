@@ -1,0 +1,1 @@
+export default function Notifications(){return <div className='notification-area'><button className='secondary' disabled>Meldungen · Beispieldaten</button></div>}
