@@ -38,7 +38,7 @@ Die eigenständige Seite finanzielle-ordnung.de wird hier nicht umgezogen.
 
 ## Pflege
 
-Startseite mit Auswahl (Betriebe oder Familie): index.html. Onboarding-Beispiel: onboarding.html. Beispiele mit Scroll-Effekten und Datenschutz-Abschnitt: referenzen.html. Gestaltung: site.css.
+Startseite mit zwei Karten: index.html. Zielseiten: geschaeft.html (Firma) und zuhause.html (Privat), Demos mit erfundenen Daten in demo/. Rechtliches: impressum.html, datenschutz.html.
 Impressum: impressum.html und impressum/index.html; bei beiden die Inhalte ändern.
 Finanzplaner: finance-preview.html.
 React-Quellen: preview-src/. Bei Änderungen im Hauptverzeichnis:

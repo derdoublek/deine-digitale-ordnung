@@ -1,0 +1,844 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Nachläufer Demo</title>
+<style>
+:root{
+  --bg:#f3f3f1; --surface:#fff; --surface2:#f4f4f1; --ink:#162036; --muted:#5d6779; --line:#e3e4df;
+  --accent:#162036; --accent-ink:#fff; --plate:#1d4f91;
+  --ges:#23875a; --na:#9a6700; --ki:#b04637; --info:#5b4fc4; --leer:#6f7a80;
+  --done:#23875a; --started:#1d5ba6; --lock:#9a5a2c; --r:16px;
+  --font:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.4;letter-spacing:-.005em}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--started);outline-offset:2px}
+[hidden]{display:none!important}
+small{font-size:14px}
+b,strong{font-weight:700}
+
+.demobar{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;padding:6px 16px;background:var(--surface2);border-bottom:1px solid var(--line);font-size:13px;color:var(--muted)}
+.demobar i{width:7px;height:7px;border-radius:50%;background:var(--na);display:inline-block}
+.demobar button{border:0;background:none;color:var(--started);font-weight:600;font-size:13px;padding:4px 2px;text-decoration:underline}
+
+.shell{max-width:1100px;margin:0 auto}
+.side{padding:14px 16px 6px}
+.brandrow{display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
+.brand{display:grid;gap:2px}
+.brand small{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+.brand b{font-size:22px;line-height:1.05;letter-spacing:-.02em}
+.who{font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px}
+.who .net{display:flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 11px;font-size:13px}
+.who .net i{width:8px;height:8px;border-radius:50%;background:var(--ges)}
+.nav{display:flex;gap:2px;background:#e6e7e2;border-radius:14px;padding:4px;margin-top:12px}
+.nav button{flex:1 1 0;min-width:0;min-height:44px;border:0;background:none;border-radius:11px;padding:0 2px;font-size:14px;font-weight:600;color:var(--muted)}
+.nav button[aria-current="page"]{background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(22,32,54,.12)}
+.wrap{padding:0 16px 40px;min-width:0}
+@media (min-width:900px){
+  .shell{display:grid;grid-template-columns:210px minmax(0,1fr);align-items:start}
+  .side{position:sticky;top:0;padding:22px 8px 20px 16px}
+  .brandrow{flex-direction:column;align-items:flex-start;gap:8px}
+  .nav{flex-direction:column;background:none;padding:0;margin-top:20px;gap:4px}
+  .nav button{flex:none;text-align:left;padding:0 14px;font-size:16px}
+}
+
+h1{font-size:22px;line-height:1.15;margin:18px 0 4px;letter-spacing:-.02em}
+h2{font-size:18px;margin:20px 0 8px;letter-spacing:-.01em}
+.sub{color:var(--muted);font-size:16px;margin:4px 0 0}
+.label{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600}
+.btn{border:0;background:var(--accent);color:var(--accent-ink);font-weight:600;border-radius:12px;padding:10px 16px;min-height:44px;font-size:16px}
+.btn.ghost{background:var(--surface);color:var(--ink);border:1px solid #cfd2d8}
+.btn.small{padding:6px 12px;font-size:14px}
+.btn.danger{background:var(--ki);color:#fff}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.tag{font-size:12px;font-weight:600;border-radius:4px;padding:1px 6px;background:var(--surface2);border:1px solid var(--line);color:var(--muted);margin-left:6px;vertical-align:2px}
+.warn{color:var(--na);font-weight:600}
+.empty{color:var(--muted);text-align:center;padding:26px 10px;border:1px dashed var(--line);border-radius:var(--r);margin-top:8px}
+
+/* Segment */
+.seg{display:flex;background:#e6e7e2;border-radius:12px;padding:3px;gap:3px;margin-top:12px}
+.seg button{flex:1;min-height:40px;border:0;background:transparent;border-radius:9px;padding:6px 6px;font-size:14px;font-weight:600;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.seg.wrapseg{flex-wrap:wrap;background:none;padding:0;gap:6px}
+.seg.wrapseg button{flex:0 0 auto;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 14px;min-height:40px}
+.seg.wrapseg button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.box .seg{background:var(--surface)}
+.box .seg button[aria-pressed="true"]{background:var(--surface2)}
+
+/* KPIs */
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:14px;background:#162036;border-radius:var(--r);padding:16px}
+.kpi strong{display:block;font-size:22px;line-height:1.1;color:#fff;font-variant-numeric:tabular-nums}
+.kpi span{font-size:13px;color:#b3bccd;display:block;line-height:1.25;margin-top:2px}
+.kpi strong.g{color:#6fd3a1}.kpi strong.y{color:#e7c56b}
+@media (max-width:520px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.stack{display:flex;height:12px;border-radius:6px;overflow:hidden;margin-top:10px;background:#e6e7e2}
+.stack span{display:block;height:100%}
+.legend{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:8px;font-size:13px;color:var(--muted)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.up{color:var(--ges);font-size:12px;font-weight:700;margin-left:3px}
+.dn{color:var(--ki);font-size:12px;font-weight:700;margin-left:3px}
+
+/* Sektionen / Baum */
+.secs{display:grid;gap:10px;margin-top:16px}
+.tree{display:grid;gap:8px;margin-top:12px}
+details{min-width:0}
+details > summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:12px 14px}
+details > summary::-webkit-details-marker{display:none}
+details > summary::before{content:"";flex:none;width:8px;height:8px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(-45deg);transition:transform .15s;margin-right:2px}
+details[open] > summary::before{transform:rotate(45deg)}
+summary .nm{flex:1;min-width:0}
+summary .nm b{display:block;font-size:18px;letter-spacing:-.02em}
+summary .nm small{display:block;color:var(--muted);font-size:14px;font-variant-numeric:tabular-nums}
+details.sec,details.lk,.panel,.box,.whobox,.curcard,.qbox,.lcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:0 1px 2px rgba(22,32,54,.04)}
+.secbody{padding:0 14px 14px;min-width:0}
+.kids{padding:0 10px 10px 18px;display:grid;gap:2px}
+details.ort{border-top:1px solid var(--line)}
+details.ort > summary{padding:10px 6px}
+details.teil{border-top:1px dashed var(--line)}
+details.teil > summary{padding:8px 6px}
+details.teil > summary .nm b{font-size:16px}
+.ortbody{padding:2px 6px 12px 10px;display:grid;gap:10px}
+.box{padding:10px;background:var(--surface2);box-shadow:none}
+.panel{padding:14px}
+.whobox{margin-top:12px;padding:12px 14px}
+.whobox > summary{padding:0}
+.whobox > summary::before{display:none}
+.whobox > summary small{display:block;color:var(--muted);margin-top:2px}
+
+/* Pills */
+.st{font-size:12px;font-weight:700;border-radius:999px;padding:3px 9px;white-space:nowrap}
+.st.offen{color:var(--muted);border:1.5px dashed var(--line)}
+.st.angefangen,.st.lauft{color:var(--started);border:1.5px solid var(--started)}
+.st.fertig,.st.frei{color:var(--ges);border:1.5px solid var(--ges)}
+.st.gesperrt{color:var(--muted);border:1.5px solid var(--line)}
+.st.ab{color:var(--lock);border:1.5px solid var(--lock)}
+.st.teil{color:var(--na);border:1.5px solid var(--na)}
+.pill{font-size:12px;font-weight:700;border-radius:999px;padding:4px 9px;white-space:nowrap;border:1.5px solid currentColor}
+.pill.none{color:var(--muted);border-style:dashed}
+.s-GES{color:var(--ges)}.s-NA{color:var(--na)}.s-KI{color:var(--ki)}.s-INFO{color:var(--info)}.s-LEER{color:var(--leer)}
+
+/* Tabellen */
+.tbl{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+table{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeric:tabular-nums}
+th,td{padding:9px 10px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600}
+th:first-child,td:first-child{text-align:left}
+tr:last-child td{border-bottom:0}
+td.muted{color:var(--muted)}
+.secbody .tbl{border-radius:10px}
+td small.sm{display:block;font-size:12px;color:var(--muted);font-weight:400}
+@media (max-width:700px){
+  .tbl{overflow:visible;background:none;border:0}
+  .tbl table,.tbl tbody{display:block}
+  .tbl thead{display:none}
+  .tbl tr{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px 10px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px}
+  .secbody .tbl tr{background:var(--surface2)}
+  .tbl td{display:block;padding:0;border:0;text-align:left;white-space:normal;min-width:0;font-size:15px}
+  .tbl td::before{display:block;content:attr(data-label);font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600;margin-bottom:1px}
+  .tbl td:first-child{grid-column:1/-1;font-size:16px}
+  .tbl td:first-child::before,.tbl td[colspan]::before,.tbl td:not([data-label])::before{display:none}
+  .tbl td[colspan]{grid-column:1/-1}
+}
+
+/* Roadmap */
+.rmgo{border:0;background:none;padding:0;font-weight:700;color:var(--ink);text-align:left;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px;min-height:0}
+.rmplz{font-variant-numeric:tabular-nums;color:var(--muted);font-weight:600;margin-right:4px;font-size:14px}
+.rmm{display:grid;grid-template-columns:110px minmax(0,1fr);gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.rmm:first-child{border-top:0}
+.rmline{display:inline-flex;align-items:baseline;margin:0 14px 4px 0;white-space:nowrap}
+@media (max-width:520px){.rmm{grid-template-columns:1fr;gap:4px}}
+.rmrow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+.rmchks{display:grid;max-height:36vh;overflow:auto}
+.rmchk{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;padding:8px 2px;border-bottom:1px solid var(--line)}
+.rmchk small{color:var(--muted);font-size:13px}
+
+/* Formulare */
+.search{width:100%;margin-top:12px;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:11px 12px;font-size:16px}
+.field{display:grid;gap:4px;margin-top:8px}
+.field input,.field select,.field textarea,.sheet textarea{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:10px 12px;min-width:0;width:100%;font-size:16px}
+.sheet textarea{min-height:76px;margin-top:6px;resize:vertical}
+.inline{display:flex;gap:8px;flex-wrap:wrap;align-items:end}
+.inline .field{flex:1;min-width:140px}
+.checks{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.checks label{display:flex;gap:6px;align-items:center;border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:14px;background:var(--surface);min-height:40px}
+.checks input,.rmchk input{width:18px;height:18px;accent-color:var(--ink)}
+.chip{flex:none;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px;font-weight:600;font-size:14px;min-height:44px;white-space:nowrap}
+.chip[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+/* Listen */
+.lists{display:grid;gap:10px;padding:0 12px 12px}
+.lcard{display:grid;grid-template-columns:1fr auto;gap:4px 12px;padding:14px;text-align:left;width:100%}
+.lcard b{font-size:18px;letter-spacing:-.02em}
+.lcard .meta{color:var(--muted);font-size:14px}
+.lcard .num{grid-row:1/3;grid-column:2;text-align:right;font-variant-numeric:tabular-nums}
+.lcard .num strong{display:block;font-size:22px}
+.bar{display:flex;height:6px;border-radius:3px;overflow:hidden;background:#e6e7e2;grid-column:1/-1;margin-top:8px}
+.bar span{display:block;height:100%}
+.covline{grid-column:1/-1;font-size:13px;color:var(--muted);margin-top:4px}
+.back{background:none;border:0;color:var(--started);font-weight:600;padding:14px 0 0;min-height:44px}
+.cov{margin-top:12px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:10px 12px}
+.cov .t{display:flex;justify-content:space-between;gap:8px;font-size:14px;color:var(--muted)}
+.cov .t b{color:var(--ink)}
+.cov .bar{height:8px}
+.rows{display:grid;gap:6px;margin-top:8px}
+.row{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px;text-align:left;width:100%}
+.plate{min-width:50px;height:38px;padding:0 6px;display:grid;place-items:center;background:var(--plate);color:#fff;border-radius:5px;border:2px solid #fff;box-shadow:0 0 0 1px var(--plate);font-weight:700;font-size:18px;font-variant-numeric:tabular-nums}
+.row .who2{min-width:0}
+.row .nm{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .sm{font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tm{background:var(--surface2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-top:8px}
+.tm small{display:block;color:var(--muted)}
+.tour{list-style:none;padding:0;margin:0;display:grid;gap:2px}
+.tour li{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:15px;flex-wrap:wrap}
+.tour li:last-child{border-bottom:0}
+.tour .grow{flex:1 1 180px;min-width:0}
+.tour .grow small{display:block;color:var(--muted);font-size:13px}
+.slist{list-style:none;margin:0;padding:0 6px 8px 14px;columns:2 220px;column-gap:18px;font-size:15px}
+.slist li{break-inside:avoid;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--line)}
+.slist .dash{color:var(--muted)}
+
+/* Erfassung */
+.qbox{margin-top:14px;padding:12px 14px}
+.qin{display:grid;grid-template-columns:96px 1fr;gap:8px;margin-top:8px}
+.qin .search{margin:0}
+.snchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;align-items:center}
+.snchips .chip{min-height:40px;padding:4px 14px}
+.qgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.qgrid .wide{grid-column:1/-1}
+.qgrid .sbtn:disabled{opacity:.35;filter:grayscale(1);cursor:not-allowed}
+.sbtn{border:2px solid var(--line);background:var(--surface2);border-radius:12px;padding:14px 10px;font-weight:700;font-size:16px;text-align:left;display:flex;flex-direction:column;gap:2px;min-height:44px}
+.sbtn small{font-weight:500;font-size:13px;color:var(--muted)}
+.sbtn[aria-pressed="true"]{border-color:currentColor;background:var(--surface)}
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.sgrid .wide{grid-column:1/-1}
+.qlock{display:flex;align-items:center;gap:10px;background:var(--ink);color:#fff;border-radius:14px;padding:10px 14px;font-size:16px;margin-top:8px}
+.qlock b{font-size:22px}
+.qlock .btn{margin-left:auto;background:rgba(255,255,255,.16);color:#fff}
+.qlast{margin-top:10px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:14px;background:var(--surface2);border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+.qlast .seg{margin:0}
+.qlast .seg button{min-height:36px;padding:2px 8px}
+.hist{list-style:none;padding:0;margin:6px 0 0;display:grid;gap:4px;font-size:14px;color:var(--muted)}
+.hist li{display:flex;justify-content:space-between;gap:8px;border-bottom:1px solid var(--line);padding:4px 0;flex-wrap:wrap}
+
+/* Statistik-Karte */
+.osc{background:var(--surface);border:1px solid var(--line);border-radius:14px;margin:8px 0;overflow:hidden}
+.osq{font-weight:800;font-size:17px;padding:3px 9px;border-radius:9px}
+.osq.g,.osqb.g{background:#ddf2e3;color:#1e7a45}.osq.y,.osqb.y{background:#fbefd5;color:#7a5000}.osq.r,.osqb.r{background:#f9dedc;color:#b3261e}
+.osb{padding:0 14px 14px}
+.osbar{display:flex;height:12px;border-radius:6px;overflow:hidden;background:#d9dad5}
+.osbar i{display:block;height:100%}
+.osp{font-size:13px;color:var(--muted);margin:4px 0 10px}
+.osg{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.osg div{display:flex;align-items:center;gap:8px;background:var(--surface2);border-radius:10px;padding:8px 10px;font-size:14px}
+.osg b{margin-left:auto;font-size:16px}
+.osg em{font-style:normal;font-size:12px;color:var(--muted)}
+.osd{width:10px;height:10px;border-radius:50%;flex:none}
+.osqb{margin-top:10px;border-radius:12px;padding:10px 12px}
+.osqb small{display:block;font-size:13px;opacity:.9}
+@media (max-width:520px){.osg{grid-template-columns:1fr}}
+
+/* Tag */
+.days{display:flex;gap:2px;padding:8px 0 2px}
+.dayb{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;gap:3px;border:1px solid transparent;background:none;border-radius:8px;padding:4px 0;font-variant-numeric:tabular-nums}
+.dayb[aria-pressed="true"]{border-color:var(--ink);background:var(--surface)}
+.dayb .col{width:100%;max-width:22px;height:64px;display:flex;flex-direction:column;justify-content:flex-end;background:var(--surface2);border-radius:4px;overflow:hidden}
+.dayb .col i{display:block;width:100%}
+.dayb small{font-size:12px;color:var(--muted);line-height:1.1;text-align:center}
+.dayb b{font-size:12px;white-space:nowrap;min-height:14px}
+.hint{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--line);font-size:15px}
+.hint:last-child{border-bottom:0}
+.hint .dot{flex:none;width:9px;height:9px;border-radius:50%;margin-top:7px;background:var(--na)}
+.hint .dot.ok{background:var(--ges)}.hint .dot.bad{background:var(--ki)}
+
+/* Sheet / Toast */
+.scrim{position:fixed;inset:0;background:rgba(5,12,16,.45);z-index:40;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--surface);width:100%;max-width:520px;border-radius:16px 16px 0 0;padding:16px;max-height:92%;overflow:auto}
+@media (min-width:700px){.scrim{align-items:center}.sheet{border-radius:16px}}
+.sheet .hd{display:flex;gap:12px;align-items:center}
+.sheet .hd h3{font-size:20px;margin:0;line-height:1.1;letter-spacing:-.02em}
+.sheet .x{margin-left:auto;border:0;background:var(--surface2);border-radius:10px;width:44px;height:44px;font-size:20px;flex:none}
+.sheet .foot{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.prow{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:0;border-bottom:1px solid var(--line);background:none;padding:11px 2px;min-height:48px}
+.prow .n{flex:1;min-width:0;font-weight:600}
+.prow .n small{display:block;font-weight:400;color:var(--muted)}
+.toast,.okflash{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);padding:10px 18px;border-radius:999px;font-weight:700;font-size:15px;z-index:60;max-width:calc(100% - 32px);text-align:center;box-shadow:0 6px 20px rgba(0,0,0,.18)}
+.toast{background:var(--ink);color:#fff}
+.okflash{background:var(--ges);color:#fff;animation:okin .25s ease-out}
+@keyframes okin{from{opacity:0;transform:translate(-50%,10px) scale(.9)}to{opacity:1;transform:translate(-50%,0) scale(1)}}
+.foot-note{color:var(--muted);font-size:13px;margin-top:28px;text-align:center}
+@media (prefers-reduced-motion:reduce){.okflash{animation:none}details > summary::before{transition:none}}
+</style>
+</head>
+<body>
+<div class="demobar"><i></i><span>Demo mit Beispieldaten</span><button type="button" id="reset">Zurücksetzen</button></div>
+<div class="shell">
+  <aside class="side">
+    <div class="brandrow">
+      <div class="brand"><small>Außendienst</small><b>Nachläufer</b></div>
+      <div class="who"><span class="net"><i></i>Online</span><span>Teamleitung</span></div>
+    </div>
+    <nav class="nav" id="nav" aria-label="Bereiche">
+      <button type="button" data-nav="tl">Übersicht</button>
+      <button type="button" data-nav="lists">Listen</button>
+      <button type="button" data-nav="geb">Gebiete</button>
+      <button type="button" data-nav="day">Tag</button>
+    </nav>
+  </aside>
+  <main id="app" class="wrap"></main>
+</div>
+<div id="toastHost"></div><div id="okHost" aria-live="polite"></div>
+
+<script>
+"use strict";
+/* ---------- Basis ---------- */
+const TODAY="2026-10-25";
+const T0=new Date(2026,9,25,12,0,0).getTime(), LOADED=Date.now();
+const now=()=>T0+(Date.now()-LOADED);
+const today=()=>TODAY;
+const MON=["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];
+const WD=["So","Mo","Di","Mi","Do","Fr","Sa"];
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let _id=0; const uid=()=>"n"+(++_id)+Math.random().toString(36).slice(2,5);
+const norm=s=>String(s||"").toLowerCase().replace(/str\.?(\s|$)/g,"straße$1").replace(/strasse/g,"straße").replace(/[\s\-.]/g,"").replace(/ß/g,"ss").replace(/ä/g,"a").replace(/ö/g,"o").replace(/ü/g,"u");
+const fmtDate=iso=>iso?iso.split("-").reverse().join("."):"";
+const addMonths=(iso,n)=>{const [y,m,d]=iso.split("-").map(Number);return new Date(Date.UTC(y,m-1+n,d)).toISOString().slice(0,10);};
+const rmYm=ym=>ym?MON[+ym.slice(5,7)-1]+" "+ym.slice(0,4):"";
+const rmDays=d=>Math.round((Date.UTC(...d.split("-").map((v,i)=>i===1?v-1:+v))-Date.UTC(2026,9,25))/864e5);
+const dayKey=t=>{const d=new Date(t);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");};
+const dayLabel=k=>{const [y,m,d]=k.split("-").map(Number);return WD[new Date(y,m-1,d).getDay()]+" "+String(d).padStart(2,"0")+"."+String(m).padStart(2,"0")+".";};
+const hm=t=>new Date(t).toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"});
+const fmt=t=>{const d=new Date(t);return d.toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit"})+" "+hm(t);};
+const fmtRel=t=>{const m=Math.round((now()-t)/60000);if(m<1)return "gerade eben";if(m<60)return `vor ${m} Min.`;const h=Math.round(m/60);if(h<24)return `vor ${h} Std.`;return fmt(t);};
+const f0=v=>Math.round(v).toString(), f1=v=>(Math.round(v*10)/10).toLocaleString("de-DE"), pc=v=>Math.round(v*100)+" %";
+
+const STATUS={GES:{label:"Geschrieben",color:"var(--ges)"},NA:{label:"Nicht angetroffen",color:"var(--na)"},KI:{label:"Kein Interesse",color:"var(--ki)"},INFO:{label:"Info",color:"var(--info)"},LEER:{label:"Leerstand",color:"var(--leer)"}};
+const ORDER=["GES","NA","KI","INFO","LEER"];
+const USERS={me:"Du",lena:"Lena S.",tom:"Tom B."};
+const MAS=["lena","tom"];
+const uname=id=>USERS[id]||id;
+
+/* ---------- Beispiel-Verzeichnis (frei erfunden) ---------- */
+const REGION=[
+ {lk:"Landkreis Nord",g:[
+  {id:"musterstadt",g:"Musterstadt",plz:["99001"],t:[["Zentrum",["Gartenweg","Marktplatz"]],["Nordviertel",["Birkenallee","Dorfstraße"]]],b:{"Zentrum":"2026-04","Nordviertel":"2025-08"}},
+  {id:"beispieldorf",g:"Beispieldorf",plz:["99002"],t:[["Beispieldorf",["Gartenweg","Dorfstraße","Schulweg","Am Anger"]]]},
+  {id:"lindenau",g:"Lindenau",plz:["99003"],t:[["Ortsmitte",["Lindenstraße","Bachgasse"]],["Hangsiedlung",["Bergweg"]]]},
+  {id:"auenbach",g:"Auenbach",plz:["99004"],t:[["Auenbach",["Auenweg","Mühlstraße","Feldgasse"]]],b:{"Auenbach":"2025-12"}}]},
+ {lk:"Landkreis Süd",g:[
+  {id:"neuhausen",g:"Neuhausen",plz:["99101"],t:[["Neuhausen",["Hauptstraße","Rosenweg","Parkallee"]]]},
+  {id:"talheim",g:"Talheim",plz:["99102"],t:[["Unterdorf",["Mühlweg","Schulstraße"]],["Oberdorf",["Kirchgasse"]]],b:{"Unterdorf":"2026-05","Oberdorf":"2026-09"}},
+  {id:"birkfeld",g:"Birkfeld",plz:["99103"],t:[["Birkfeld",["Birkenweg","Waldstraße"]]],b:{"Birkfeld":"2025-08"}},
+  {id:"steinbach",g:"Steinbach",plz:["99104"],t:[["Steinbach",["Steinweg","Bahnweg","Am Bach"]]]}]}
+];
+const ORT={}; REGION.forEach(r=>r.g.forEach(o=>{o.lk=r.lk;ORT[o.id]=o;}));
+
+/* ---------- Beispieldaten erzeugen ---------- */
+function genData(){
+  let seed=11; const R=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296;};
+  const PLAN=[
+   {id:"l1",name:"Beispieldorf",ort:"beispieldorf",teile:null,members:["lena","tom"],streets:[
+     {s:"Gartenweg",n:12,u:"lena",days:[10,9,8],done:true},{s:"Dorfstraße",n:11,u:"lena",days:[6,5,3]},
+     {s:"Schulweg",n:8,u:"tom",days:[2,1]},{s:"Am Anger",n:5,u:"tom",days:[1]}]},
+   {id:"l2",name:"Lindenau Ortsmitte",ort:"lindenau",teile:["Ortsmitte"],members:["tom"],streets:[
+     {s:"Lindenstraße",n:10,u:"tom",days:[5,4,2]},{s:"Bachgasse",n:6,u:"tom",days:[0]}]},
+   {id:"l3",name:"Neuhausen",ort:"neuhausen",teile:null,members:["lena"],streets:[
+     {s:"Hauptstraße",n:9,u:"lena",days:[5,4,2]},{s:"Rosenweg",n:7,u:"lena",days:[0]}]}];
+  const NAMES=["","","Fam. Muster","","","Hr. Beispiel","","","Fr. Probe","","Fam. Test",""];
+  const cnt={}, entries=[], lists=[];
+  const stamp=(day,u)=>{const k=u+day;cnt[k]=(cnt[k]||0)+4+Math.floor(R()*7);return new Date(2026,9,25-day,8,40+(u==="tom"?25:0)).getTime()+cnt[k]*60000;};
+  const pick=a=>a[Math.floor(R()*a.length)];
+  PLAN.forEach(p=>{
+    lists.push({id:p.id,name:p.name,ort:p.ort,teile:p.teile,members:p.members,done:{}});
+    p.streets.forEach(st=>{
+      if(st.done) lists[lists.length-1].done[st.s]=true;
+      for(let i=0;i<st.n;i++){
+        const day=st.days[Math.min(st.days.length-1,Math.floor(i/st.n*st.days.length))], u=st.u;
+        const e={id:uid(),listId:p.id,street:st.s,no:String(i+1)+(i===4?"a":""),name:pick(NAMES),status:null,note:"",na:[],ts:0,by:u,log:[]};
+        const add=(k,t,z)=>{e.log.push({t,by:u,k,txt:k==="NA"?(e.na.length)+"x nicht angetroffen":STATUS[k].label,z:z});e.ts=t;e.status=k;};
+        const fin=(k,t)=>{let z; if(k==="GES"){z=R()<.55?1:R()<.7?2:3;e.zaehler=z;} if(k==="KI")e.note=pick(["Hat schon Anbieter","Kein Bedarf","Später nochmal"]); if(k==="INFO")e.note="Unterlagen liegen aus"; add(k,t,z);};
+        const r=R(), t1=stamp(day,u), d2=Math.max(day-1,0);
+        if(r<.27) fin("GES",t1); else if(r<.47) fin("KI",t1); else if(r<.54) fin("INFO",t1); else if(r<.60) fin("LEER",t1);
+        else if(r<.74||day===0){e.na.push(t1);add("NA",t1);}
+        else if(r<.81){e.na.push(t1);add("NA",t1);const t2=stamp(d2,u);e.na.push(t2);add("NA",t2);}
+        else if(r<.85){[t1,stamp(d2,u),stamp(d2,u)].forEach(t=>{e.na.push(t);add("NA",t);});}
+        else {e.na.push(t1);add("NA",t1);fin(pick(["GES","GES","KI","INFO"]),stamp(d2,u));}
+        entries.push(e);
+      }
+    });
+  });
+  return {lists,entries};
+}
+
+/* ---------- Zustand ---------- */
+let S, QD, qk, qz, qzOpen, qNote, lastQ, qFocus, RMS, RMF, gq;
+function fresh(){
+  const {lists,entries}=genData();
+  const st={view:"tl",gMode:"rm",ov:"team",lists,entries,
+    orte:{beispieldorf:{status:"frei",team:"alle"},lindenau:{status:"frei",team:"alle"},neuhausen:{status:"frei",team:"alle"}},
+    teilLocks:{},street:{},filter:"alle",sf:"",open:{"sec:rm:Landkreis Nord":true,"sec:rm:Landkreis Süd":true},listId:null,day:dayKey(T0)};
+  lists.forEach(l=>{const es=entries.filter(e=>e.listId===l.id).sort((a,b)=>b.ts-a.ts);st.street[l.id]=es[0]?es[0].street:"";});
+  QD={k:"",hn:"",zs:"",lock:false}; qk=null; qz=""; qzOpen=false; qNote=""; lastQ=null; qFocus=false; RMS="alle"; RMF="alle"; gq="";
+  return st;
+}
+
+/* ---------- Gebiets-Logik ---------- */
+const ortState=id=>S.orte[id]||{status:"gesperrt",team:"alle"};
+const ortOpen=id=>{const s=ortState(id);return s.status==="frei"||(s.status==="ab"&&s.ab&&s.ab<=today());};
+const ortLabel=id=>{const s=ortState(id);if(s.status==="frei")return "frei";if(s.status==="ab")return ortOpen(id)?"frei":"ab "+fmtDate(s.ab);return "gesperrt";};
+const ortCls=id=>{const s=ortState(id);return s.status==="ab"&&!ortOpen(id)?"ab":ortOpen(id)?"frei":"gesperrt";};
+const teamLabel=id=>{const s=ortState(id);return s.team==="alle"?"alle Mitarbeiter":(s.team.length?s.team.map(uname).join(", "):"niemand");};
+function teilLock(oid,teil){const k=S.teilLocks[oid+"|"+teil];if(k)return k;const o=ORT[oid],b=o&&o.b&&o.b[teil];return b?{ab:addMonths(b+"-01",12),from:"zuletzt bearbeitet "+b.slice(5)+"/"+b.slice(0,4)}:undefined;}
+const teilOpen=(oid,teil)=>{const k=teilLock(oid,teil);return !k||k.ab<=today();};
+const listOpen=l=>ortOpen(l.ort)&&(!l.teile||l.teile.some(t=>teilOpen(l.ort,t)));
+const rmTeile=o=>o.t.map(x=>x[0]);
+function rmLast(o,tn){const own=S.teilLocks[o.id+"|"+tn];if(own){if(own.b)return own.b;if(own.ab&&own.ab>"2001")return addMonths(own.ab,-12).slice(0,7);return "";}return (o.b&&o.b[tn])||"";}
+function rmData(){
+  const td=today(), st={};
+  const lo={}; S.lists.forEach(l=>{lo[l.id]=l.ort;});
+  S.entries.forEach(e=>{const id=lo[e.listId];if(!id)return;const s=st[id]||(st[id]={n:0,g:0,t:0});s.n++;if(e.status==="GES")s.g++;if(e.ts>s.t)s.t=e.ts;});
+  const R=[];
+  REGION.forEach(r=>r.g.forEach(o=>{
+    const teile=rmTeile(o);let last="";const locks=[];
+    teile.forEach(tn=>{const b=rmLast(o,tn);if(b>last)last=b;const k=teilLock(o.id,tn);if(k&&k.ab>td)locks.push(k.ab);});
+    locks.sort();
+    const s=st[o.id], le=s&&s.t?dayKey(s.t):"";
+    if(le&&le.slice(0,7)>last)last=le.slice(0,7);
+    const os=ortState(o.id), hand=os.status==="ab"&&os.ab&&os.ab>td?os.ab:null;
+    const bis=[locks[locks.length-1],hand].filter(Boolean).sort().pop()||null;
+    let k; if(ortOpen(o.id))k="lauft"; else if(hand||locks.length>=teile.length)k="sperr"; else if(locks.length)k="teil"; else k="frei";
+    R.push({o,k,bis,last,n:s?s.n:0,g:s?s.g:0,bald:k!=="lauft"&&!!bis&&rmDays(bis)<=75,nodate:!last});
+  }));
+  return R;
+}
+const scope=l=>{const o=ORT[l.ort],out=[];o.t.forEach(([tn,ss])=>{if(l.teile&&!l.teile.includes(tn))return;ss.forEach(s=>out.push({name:s,teil:tn}));});return out;};
+const areaLabel=l=>{const o=ORT[l.ort];return `${o.plz[0]} ${o.g}${l.teile?" · "+l.teile.join(", "):""}`;};
+
+/* ---------- Statistik ---------- */
+const listEntries=id=>S.entries.filter(e=>e.listId===id);
+function counts(arr){const c={GES:0,NA:0,KI:0,INFO:0,LEER:0,OPEN:0};arr.forEach(e=>{if(e.status)c[e.status]++;else c.OPEN++;});return c;}
+function aggr(ls){const es=S.entries.filter(e=>ls.some(l=>l.id===e.listId));const c=counts(es);const reached=c.GES+c.KI+c.INFO;return {es,c,quote:reached?Math.round(c.GES/reached*100):0,na:es.filter(e=>e.status==="NA"&&e.na.length<3).length};}
+function streetState(l,name){const n=S.entries.filter(e=>e.listId===l.id&&e.street===name).length;if(l.done&&l.done[name])return {st:"fertig",n};return {st:n?"angefangen":"offen",n};}
+function coverage(l){const c={fertig:0,angefangen:0,offen:0};const sc=scope(l);sc.forEach(s=>c[streetState(l,s.name).st]++);return {...c,total:sc.length};}
+const covBar=c=>c.total?`<span style="width:${c.fertig/c.total*100}%;background:var(--done)"></span><span style="width:${c.angefangen/c.total*100}%;background:var(--started)"></span>`:"";
+const barHTML=(c,total)=>total?ORDER.map(k=>c[k]?`<span style="width:${c[k]/total*100}%;background:${STATUS[k].color}" title="${STATUS[k].label}: ${c[k]}"></span>`:"").join(""):"";
+function ortStat(ortId){
+  const ids=new Set(S.lists.filter(l=>l.ort===ortId).map(l=>l.id));
+  const s={GES:0,KI:0,INFO:0,LEER:0,NA1:0,NA2:0,NA3:0,offen:0,met2:0,met3:0,z:0,total:0};
+  S.entries.forEach(e=>{if(!ids.has(e.listId))return;const na=e.na.length,st=e.status;s.total++;
+    if(!st)s.offen++;else if(st==="NA")s["NA"+Math.min(3,Math.max(1,na))]++;else s[st]++;
+    if(st==="GES")s.z+=(+e.zaehler||1);
+    if(["GES","KI","INFO"].includes(st)&&na>=1)s["met"+Math.min(3,na+1)]++;});
+  s.fertig=s.GES+s.KI+s.LEER+s.NA3;s.open=s.total-s.fertig;s.met=s.GES+s.KI+s.INFO;s.basis=s.total-s.LEER-s.offen;
+  s.quote=s.basis?Math.round(s.met/s.basis*100):0;s.d2=s.NA2+s.NA3+s.met2+s.met3;return s;}
+const qCls=q=>q>=80?"g":q>=75?"y":"r";
+function ortStatCard(ortId,open){
+  const o=ORT[ortId],s=ortStat(ortId);if(!s.total)return "";
+  const seg=(n,c)=>n?`<i style="flex:${n};background:${c}"></i>`:"";
+  const it=(c,l,n,x)=>`<div><span class="osd" style="background:${c}"></span>${l}${x?` <em>${x}</em>`:""}<b>${n}</b></div>`;
+  const hint=!s.d2?"Bisher nur 1. Durchgang. Die Quote steigt erst mit dem 2. Durchgang.":`2. Durchgang: ${s.d2} Häuser nochmal angelaufen, ${s.met2} angetroffen (${Math.round(s.met2/s.d2*100)} %).${s.NA1?` Noch ${s.NA1} Häuser ohne 2. Besuch.`:""}`;
+  return `<details class="osc" data-key="os:${ortId}" ${open||S.open["os:"+ortId]?"open":""}><summary><span class="nm"><b>${esc(o.g)}</b><small>${s.total} Haushalte · ${s.fertig} fertig · ${s.open} offen</small></span><span class="osq ${qCls(s.quote)}">${s.quote} %</span></summary>
+   <div class="osb"><div class="osbar">${seg(s.GES,"var(--ges)")}${seg(s.KI,"var(--ki)")}${seg(s.INFO,"var(--info)")}${seg(s.LEER,"var(--leer)")}${seg(s.NA3,"#8a5a00")}${seg(s.NA2,"#c9951f")}${seg(s.NA1,"#e7c56b")}</div>
+   <div class="osp">${s.total?Math.round(s.fertig/s.total*100):0} % fertig</div>
+   <div class="osg">${it("var(--ges)","Geschrieben",s.GES,s.z+" Zähler")}${it("var(--ki)","Kein Interesse",s.KI)}${it("var(--info)","Info",s.INFO)}${it("var(--leer)","Leerstand",s.LEER)}${it("#e7c56b","1x nicht angetr.",s.NA1)}${it("#c9951f","2x nicht angetr.",s.NA2)}${it("#8a5a00","3x nicht angetr.",s.NA3,"fertig")}${it("#d9dad5","nicht besucht",s.offen)}</div>
+   <div class="osqb ${qCls(s.quote)}"><b>Antreffquote ${s.quote} %</b><small>${s.met} angetroffen von ${s.basis} Haushalten (ohne Leerstand) · Ziel 80 %, Minimum 75 %</small></div>
+   <p class="sub" style="margin:8px 0 0;font-size:14px">${hint}</p></div></details>`;}
+function dayStats(){
+  const M={};
+  S.entries.forEach(e=>{
+    const P={};
+    e.log.forEach(x=>{if(!x.k)return;const key=dayKey(x.t)+"|"+x.by;const c=P[key];
+      if(!c)P[key]={x,first:x.t,last:x.t};else{if(x.t>=c.x.t)c.x=x;c.first=Math.min(c.first,x.t);c.last=Math.max(c.last,x.t);}});
+    Object.keys(P).forEach(key=>{const c=P[key],x=c.x,dk=key.slice(0,10),by=key.slice(11);
+      const D=M[dk]=M[dk]||{};const s=D[by]=D[by]||{doors:0,met:0,ges:0,z:0,ki:0,na:0,leer:0,info:0,first:c.first,last:c.last};
+      s.doors++;
+      if(x.k==="GES"){s.ges++;s.z+=x.z||1;s.met++;}else if(x.k==="KI"){s.ki++;s.met++;}else if(x.k==="INFO"){s.info++;s.met++;}else if(x.k==="NA")s.na++;else if(x.k==="LEER")s.leer++;
+      s.first=Math.min(s.first,c.first);s.last=Math.max(s.last,c.last);});
+  });
+  return M;
+}
+const metr=s=>(s.doors-s.leer)>0?s.met/(s.doors-s.leer):0;
+const hrs=s=>Math.max(.25,(s.last-s.first)/3600e3);
+function sumStats(arr){const o={doors:0,met:0,ges:0,z:0,ki:0,na:0,leer:0,info:0,h:0};arr.forEach(s=>{["doors","met","ges","z","ki","na","leer","info"].forEach(k=>o[k]+=s[k]);o.h+=hrs(s);});return o;}
+function avgOf(M,by,except){const days=Object.keys(M).filter(k=>k!==except&&M[k][by]);if(!days.length)return null;const t=sumStats(days.map(k=>M[k][by])),n=days.length;return {doors:t.doors/n,z:t.z/n,h:t.h/n,metr:metr(t),q:t.met?t.ges/t.met:0,n};}
+const cmp=(v,a,fm)=>{if(a==null||!isFinite(a)||a===0)return "";const r=v/a;if(r>=1.15)return `<span class="up" title="Schnitt ${fm(a)}">▲</span>`;if(r<=.85)return `<span class="dn" title="Schnitt ${fm(a)}">▼</span>`;return "";};
+
+/* ---------- Kleine UI-Helfer ---------- */
+function toast(msg){const h=document.getElementById("toastHost");h.innerHTML=`<div class="toast" role="status">${esc(msg)}</div>`;clearTimeout(toast.t);toast.t=setTimeout(()=>{h.innerHTML="";},2600);}
+function okFlash(msg){const h=document.getElementById("okHost");h.innerHTML=`<div class="okflash" role="status">✓ ${esc(msg)}</div>`;clearTimeout(okFlash.t);okFlash.t=setTimeout(()=>{h.innerHTML="";},2200);}
+function popup(id,html,bind){const ex=document.getElementById(id);if(ex)ex.remove();const w=document.createElement("div");w.className="scrim";w.id=id;w.setAttribute("role","dialog");w.setAttribute("aria-modal","true");w.innerHTML=`<div class="sheet">${html}</div>`;w.addEventListener("click",e=>{if(e.target===w)w.remove();});document.body.appendChild(w);bind(w);return w;}
+function sec(key,title,meta,body){return `<details class="sec" data-key="sec:${key}" ${S.open["sec:"+key]?"open":""}><summary><span class="nm"><b>${title}</b>${meta?`<small>${meta}</small>`:""}</span></summary><div class="secbody">${body}</div></details>`;}
+const colD=(k,title,meta,body,def)=>{const o=S.open["c:"+k];const open=o===undefined?def:o;return `<details class="whobox" data-col="${k}" ${open?"open":""}><summary><span class="label">${title}</span>${meta?`<small>${meta}</small>`:""}</summary><div style="margin-top:8px">${body}</div></details>`;};
+const segHTML=(label,cur,opts,attr,cls)=>`<div class="seg ${cls||""}" role="group" aria-label="${label}">${opts.map(([v,l])=>`<button type="button" ${attr}="${esc(v)}" aria-pressed="${cur===v}">${l}</button>`).join("")}</div>`;
+const foot=()=>`<p class="foot-note">Demo mit Beispieldaten · alle Orte, Straßen und Namen sind frei erfunden.<br>Änderungen bleiben nur in dieser Sitzung.</p>`;
+
+/* ---------- Rendering ---------- */
+function render(){
+  document.querySelectorAll("#nav button").forEach(b=>{const v=S.view==="list"?"lists":S.view;if(b.dataset.nav===v)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current");});
+  ({tl:renderTL,lists:renderLists,list:renderList,geb:renderGeb,day:renderDay}[S.view]||renderTL)();
+}
+
+/* Übersicht */
+function renderTL(){
+  const A=aggr(S.lists);
+  const M=dayStats(), td=dayKey(T0);
+  const ovHead=`<h1>Übersicht</h1>${segHTML("Umfang",S.ov,[["team","Ganzes Team"],["ma","Pro Mitarbeiter"]],"data-ov")}`;
+  let body;
+  if(S.ov==="ma"){
+    body=`<div class="tree">${MAS.map(u=>{
+      const es=S.entries.filter(e=>e.by===u),c=counts(es),reached=c.GES+c.KI+c.INFO,q=reached?Math.round(c.GES/reached*100):0;
+      const na=es.filter(e=>e.status==="NA"&&e.na.length<3).length, s=(M[td]||{})[u];
+      const ls=S.lists.filter(l=>l.members.includes(u));
+      return `<details class="lk" data-key="ov:${u}" ${S.open["ov:"+u]?"open":""}><summary><span class="nm"><b>${esc(uname(u))}</b><small>${s?`heute ${s.doors} Türen · ${s.ges} geschrieben`:"heute noch nicht gestartet"} · ${ls.length} ${ls.length===1?"Liste":"Listen"}</small></span></summary>
+      <div class="ortbody"><div class="kpis"><div class="kpi"><strong>${es.length}</strong><span>Häuser erfasst</span></div><div class="kpi"><strong class="g">${c.GES}</strong><span>Geschrieben</span></div><div class="kpi"><strong>${q} %</strong><span>Abschlussquote</span></div><div class="kpi"><strong class="y">${na}</strong><span>Nachlauf offen</span></div></div>
+      <div class="stack">${barHTML(c,es.length)}</div><div class="legend">${ORDER.map(k=>`<span><i style="background:${STATUS[k].color}"></i>${STATUS[k].label} ${c[k]}</span>`).join("")}</div>
+      <div class="box"><span class="label">Arbeitet an</span><ul class="tour">${ls.map(l=>{const cv=coverage(l);return `<li><div class="grow"><b>${esc(l.name)}</b><small>${cv.fertig} von ${cv.total} Straßen fertig</small></div><button type="button" class="btn ghost small" data-l="${l.id}">Öffnen</button></li>`;}).join("")}</ul></div></div></details>`;}).join("")}</div>`;
+  } else {
+    const ids=[...new Set(S.lists.map(l=>l.ort))].filter(id=>ortStat(id).total).sort((a,b)=>ortStat(b).total-ortStat(a).total);
+    const T=ids.map(ortStat).reduce((a,s)=>({met:a.met+s.met,basis:a.basis+s.basis}),{met:0,basis:0}), q=T.basis?Math.round(T.met/T.basis*100):0;
+    const all=MAS.map(u=>(M[td]||{})[u]).filter(Boolean), TT=sumStats(all);
+    const row=u=>{const s=(M[td]||{})[u];return `<tr><td><b>${esc(uname(u))}</b>${s?`<small class="sm">${hm(s.first)}–${hm(s.last)} Uhr</small>`:""}</td>${s?`<td data-label="Türen">${s.doors}</td><td data-label="Geschrieben" style="color:var(--ges);font-weight:700">${s.ges}</td><td data-label="Zähler"><b>${s.z}</b></td>`:`<td class="muted" colspan="3">noch nicht gestartet</td>`}</tr>`;};
+    body=`<div class="kpis">
+      <div class="kpi"><strong>${A.es.length}</strong><span>Häuser erfasst</span></div>
+      <div class="kpi"><strong class="g">${A.c.GES}</strong><span>Geschrieben</span></div>
+      <div class="kpi"><strong>${A.quote} %</strong><span>Quote (von angetroffen)</span></div>
+      <div class="kpi"><strong class="y">${A.na}</strong><span>Nachlauf offen</span></div></div>
+    <div class="stack" aria-label="Statusverteilung">${barHTML(A.c,A.es.length)}</div>
+    <div class="legend">${ORDER.map(k=>`<span><i style="background:${STATUS[k].color}"></i>${STATUS[k].label} ${A.c[k]}</span>`).join("")}</div>
+    <div class="secs">
+      ${sec("ortstat","Orte – Antreffquote",`${ids.length} Orte · gesamt ${q} % · Ziel 80 %`,ids.map(id=>ortStatCard(id,false)).join(""))}
+      ${sec("heute","Team heute",`${all.length} im Einsatz · ${TT.doors} Türen · ${TT.ges} geschrieben`,`<p class="sub" style="margin:0 0 8px">${esc(dayLabel(td))} · Türen = alle Besuche, auch Nachbesuche.</p><div class="tbl"><table><thead><tr><th>Name</th><th>Türen</th><th>Geschr.</th><th>Zähler</th></tr></thead><tbody>${MAS.map(row).join("")}</tbody></table></div>`)}
+    </div>`;
+  }
+  app.innerHTML=ovHead+body+foot();
+}
+
+/* Listen */
+function renderLists(){
+  const G={};
+  S.lists.forEach(l=>{const o=ORT[l.ort];(G[o.lk]=G[o.lk]||[]).push(l);});
+  const card=l=>{const es=listEntries(l.id),cv=coverage(l);
+    return `<button class="lcard" data-l="${l.id}" type="button">
+      <div><b>${esc(l.name)}</b>${listOpen(l)?"":`<span class="tag">gesperrt</span>`}</div>
+      <div class="meta">${esc(areaLabel(l))} · ${l.members.map(uname).join(", ")}</div>
+      <div class="num"><strong>${es.length}</strong><span class="label">Häuser</span></div>
+      <div class="bar">${covBar(cv)}</div>
+      <div class="covline">${cv.fertig} fertig · ${cv.angefangen} angefangen · ${cv.offen} offen von ${cv.total} Straßen</div></button>`;};
+  const keys=REGION.map(r=>r.lk).filter(k=>G[k]);
+  app.innerHTML=`<h1>Listen</h1><p class="sub">Eine Liste pro Ort oder Ortsteil. Tippen, um Haustüren zu erfassen.</p>
+    <div class="tree">${keys.map(k=>`<details class="lk" data-key="ll:${esc(k)}" ${S.open["ll:"+k]!==false?"open":""}><summary><span class="nm"><b>${esc(k)}</b><small>${G[k].length} ${G[k].length===1?"Liste":"Listen"}</small></span></summary><div class="lists">${G[k].map(card).join("")}</div></details>`).join("")}</div>${foot()}`;
+}
+
+/* Eine Liste */
+const sfChips=()=>`<div class="seg wrapseg" role="group" aria-label="Status" style="margin:0 0 10px">${[["","Alle"],...ORDER.map(k=>[k,STATUS[k].label]),["offen","Offen"]].map(([k,t])=>`<button type="button" data-sf="${k}" aria-pressed="${(S.sf||"")===k}">${t}</button>`).join("")}</div>`;
+function rowHTML(e){
+  const st=e.status?`<span class="pill s-${e.status}">${esc(e.status==="NA"?e.na.length+"x n. a.":e.status==="GES"?"Geschr. · "+(e.zaehler||1)+" Zähler":STATUS[e.status].label)}</span>`:`<span class="pill none">offen</span>`;
+  return `<button type="button" class="row" data-e="${e.id}"><span class="plate">${esc(e.no)}</span><span class="who2"><div class="nm">${esc(e.name||"—")}</div><div class="sm">${esc(uname(e.by))} · ${fmtRel(e.ts)}${e.note?" · "+esc(e.note):""}</div></span>${st}</button>`;
+}
+function renderList(){
+  const l=S.lists.find(x=>x.id===S.listId);if(!l){S.view="lists";return render();}
+  const all=listEntries(l.id), cur=S.street[l.id]||"";
+  const filt=e=>(S.sf==="offen"?!e.status:S.sf?e.status===S.sf:true)&&(S.filter==="meine"?e.by==="me":S.filter==="nachlauf"?(e.status==="NA"&&e.na.length<3):true);
+  const rows=all.filter(e=>e.street===cur&&filt(e)).sort((a,b)=>(parseInt(a.no)||0)-(parseInt(b.no)||0)||a.no.localeCompare(b.no));
+  const cv=coverage(l), cs=cur?streetState(l,cur):null;
+  const dk=l.id+"|"+cur; if(QD.k!==dk){QD={k:dk,hn:"",zs:"",lock:false};qk=null;qz="";qzOpen=false;}
+  const M={};all.forEach(e=>{const m=M[e.street]=M[e.street]||{s:e.street,n:0,last:0,ges:0};m.n++;m.last=Math.max(m.last,e.ts||0);if(e.status==="GES")m.ges++;});
+  if(cur&&!M[cur])M[cur]={s:cur,n:0,last:0,ges:0};
+  const SL=Object.values(M).sort((x,y)=>(x.s===cur?-1:y.s===cur?1:0)||y.last-x.last), fertig=SL.filter(m=>l.done[m.s]).length;
+  const rowS=m=>`<div class="tm"><b>${esc(m.s)}</b>${m.s===cur?' <span class="tag">aktuell</span>':""}<small>${m.n} ${m.n===1?"Haus":"Häuser"} · ${m.ges} geschrieben${m.last?" · zuletzt "+fmtRel(m.last):""}${l.done[m.s]?" · fertig ✓":""}</small>
+    <div class="inline" style="margin-top:8px">${m.s===cur?"":`<button type="button" class="btn small" data-s="${esc(m.s)}">Hier weiter</button>`}<button type="button" class="btn ghost small" data-sdone="${esc(m.s)}">${l.done[m.s]?"Wieder öffnen":"Fertig ✓"}</button></div></div>`;
+  const lock=QD.lock&&QD.hn;
+  const q=lastQ&&lastQ.list===l.id&&lastQ.street===cur?S.entries.find(x=>x.id===lastQ.id):null;
+  const dis=lock?"":" disabled";
+  app.innerHTML=`
+    <button class="back" type="button" data-back>‹ Alle Listen</button>
+    <h1>${esc(l.name)}</h1>
+    <p class="sub">${esc(areaLabel(l))} · ${all.length} Häuser · ${counts(all).GES} geschrieben</p>
+    ${ortStatCard(l.ort,false)}
+    <div class="cov"><div class="t"><span><b>${cv.fertig}</b> fertig · <b>${cv.angefangen}</b> angefangen · <b>${cv.offen}</b> offen</span><span>${cv.total} Straßen</span></div><div class="bar">${covBar(cv)}</div></div>
+    ${segHTML("Filter",S.filter,[["alle","Alle"],["meine","Meine"],["nachlauf","Nachlauf offen"]],"data-f")}
+    ${colD("sts","Straßen dieser Liste",`${SL.length} bearbeitet · ${fertig} fertig`,`<button type="button" class="btn" data-pick>Neue Straße wählen</button>${SL.map(rowS).join("")}`,false)}
+    <div class="curcard" style="display:flex;flex-wrap:wrap;gap:10px 12px;align-items:center;justify-content:space-between;margin-top:12px;padding:12px 14px">
+      <div style="min-width:0;flex:1 1 180px"><span class="label">Aktuelle Straße</span><br><b style="font-size:22px;line-height:1.1;overflow-wrap:anywhere">${esc(cur||"Noch keine gewählt")}</b>
+      ${cur?`<br><small style="color:var(--muted)">${all.filter(e=>e.street===cur).length} Häuser${cs.st==="fertig"?" · fertig ✓":""}</small>`:""}</div>
+      <div class="inline"><button type="button" class="btn" data-pick>${cur?"Straße wechseln":"Straße wählen"}</button>${cur?`<button class="btn ghost small" type="button" data-sdone="${esc(cur)}">${cs.st==="fertig"?"Wieder öffnen":"Straße fertig ✓"}</button>`:""}</div></div>
+    ${cur?`<div class="qbox"><span class="label">Nächste Haustür</span>
+      ${lock?`<div class="qlock" role="status"><span>Haustür <b>${esc(QD.hn+(QD.zs||""))}</b></span><button type="button" class="btn small" data-qunlock>Ändern</button></div>
+         <p class="sub" style="margin:6px 0 0;font-size:15px">Nummer ist gemerkt. Jetzt Status tippen.</p>`
+       :`<div class="qin"><input id="hn" class="search" inputmode="numeric" pattern="[0-9]*" placeholder="Nr." aria-label="Hausnummer" value="${esc(QD.hn)}"><button type="button" class="btn" data-qok>OK</button></div>
+         <div class="snchips" role="group" aria-label="Zusatz zur Hausnummer"><small style="color:var(--muted)">Zusatz</small>${["a","b","c","d","e","f"].map(z=>`<button type="button" class="chip" data-zs="${z}" aria-pressed="${QD.zs===z}">${z.toUpperCase()}</button>`).join("")}</div>
+         <p class="sub" style="margin:6px 0 0;font-size:15px">Nummer eintippen, dann OK oder Enter.</p>`}
+      <div class="qgrid"><button type="button" class="sbtn wide s-NA" data-q="NA"${dis}>Nicht angetroffen</button>${["GES","KI","INFO","LEER"].map(k=>`<button type="button" class="sbtn s-${k}" data-q="${k}"${dis} ${qk===k||(k==="GES"&&qzOpen)?'style="outline:3px solid var(--ink)"':""}>${STATUS[k].label}</button>`).join("")}</div>
+      ${qzOpen?`<div style="margin-top:10px"><span class="label">Wie viele Zähler?</span><div class="seg" role="group" aria-label="Anzahl Zähler">${[1,2,3,4].map(z=>`<button type="button" data-qzn="${z}">${z===4?"4+":z}</button>`).join("")}</div><button class="btn ghost small" type="button" data-qzx style="margin-top:8px">Abbrechen</button></div>`:""}
+      ${qk?`<div style="margin-top:10px"><span class="label">${qk==="KI"?"Notiz zu Kein Interesse (Pflicht)":"Notiz zu Info (Pflicht)"}</span><textarea id="qnt" maxlength="300" placeholder="Pflicht: kurz notieren" aria-label="Notiz">${esc(qNote)}</textarea><div class="inline" style="margin-top:8px"><button class="btn" type="button" data-qnok ${qNote.trim()?"":"disabled"}>Speichern</button><button class="btn ghost" type="button" data-qnx>Abbrechen</button></div></div>`:""}
+      ${q?`<div class="qlast"><span>Zuletzt: <b>${esc(q.no)}</b> · ${esc(q.status?STATUS[q.status].label:"offen")}</span>${q.status==="GES"?`<span class="seg" role="group" aria-label="Zähler">${[1,2,3,4].map(z=>`<button type="button" data-qz="${z}" aria-pressed="${(q.zaehler||1)===z}">${z===4?"4+":z+" Z."}</button>`).join("")}</span>`:""}<button type="button" class="btn ghost small" data-e="${q.id}">Details</button></div>`:""}
+    </div>
+    ${colD("rows",`${rows.length} ${rows.length===1?"Haus":"Häuser"}${S.filter==="meine"?" von dir":S.filter==="nachlauf"?" mit offenem Nachlauf":""} in ${esc(cur)}`,"",`${sfChips()}<div class="rows">${rows.map(rowHTML).join("")||`<div class="empty">${S.filter==="alle"&&!S.sf?"Noch keine Häuser in dieser Straße. Trag oben die erste Hausnummer ein.":"Keine Treffer für diesen Filter."}</div>`}</div>`,true)}`
+    :`<div class="empty">Wähl oben die erste Straße aus.</div>`}
+    ${foot()}`;
+  if(qFocus){qFocus=false;const h=document.getElementById("hn");if(h)h.focus({preventScroll:true});}
+  const t=document.getElementById("qnt");if(t){t.focus({preventScroll:true});t.setSelectionRange(t.value.length,t.value.length);}
+}
+function quickHouse(l,street,no,k,z,note){
+  let e=S.entries.find(x=>x.listId===l.id&&x.street===street&&x.no.toLowerCase()===no.toLowerCase());
+  if(!e){e={id:uid(),listId:l.id,street,no,name:"",status:null,note:"",na:[],ts:now(),by:"me",log:[]};S.entries.push(e);}
+  const t=now();
+  if(k==="NA"){
+    if(e.na.length>=3&&e.status==="NA"){toast(`${street} ${no}: schon 3x nicht angetroffen, Haus ist durch.`);}
+    else{e.status="NA";e.na.push(t);e.log.push({t,by:"me",k:"NA",txt:e.na.length+"x nicht angetroffen"});}
+  } else {e.status=k;if(k==="GES")e.zaehler=z||e.zaehler||1;e.log.push({t,by:"me",k,txt:STATUS[k].label,z:k==="GES"?e.zaehler:undefined});}
+  if(note)e.note=e.note?e.note+" | "+note:note;
+  e.ts=t;e.by="me";
+  QD.hn="";QD.zs="";QD.lock=false;qk=null;qzOpen=false;qNote="";qFocus=true;lastQ={id:e.id,list:l.id,street};
+  render();okFlash(`${street} ${no}: ${k==="NA"?e.na.length+"x nicht angetroffen":STATUS[k].label}`);
+}
+function openPicker(l){
+  const sc=scope(l);
+  popup("pickPop",`<div class="hd"><div><h3>Straße wählen</h3><div class="sub" style="font-size:14px;margin:0">${esc(areaLabel(l))}</div></div><button class="x" type="button" id="px" aria-label="Schließen">×</button></div>
+    <input class="search" id="pq" type="search" placeholder="Straße suchen" autocomplete="off" aria-label="Suchen"><div id="pres" style="margin-top:6px"></div>`,w=>{
+    const q=w.querySelector("#pq");
+    const draw=()=>{const nq=norm(q.value);
+      const hits=sc.filter(s=>!nq||norm(s.name).includes(nq)||norm(s.teil).includes(nq)).map(s=>({...s,...streetState(l,s.name)}));
+      w.querySelector("#pres").innerHTML=hits.map(h=>`<button type="button" class="prow" data-n="${esc(h.name)}"><span class="n">${esc(h.name)}${l.teile||ORT[l.ort].t.length>1?`<small>${esc(h.teil)}</small>`:""}</span><span class="st ${h.st}">${h.st==="offen"?"offen":h.st==="fertig"?"fertig":h.n+" Häuser"}</span></button>`).join("")||`<div class="empty">Nicht im Verzeichnis.</div>`;
+      w.querySelectorAll("[data-n]").forEach(b=>b.onclick=()=>{S.street[l.id]=b.dataset.n;w.remove();render();});};
+    q.addEventListener("input",draw);w.querySelector("#px").onclick=()=>w.remove();draw();
+  });
+}
+function openSheet(id){
+  const e=S.entries.find(x=>x.id===id);if(!e)return;
+  const mutate=fn=>{fn(e);e.ts=now();e.by="me";};
+  const w=popup("houseSheet","",()=>{});
+  const draw=()=>{
+    const sh=w.querySelector(".sheet"), naNext=e.na.length+1;
+    sh.innerHTML=`<div class="hd"><span class="plate">${esc(e.no)}</span><div><h3>${esc(e.street)} ${esc(e.no)}</h3><div class="sub" style="font-size:14px;margin:0">${esc(e.name||"ohne Name")}</div></div><button class="x" type="button" id="x" aria-label="Schließen">×</button></div>
+      <div class="sgrid"><button type="button" class="sbtn wide s-NA" data-st="NA" aria-pressed="${e.status==="NA"}">Nicht angetroffen<small>${e.na.length?`Bisher ${e.na.length}x · tippen für ${naNext}. Versuch`:"1. Versuch eintragen"}</small></button>
+      ${["GES","KI","INFO","LEER"].map(k=>`<button type="button" class="sbtn s-${k}" data-st="${k}" aria-pressed="${e.status===k}">${STATUS[k].label}<small>${{GES:"Abschluss",KI:"Absage",INFO:"Unterlagen da",LEER:"Wohnung leer"}[k]}</small></button>`).join("")}</div>
+      ${e.status==="GES"?`<div style="margin-top:14px"><span class="label">Zähler geschrieben</span><div class="seg" role="group" aria-label="Anzahl Zähler">${[1,2,3,4].map(z=>`<button type="button" data-z="${z}" aria-pressed="${(e.zaehler||1)===z}">${z===4?"4+":z}</button>`).join("")}</div></div>`:""}
+      <div style="margin-top:14px"><label class="label" for="note">Bemerkung / Termin</label><textarea id="note" placeholder="z. B. 2 Zähler, Termin Do 17 Uhr">${esc(e.note)}</textarea></div>
+      ${e.log.length?`<div style="margin-top:10px"><span class="label">Verlauf</span><ul class="hist">${e.log.slice().reverse().map(x=>`<li><span>${esc(x.txt)}</span><span>${esc(uname(x.by))} · ${fmt(x.t)}</span></li>`).join("")}</ul></div>`:""}
+      <div class="foot"><button class="btn" type="button" id="done">Fertig</button>${e.status?'<button class="btn ghost" type="button" id="sreset">Status zurücksetzen</button>':""}</div>`;
+    const commit=()=>{const n=sh.querySelector("#note");if(n&&n.value!==e.note){e.note=n.value;e.ts=now();e.by="me";}};
+    const close=()=>{commit();w.remove();render();};
+    sh.querySelector("#x").onclick=close;sh.querySelector("#done").onclick=close;
+    const r=sh.querySelector("#sreset");if(r)r.onclick=()=>{commit();mutate(x=>{x.status=null;x.na=[];x.log.push({t:now(),by:"me",txt:"Status zurückgesetzt"});});draw();};
+    sh.querySelectorAll("[data-z]").forEach(b=>b.onclick=()=>{commit();const z=+b.dataset.z;mutate(x=>{x.zaehler=z;for(let i=x.log.length-1;i>=0;i--){if(x.log[i].k==="GES"){x.log[i].z=z;break;}}});draw();});
+    sh.querySelectorAll("[data-st]").forEach(b=>b.onclick=()=>{commit();const k=b.dataset.st;
+      if((k==="INFO"||k==="KI")&&!(e.note||"").trim()){toast("Bitte erst eine Notiz eintragen");sh.querySelector("#note").focus();return;}
+      if(k==="NA"){if(e.na.length>=3&&e.status==="NA"){toast("Schon 3x nicht angetroffen. Haus ist durch.");return;}
+        mutate(x=>{x.status="NA";x.na.push(now());x.log.push({t:now(),by:"me",k:"NA",txt:x.na.length+"x nicht angetroffen"});});}
+      else mutate(x=>{x.status=k;if(k==="GES")x.zaehler=x.zaehler||1;x.log.push({t:now(),by:"me",k,txt:STATUS[k].label,z:k==="GES"?x.zaehler:undefined});});
+      draw();});
+  };
+  w.addEventListener("click",ev=>{if(ev.target===w)render();});
+  draw();
+}
+
+/* Gebiete */
+const gModeSeg=()=>segHTML("Ansicht",S.gMode,[["rm","Roadmap"],["edit","Bearbeiten"]],"data-gmode");
+function renderGeb(){S.gMode==="rm"?renderRoadmap():renderEdit();}
+function renderRoadmap(){
+  const td=today(),R=rmData().filter(x=>RMS==="alle"||x.o.lk===RMS);
+  const plz=x=>x.o.plz[0];
+  const stOf=x=>x.k==="lauft"?"lauft":x.bald?"bald":x.k==="frei"?(x.nodate?"nodate":"frei"):x.k;
+  const SL={frei:["Frei","frei"],teil:["Teilweise frei","teil"],bald:["Bald frei","ab"],sperr:["Gesperrt","gesperrt"],nodate:["Kein Datum","offen"],lauft:["Freigegeben","lauft"]};
+  const cnt=k=>R.filter(x=>stOf(x)===k).length;
+  const F=R.filter(x=>RMF==="alle"||stOf(x)===RMF);
+  const go=x=>`<button type="button" class="rmgo" data-rmgo="${x.o.id}">${esc(x.o.g)}</button>`;
+  const lks=[...new Set(REGION.map(r=>r.lk))].sort().map(lk=>{
+    const rows=F.filter(x=>x.o.lk===lk).sort((a,b)=>plz(a).localeCompare(plz(b)));
+    if(!rows.length)return "";
+    const meta=Object.keys(SL).map(k=>[k,rows.filter(x=>stOf(x)===k).length]).filter(a=>a[1]).map(([k,n])=>`${n} ${SL[k][0].toLowerCase()}`).join(" · ");
+    const body=`<div class="tbl"><table><thead><tr><th>Ort</th><th>Zuletzt drin</th><th>Wieder frei</th><th>Status</th><th>Datum</th></tr></thead><tbody>${rows.map(x=>{
+      const s=stOf(x);
+      const frei=x.k==="lauft"?"–":x.bis?(x.k==="teil"?`teilw. jetzt<small class="sm">komplett ${fmtDate(x.bis)}</small>`:fmtDate(x.bis)):"jetzt";
+      return `<tr><td><span class="rmplz">${plz(x)}</span> ${go(x)}${x.k==="lauft"?`<small class="sm">${x.n} Häuser · ${x.g} geschrieben</small>`:""}</td><td data-label="Zuletzt drin">${x.last?rmYm(x.last):"–"}</td><td data-label="Wieder frei">${frei}</td><td data-label="Status"><span class="st ${SL[s][1]}">${SL[s][0]}</span></td><td data-label="Datum"><button type="button" class="btn ghost small" data-rmdate="${x.o.id}">${x.last?"Ändern":"+ Datum"}</button></td></tr>`;}).join("")}</tbody></table></div>`;
+    const key="rm:"+lk, open=RMF!=="alle"||S.open["sec:"+key];
+    return `<details class="sec" data-key="sec:${esc(key)}" ${open?"open":""}><summary><span class="nm"><b>${esc(lk)}</b><small>${rows.length} Orte · ${meta}</small></span></summary><div class="secbody">${body}</div></details>`;}).join("");
+  const M={};R.forEach(x=>{if(x.k==="lauft"||!x.bis||x.bis<=td)return;(M[x.bis.slice(0,7)]=M[x.bis.slice(0,7)]||[]).push(x);});
+  const mk=Object.keys(M).sort();
+  const zeit=mk.length?mk.map(m=>`<div class="rmm"><b>${rmYm(m)}</b><div>${M[m].sort((a,b)=>plz(a).localeCompare(plz(b))).map(x=>`<span class="rmline"><span class="rmplz">${plz(x)}</span> ${go(x)}</span>`).join("")}</div></div>`).join(""):`<p class="sub">Keine Sperren in dieser Auswahl.</p>`;
+  const fopts=[["alle","Alle"],["frei","Frei"],["teil","Teilweise"],["bald","Bald frei"],["sperr","Gesperrt"],["nodate","Kein Datum"],["lauft","Freigegeben"]].map(([k,l])=>[k,k==="alle"?`${l} ${R.length}`:`${l} ${cnt(k)}`]);
+  app.innerHTML=`<h1>Gebiete</h1>${gModeSeg()}
+    ${segHTML("Landkreis",RMS,[["alle","Alle Landkreise"],["Landkreis Nord","Nord"],["Landkreis Süd","Süd"]],"data-rms")}
+    <div class="kpis"><div class="kpi"><strong>${cnt("frei")}</strong><span>frei</span></div><div class="kpi"><strong>${cnt("bald")}</strong><span>bald frei</span></div><div class="kpi"><strong>${cnt("sperr")+cnt("teil")}</strong><span>gesperrt / teilweise</span></div><div class="kpi"><strong>${cnt("nodate")}</strong><span>ohne Datum</span></div></div>
+    ${segHTML("Status",RMF,fopts,"data-rmf","wrapseg")}
+    <div class="secs">${lks||`<p class="sub">Keine Orte mit diesem Status.</p>`}</div>
+    <div class="secs">${sec("rm-zeit","Wann wird was frei?",mk.length?`als Nächstes: ${rmYm(mk[0])}`:"nichts gesperrt",zeit)}</div>${foot()}`;
+}
+function rmDate(id,lock){
+  const o=ORT[id],teile=rmTeile(o),td=today();
+  const cur=lock?td.slice(0,7):(teile.map(t=>rmLast(o,t)).filter(Boolean).sort().pop()||td.slice(0,7));
+  const yrs=[];for(let y=2026;y>=2022;y--)yrs.push(y);
+  popup("rmPop",`<div class="hd"><h3>${esc(o.g)}${lock?" sperren":""}</h3><button class="x" type="button" id="rmx" aria-label="Schließen">×</button></div>
+    <p class="sub" style="margin-top:8px">${lock?"Ab welchem Monat gilt die Sperre (zuletzt drin)? Niemand kommt mehr rein. Wieder frei 12 Monate danach.":"Wann wart ihr zuletzt drin? Gesperrt wird bis 12 Monate danach."}</p>
+    <div class="rmrow"><label class="field"><span class="label">Monat</span><select id="rmmo">${MON.map((n,i)=>`<option value="${String(i+1).padStart(2,"0")}"${+cur.slice(5,7)===i+1?" selected":""}>${n}</option>`).join("")}</select></label>
+    <label class="field"><span class="label">Jahr</span><select id="rmy">${yrs.map(y=>`<option value="${y}"${+cur.slice(0,4)===y?" selected":""}>${y}</option>`).join("")}</select></label></div>
+    ${teile.length>1?`<div class="field"><span class="label">Für welche Ortsteile?</span><div class="rmchks">${teile.map(t=>{const b=rmLast(o,t);return `<label class="rmchk"><input type="checkbox" data-rmt="${esc(t)}" checked><span>${esc(t)}</span><small>${b?rmYm(b):"kein Datum"}</small></label>`;}).join("")}</div></div>`:""}
+    <p class="sub" id="rmh" style="font-weight:600"></p>
+    <div class="foot"><button type="button" class="btn" id="rms" style="flex:1">${lock?"Sperren":"Speichern"}</button><button type="button" class="btn ghost" id="rmc">Abbrechen</button></div>`,w=>{
+    const q=s=>w.querySelector(s), ym=()=>q("#rmy").value+"-"+q("#rmmo").value;
+    const sel=()=>teile.length>1?[...w.querySelectorAll("[data-rmt]")].filter(x=>x.checked).map(x=>x.dataset.rmt):teile;
+    const hint=()=>{const v=ym();if(v>td.slice(0,7)){q("#rmh").textContent="Das Datum liegt in der Zukunft.";return;}const ab=addMonths(v+"-01",12);q("#rmh").textContent=ab>td?`Gesperrt bis ${fmtDate(ab)}`:"Liegt über 12 Monate zurück, also sofort wieder frei.";};
+    hint();q("#rmmo").onchange=hint;q("#rmy").onchange=hint;q("#rmx").onclick=q("#rmc").onclick=()=>w.remove();
+    q("#rms").onclick=()=>{const v=ym(),T=sel();if(v>td.slice(0,7))return;if(!T.length){q("#rmh").textContent="Bitte mindestens einen Ortsteil wählen.";return;}
+      if(lock){const st=S.orte[id]=S.orte[id]||{status:"gesperrt",team:"alle"};st.status="gesperrt";}
+      const ab=addMonths(v+"-01",12);T.forEach(t=>{S.teilLocks[id+"|"+t]={ab,from:"bearbeitet "+v.slice(5)+"/"+v.slice(0,4),b:v};});
+      w.remove();render();okFlash(ab>td?`${o.g} gesperrt bis ${fmtDate(ab)}`:`${o.g}: gespeichert, sofort frei`);};
+  });
+}
+function renderEdit(){
+  const totO=REGION.reduce((a,r)=>a+r.g.length,0), totS=REGION.reduce((a,r)=>a+r.g.reduce((b,o)=>b+o.t.reduce((c,t)=>c+t[1].length,0),0),0);
+  app.innerHTML=`<h1>Gebiete</h1>${gModeSeg()}
+    <p class="sub" style="margin-top:10px">${totO} Orte · ${totS} Straßen. Alles zugeklappt, Inhalt erst auf Klick.</p>
+    <input class="search" id="gq" type="search" placeholder="Ort, Ortsteil, Straße oder PLZ suchen" value="${esc(gq)}" autocomplete="off" aria-label="Gebiete durchsuchen"><div id="gres"></div>${foot()}`;
+  document.getElementById("gq").addEventListener("input",ev=>{gq=ev.target.value;drawGeb();});
+  drawGeb();
+}
+function drawGeb(){
+  const host=document.getElementById("gres"),nq=norm(gq);
+  if(nq.length>=2){
+    const hits=[];
+    REGION.forEach(r=>r.g.forEach(o=>{
+      if(norm(o.g).includes(nq)||o.plz.some(p=>p.startsWith(gq.trim())))hits.push({kind:"Ort",o,label:o.g,path:r.lk+" · "+o.plz.join(", ")});
+      o.t.forEach(([tn,ss])=>{
+        if(tn!==o.g&&norm(tn).includes(nq))hits.push({kind:"Ortsteil",o,teil:tn,label:tn,path:r.lk+" › "+o.g});
+        ss.forEach(s=>{if(norm(s).includes(nq))hits.push({kind:"Straße",o,teil:tn,label:s,path:r.lk+" › "+o.g+(tn!==o.g?" › "+tn:"")});});});}));
+    host.innerHTML=`<div class="tree">${hits.slice(0,40).map((h,i)=>`<button type="button" class="prow" style="background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:9px 12px" data-hit="${i}"><span class="n">${esc(h.label)}<small>${h.kind} · ${esc(h.path)}</small></span>${h.kind==="Ort"?`<span class="st ${ortCls(h.o.id)}">${esc(ortLabel(h.o.id))}</span>`:""}</button>`).join("")||`<div class="empty">Nichts gefunden.</div>`}</div>`;
+    host.querySelectorAll("[data-hit]").forEach(b=>b.onclick=()=>{const h=hits[+b.dataset.hit];S.open["lk:"+h.o.lk]=true;S.open["o:"+h.o.id]=true;if(h.teil)S.open["t:"+h.o.id+"|"+h.teil]=true;gq="";renderEdit();const el=document.getElementById("o-"+h.o.id);if(el)el.scrollIntoView({block:"start"});});
+    return;
+  }
+  host.innerHTML=`<div class="tree">${REGION.map(r=>{
+    const frei=r.g.filter(o=>ortOpen(o.id)).length, L=S.lists.filter(l=>ORT[l.ort].lk===r.lk), a=aggr(L);
+    return `<details class="lk" data-key="lk:${esc(r.lk)}" ${S.open["lk:"+r.lk]?"open":""}><summary><span class="nm"><b>${esc(r.lk)}</b><small>${r.g.length} Orte · ${frei} freigegeben · ${L.length} Listen · ${a.es.length} Häuser</small></span></summary>
+    <div class="kids">${r.g.map(ortHTML).join("")}</div></details>`;}).join("")}</div>`;
+}
+function ortHTML(o){
+  const id=o.id,s=ortState(id),L=S.lists.filter(l=>l.ort===id),a=aggr(L),team=s.team==="alle"?MAS:s.team;
+  const nStr=o.t.reduce((c,t)=>c+t[1].length,0);
+  const lockBar=tn=>{const k=teilLock(id,tn);if(!k||teilOpen(id,tn))return "";return `<div class="box" style="margin:6px 0"><p class="sub" style="margin:0">Gesperrt bis <b>${fmtDate(k.ab)}</b> (${esc(k.from||"")}).</p><button type="button" class="btn ghost small" data-unlock="${id}|${esc(tn)}" style="margin-top:6px">Jetzt freigeben</button></div>`;};
+  const single=o.t.length===1;
+  const streetState2=name=>{let n=0,done=false;L.forEach(l=>{n+=S.entries.filter(e=>e.listId===l.id&&e.street===name).length;if(l.done[name])done=true;});return done?"fertig":n?"angefangen":"offen";};
+  return `<details class="ort" id="o-${id}" data-key="o:${id}" ${S.open["o:"+id]?"open":""}>
+    <summary><span class="nm"><b>${esc(o.g)}</b><small>${o.plz.join(", ")} · ${o.t.length} ${o.t.length===1?"Ortsteil":"Ortsteile"} · ${nStr} Straßen${L.length?` · ${L.length} Listen · ${a.es.length} Häuser`:""}</small></span><span class="st ${ortCls(id)}">${esc(ortLabel(id))}</span></summary>
+    <div class="ortbody">
+      <div class="box"><span class="label">Freigabe</span>
+        <div class="seg" role="group" aria-label="Freigabe ${esc(o.g)}">${[["gesperrt","Gesperrt"],["frei","Frei"],["ab","Ab Datum"]].map(([v,t])=>`<button type="button" data-ost="${id}|${v}" aria-pressed="${s.status===v}">${t}</button>`).join("")}</div>
+        ${s.status==="ab"?`<div class="field"><label class="label" for="ab-${id}">Freigegeben ab</label><input type="date" id="ab-${id}" data-oab="${id}" value="${esc(s.ab||"")}"></div>`:""}
+        <span class="label" style="display:block;margin-top:10px">Wer darf hier arbeiten?</span>
+        <div class="checks"><label><input type="checkbox" data-oall="${id}" ${s.team==="alle"?"checked":""}> Alle Mitarbeiter</label>${MAS.map(u=>`<label><input type="checkbox" data-oteam="${id}|${u}" ${team.includes(u)?"checked":""} ${s.team==="alle"?"disabled":""}> ${uname(u)}</label>`).join("")}</div></div>
+      <div class="box"><span class="label">Listen in ${esc(o.g)}</span>
+        ${L.length?`<ul class="tour">${L.map(x=>{const ag=aggr([x]);return `<li><div class="grow"><b>${esc(x.name)}</b><small>${esc(x.teile?x.teile.join(", "):"ganzer Ort")} · ${ag.es.length} Häuser · ${ag.c.GES} geschrieben</small></div><button type="button" class="btn ghost small" data-l="${x.id}">Öffnen</button></li>`;}).join("")}</ul>`:`<p class="sub" style="margin-top:4px">Noch keine Liste.</p>`}
+        <div class="inline" style="margin-top:8px"><div class="field"><label class="label" for="nl-${id}">Neue Liste</label><input id="nl-${id}" data-nlname="${id}" placeholder="${esc(o.g)}"></div><button class="btn" type="button" data-nlok="${id}">Anlegen</button></div></div>
+      <span class="label">${single?"Straßen":"Ortsteile mit Straßen"}</span>
+      ${o.t.map(([tn,ss])=>`<details class="teil" data-key="t:${id}|${esc(tn)}" ${S.open["t:"+id+"|"+tn]||single?"open":""}>
+        <summary><span class="nm"><b>${esc(tn)}</b><small>${ss.length} Straßen</small></span>${teilOpen(id,tn)?"":`<span class="st ab">ab ${fmtDate(teilLock(id,tn).ab)}</span>`}</summary>
+        <div>${lockBar(tn)}<ul class="slist">${ss.map(n=>{const st=streetState2(n);return `<li><span>${esc(n)}</span>${st==="offen"?'<span class="dash">–</span>':`<span class="st ${st}">${st}</span>`}</li>`;}).join("")}</ul></div></details>`).join("")}
+    </div></details>`;
+}
+
+/* Tag */
+function renderDay(){
+  const M=dayStats(),keys=[];
+  for(let d=13;d>=0;d--)keys.push(dayKey(T0-d*864e5));
+  const todayK=keys[keys.length-1];if(!keys.includes(S.day))S.day=todayK;
+  const tot=k=>sumStats(Object.values(M[k]||{}));
+  const maxD=Math.max(1,...keys.map(k=>tot(k).doors)),day=S.day,D=M[day]||{},T=tot(day),running=day===todayK;
+  const people=MAS.filter(id=>D[id]||Object.keys(M).some(k=>M[k][id]));
+  const rows=people.map(by=>({by,s:D[by],a:avgOf(M,by,day)}));
+  const hints=[];
+  if(running)hints.push(["warn","Der heutige Tag läuft noch. Vergleiche mit dem Schnitt sind erst am Abend aussagekräftig."]);
+  else rows.forEach(({by,s,a})=>{const n=uname(by);
+    if(!s){if(a&&a.n>=3)hints.push(["warn",`<b>${esc(n)}</b>: keine Einträge an diesem Tag (sonst Ø ${f0(a.doors)} Türen).`]);return;}
+    if(!a)return;
+    if(s.doors<a.doors*.8)hints.push(["bad",`<b>${esc(n)}</b>: nur ${s.doors} ${s.doors===1?"Tür":"Türen"} statt Ø ${f0(a.doors)}.`]);
+    if(s.doors>=10&&metr(s)<a.metr-.1)hints.push(["warn",`<b>${esc(n)}</b>: viele nicht angetroffen, nur ${pc(metr(s))} statt ${pc(a.metr)}. Uhrzeit oder Gebiet prüfen.`]);
+    if(s.doors>a.doors*1.2&&s.z>=a.z)hints.push(["ok",`<b>${esc(n)}</b>: starker Tag mit ${s.doors} Türen und ${s.z} Zählern.`]);});
+  app.innerHTML=`<h1>Tagesbericht</h1>
+    <p class="sub">Pro Tag, verglichen mit dem Schnitt der letzten 14 Tage. Türen = alle Besuche, auch Nachbesuche.</p>
+    <div class="panel" style="margin-top:12px"><div class="legend" style="margin-top:0"><span><i style="background:var(--ink)"></i>Türen</span><span><i style="background:var(--ges)"></i>davon geschrieben</span><span>Zahl unten = Zähler</span></div>
+      <div class="days" role="group" aria-label="Tag wählen">${keys.map(k=>{const t=tot(k),dl=dayLabel(k).split(" ");return `<button type="button" class="dayb" data-day="${k}" aria-pressed="${k===day}" title="${t.doors} Türen, ${t.z} Zähler"><b>${t.doors||""}</b><span class="col"><i style="height:${t.doors/maxD*100}%;background:linear-gradient(to top,var(--ges) ${t.doors?t.ges/t.doors*100:0}%,var(--ink) 0)"></i></span><small>${dl[0]}<br>${dl[1].slice(0,2)}</small><small style="color:var(--ink);font-weight:700">${t.z||"–"}</small></button>`;}).join("")}</div></div>
+    <div class="kpis"><div class="kpi"><strong>${T.doors}</strong><span>Türen am ${esc(dayLabel(day))}</span></div><div class="kpi"><strong>${T.doors?pc(metr(T)):"–"}</strong><span>angetroffen</span></div><div class="kpi"><strong class="g">${T.ges}</strong><span>geschrieben</span></div><div class="kpi"><strong>${T.z}</strong><span>Zähler</span></div></div>
+    <div class="secs">
+      ${sec("day-hint","Auffällig",running?"Tag läuft noch":(hints.length?hints.length+" Hinweise":"nichts Auffälliges"),hints.length?hints.map(([c,t])=>`<div class="hint"><span class="dot ${c==="bad"?"bad":c==="ok"?"ok":""}"></span><span>${t}</span></div>`).join(""):`<p class="sub">Nichts Auffälliges, alle im Rahmen ihres Schnitts.</p>`)}
+      ${sec("day-ma","Pro Mitarbeiter",`${rows.filter(r=>r.s).length} im Einsatz · ${T.doors} Türen · ${T.z} Zähler`,`<div class="tbl"><table><thead><tr><th>Name</th><th>Türen</th><th>Angetr.</th><th>Geschr.</th><th>Zähler</th><th>Quote</th><th>Zeit</th></tr></thead><tbody>${rows.map(({by,s,a})=>s?`<tr><td><b>${esc(uname(by))}</b></td><td data-label="Türen">${s.doors}${cmp(s.doors,a&&a.doors,f0)}</td><td data-label="Angetroffen">${pc(metr(s))}${cmp(metr(s),a&&a.metr,pc)}</td><td data-label="Geschrieben" style="color:var(--ges);font-weight:700">${s.ges}</td><td data-label="Zähler"><b>${s.z}</b>${cmp(s.z,a&&a.z,f1)}</td><td data-label="Quote">${s.met?pc(s.ges/s.met):"–"}</td><td data-label="Zeit">${hm(s.first)}–${hm(s.last)}</td></tr>`:`<tr><td><b>${esc(uname(by))}</b></td><td class="muted" colspan="6">keine Einträge</td></tr>`).join("")}</tbody></table></div><p class="sub" style="margin-top:6px;font-size:14px">▲/▼ = mindestens 15 % über bzw. unter dem eigenen Schnitt. Quote = Geschrieben von Angetroffenen.</p>`)}
+      ${sec("day-res","Ergebnisse am "+esc(dayLabel(day)),`${T.ges} geschrieben · ${T.ki} kein Interesse · ${T.na} nicht angetroffen`,`<div class="tbl"><table><thead><tr><th>Name</th><th>Geschr.</th><th>Kein Int.</th><th>Info</th><th>Nicht angetr.</th><th>Leer</th></tr></thead><tbody>${rows.filter(r=>r.s).map(({by,s})=>`<tr><td><b>${esc(uname(by))}</b></td><td data-label="Geschrieben" style="color:var(--ges);font-weight:700">${s.ges}</td><td data-label="Kein Interesse">${s.ki}</td><td data-label="Info">${s.info}</td><td data-label="Nicht angetroffen">${s.na}</td><td data-label="Leer">${s.leer}</td></tr>`).join("")||`<tr><td colspan="6" class="muted">Keine Einträge an diesem Tag.</td></tr>`}</tbody></table></div>`)}
+    </div>${foot()}`;
+}
+
+/* ---------- Ereignisse ---------- */
+const app=document.getElementById("app");
+function gotoOrt(id){const o=ORT[id];S.gMode="edit";gq="";S.open["lk:"+o.lk]=true;S.open["o:"+id]=true;render();const el=document.getElementById("o-"+id);if(el)el.scrollIntoView({block:"start"});}
+document.addEventListener("click",e=>{
+  const c=e.target.closest.bind(e.target);let x;
+  if((x=c("[data-nav]"))){S.view=x.dataset.nav;render();window.scrollTo(0,0);return;}
+  if(!app.contains(e.target))return;
+  if((x=c("[data-ov]"))){S.ov=x.dataset.ov;render();return;}
+  if((x=c("[data-gmode]"))){S.gMode=x.dataset.gmode;render();window.scrollTo(0,0);return;}
+  if((x=c("[data-rms]"))){RMS=x.dataset.rms;render();return;}
+  if((x=c("[data-rmf]"))){RMF=x.dataset.rmf;render();return;}
+  if((x=c("[data-rmdate]"))){rmDate(x.dataset.rmdate,false);return;}
+  if((x=c("[data-rmgo]"))){gotoOrt(x.dataset.rmgo);return;}
+  if((x=c("[data-ost]"))){const [id,v]=x.dataset.ost.split("|");
+    if(v==="gesperrt"&&ortState(id).status!=="gesperrt"){rmDate(id,true);return;}
+    const st=S.orte[id]=S.orte[id]||{status:"gesperrt",team:"alle"};st.status=v;
+    if(v==="ab"&&(!st.ab||st.ab<=TODAY))st.ab="2026-11-01";
+    render();okFlash(`${ORT[id].g}: ${ortLabel(id)}`);return;}
+  if((x=c("[data-unlock]"))){const k=x.dataset.unlock,old=S.teilLocks[k]||{};const [oid,tn]=k.split("|");S.teilLocks[k]={ab:"2000-01-01",from:"von dir freigegeben",manual:true,b:old.b||(ORT[oid].b&&ORT[oid].b[tn])||""};render();okFlash("Freigegeben");return;}
+  if((x=c("[data-nlok]"))){const id=x.dataset.nlok,inp=app.querySelector(`[data-nlname="${id}"]`),nm=(inp.value.trim())||ORT[id].g;S.lists.push({id:uid(),name:nm,ort:id,teile:null,members:[...MAS],done:{}});S.open["o:"+id]=true;render();okFlash(`Liste „${nm}“ angelegt${ortOpen(id)?"":" (Ort ist noch nicht freigegeben)"}`);return;}
+  if((x=c("[data-l]"))){S.view="list";S.listId=x.dataset.l;render();window.scrollTo(0,0);return;}
+  if(c("[data-back]")){S.view="lists";render();window.scrollTo(0,0);return;}
+  if((x=c("[data-f]"))){S.filter=x.dataset.f;render();return;}
+  if((x=c("[data-sf]"))){S.sf=x.dataset.sf;render();return;}
+  const l=S.lists.find(q=>q.id===S.listId);
+  if((x=c("[data-s]"))&&l){S.street[l.id]=x.dataset.s;render();return;}
+  if((x=c("[data-sdone]"))&&l){const s=x.dataset.sdone;if(l.done[s]){delete l.done[s];}else{l.done[s]=true;}render();okFlash(l.done[s]?`${s} als fertig markiert`:`${s} wieder offen`);return;}
+  if(c("[data-pick]")&&l){openPicker(l);return;}
+  if((x=c("[data-e]"))){openSheet(x.dataset.e);return;}
+  if((x=c("[data-day]"))){S.day=x.dataset.day;render();return;}
+  /* Erfassung */
+  if(l){
+    if((x=c("[data-zs]"))){QD.zs=QD.zs===x.dataset.zs?"":x.dataset.zs;const h=document.getElementById("hn");if(h)QD.hn=h.value;render();return;}
+    if(c("[data-qok]")){lockNo();return;}
+    if(c("[data-qunlock]")){QD.lock=false;qFocus=true;render();return;}
+    if((x=c("[data-q]"))&&!x.disabled){const k=x.dataset.q;qNote="";
+      if(k==="GES"){qk=null;qzOpen=true;render();}
+      else if(k==="KI"||k==="INFO"){qzOpen=false;qk=k;render();}
+      else quickHouse(l,S.street[l.id],QD.hn+QD.zs,k);return;}
+    if((x=c("[data-qzn]"))){quickHouse(l,S.street[l.id],QD.hn+QD.zs,"GES",+x.dataset.qzn);return;}
+    if(c("[data-qzx]")){qzOpen=false;render();return;}
+    if(c("[data-qnx]")){qk=null;qNote="";render();return;}
+    if(c("[data-qnok]")){if(qNote.trim())quickHouse(l,S.street[l.id],QD.hn+QD.zs,qk,0,qNote.trim());return;}
+    if((x=c("[data-qz]"))&&lastQ){const en=S.entries.find(q=>q.id===lastQ.id);if(!en)return;const z=+x.dataset.qz;en.zaehler=z;for(let i=en.log.length-1;i>=0;i--){if(en.log[i].k==="GES"){en.log[i].z=z;break;}}render();okFlash(`${z===4?"4+":z} Zähler gespeichert`);return;}
+  }
+});
+function lockNo(){const h=document.getElementById("hn");const v=(h&&h.value||"").trim();if(!v){if(h)h.focus();toast("Erst die Hausnummer eintragen");return;}QD.hn=v;QD.lock=true;render();}
+document.addEventListener("input",e=>{
+  if(e.target.id==="hn"){const v=e.target.value.replace(/\D/g,"");if(v!==e.target.value)e.target.value=v;QD.hn=v;}
+  if(e.target.id==="qnt"){qNote=e.target.value;const b=app.querySelector("[data-qnok]");if(b)b.disabled=!qNote.trim();}
+});
+document.addEventListener("keydown",e=>{
+  if(e.key==="Enter"&&e.target.id==="hn"){e.preventDefault();lockNo();}
+  if(e.key==="Escape"){const p=document.querySelector(".scrim");if(p){p.remove();render();}}
+});
+document.addEventListener("change",e=>{
+  const t=e.target;
+  if(t.dataset.oab!==undefined){S.orte[t.dataset.oab].ab=t.value;render();okFlash(`${ORT[t.dataset.oab].g}: ${ortLabel(t.dataset.oab)}`);}
+  if(t.dataset.oall!==undefined){const id=t.dataset.oall,st=S.orte[id]=S.orte[id]||{status:"gesperrt",team:"alle"};st.team=t.checked?"alle":[...MAS];render();}
+  if(t.dataset.oteam!==undefined){const [id,u]=t.dataset.oteam.split("|"),st=S.orte[id];st.team=t.checked?[...new Set([...st.team,u])]:st.team.filter(q=>q!==u);render();}
+});
+document.addEventListener("toggle",e=>{
+  const d=e.target;if(!d||!d.matches)return;
+  if(d.matches("details[data-key]")){const k=d.dataset.key;if(k.startsWith("ll:"))S.open[k]=d.open;else if(d.open)S.open[k]=true;else delete S.open[k];}
+  if(d.matches("details[data-col]"))S.open["c:"+d.dataset.col]=d.open;
+},true);
+document.getElementById("reset").onclick=()=>{S=fresh();render();window.scrollTo(0,0);okFlash("Beispieldaten zurückgesetzt");};
+
+S=fresh();render();
+</script>
+</body>
+</html>
