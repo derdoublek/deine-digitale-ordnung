@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Referenzen von Digitale Ordnung: selbst gebaute Dashboards und Apps für Teams. Erst Chaos, dann System.">
+<link rel="canonical" href="https://deine-digitale-ordnung.de/referenzen.html">
+<title>Referenzen | Digitale Ordnung</title>
+<style>
+  @font-face { font-family: "Bricolage Grotesque"; font-weight: 200 800; font-style: normal; font-display: swap; src: url("assets/fonts/bricolage-grotesque-latin-wght-normal.woff2") format("woff2"); }
+  @font-face { font-family: "DM Sans"; font-weight: 100 1000; font-style: normal; font-display: swap; src: url("assets/fonts/dm-sans-latin-wght-normal.woff2") format("woff2"); }
+  @font-face { font-family: "JetBrains Mono"; font-weight: 500; font-style: normal; font-display: swap; src: url("assets/fonts/jetbrains-mono-latin-500-normal.woff2") format("woff2"); }
+  :root{
+    color-scheme: dark;
+    --rowh: 46px;
+    --bg: #0f1a2e; --bg2: #13213a; --band: #0b1424;
+    --card: #172643; --row: #1e3052; --line: #2a3b5a;
+    --fg: #eef1f6; --muted: #a9b4c8;
+    --signal: #e9b44c; --signal-soft: #f0c46a; --signal-fg: #1b1405;
+    --ok: #3ddc84;
+    --f-display: "Bricolage Grotesque", "Arial Black", system-ui, sans-serif;
+    --f-body: "DM Sans", system-ui, -apple-system, sans-serif;
+    --f-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:20px}
+  body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:17px;line-height:1.6;overflow-x:hidden}
+  h1,h2,h3,p,ul{margin:0}
+  h1,h2,h3{font-family:var(--f-display);letter-spacing:-.02em;text-wrap:balance;line-height:1.1}
+  a{color:inherit;text-underline-offset:3px}
+  a:focus-visible,button:focus-visible{outline:3px solid var(--signal);outline-offset:3px}
+  .wrap{max-width:1120px;margin-inline:auto;padding-inline:clamp(16px,4vw,40px)}
+  .label{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;color:var(--signal)}
+
+  .top{background:var(--band);color:#fff}
+  .top .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;height:60px}
+  .logo{font-family:var(--f-display);font-weight:800;font-size:18px;text-decoration:none}
+  .logo span{color:var(--signal)}
+  .btn{display:inline-block;padding:14px 24px;background:var(--signal);color:var(--signal-fg);font-family:var(--f-display);font-weight:700;font-size:17px;border:0;border-radius:4px;text-decoration:none;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease}
+  .btn:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 #000}
+  .btn.small{padding:8px 16px;font-size:14px}
+  .btn.ghost{background:transparent;color:var(--fg);border:2px solid rgba(255,255,255,.4)}
+
+  .hero{background:var(--band);padding-block:clamp(48px,8vw,96px);background-image:radial-gradient(rgba(255,255,255,.07) 1.2px,transparent 1.4px);background-size:28px 28px}
+  .hero h1{font-size:clamp(38px,6.4vw,72px);font-weight:800;margin-top:14px;max-width:16ch}
+  .hero h1 em{font-style:normal;color:var(--signal-soft)}
+  .hero p.sub{margin-top:22px;max-width:52ch;font-size:clamp(18px,2.2vw,21px);color:#b3bccd}
+
+  .layout{display:grid;grid-template-columns:210px minmax(0,1fr);gap:clamp(28px,5vw,64px);padding-block:clamp(36px,6vw,64px)}
+  .side{position:sticky;top:20px;align-self:start}
+  .side .label{display:block;margin-bottom:12px;color:var(--muted)}
+  .side ul{list-style:none;padding:0;display:grid;gap:2px}
+  .side a{display:block;padding:8px 12px;border-left:3px solid var(--line);color:var(--muted);text-decoration:none;font-size:15px;line-height:1.35}
+  .side a:hover{color:var(--fg);background:rgba(255,255,255,.04)}
+  .side a.on{color:var(--signal);border-left-color:var(--signal);background:rgba(233,180,76,.08)}
+
+  main{min-width:0}
+  .ref{padding-block:clamp(28px,5vw,48px);border-top:1px solid var(--line)}
+  .ref:first-child{border-top:0;padding-top:0}
+  .status{display:inline-block;font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding:4px 12px;border:1px solid var(--signal);color:var(--signal);border-radius:99px;margin-bottom:16px}
+  .ref h2{font-size:clamp(28px,4vw,42px)}
+  .ref .lead{margin-top:12px;color:var(--muted);max-width:58ch;font-size:18px}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:28px}
+  .two h3{margin-bottom:10px}
+  .two p{color:var(--fg);opacity:.92}
+  .ticks{list-style:none;padding:0;display:grid;gap:8px}
+  .ticks li{position:relative;padding-left:22px}
+  .ticks li::before{content:"";position:absolute;left:2px;top:.62em;width:8px;height:8px;border-radius:2px;background:var(--signal)}
+  .fine{margin-top:12px;font-size:14px;color:var(--muted)}
+
+  /* Bühne: Chaos oben, Dashboard unten */
+  .stage{margin-top:30px;padding:18px;background:var(--bg2);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+  .zone{position:relative;height:190px;border-radius:6px;border:1px dashed var(--line)}
+  .zone-cap{position:absolute;left:14px;bottom:10px;right:14px;font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .zone-cap span{position:absolute;left:0;bottom:0}
+  .cap-a{opacity:0}.cap-b{opacity:1;color:var(--ok)}
+  .panel{position:relative;z-index:2;margin:18px auto 0;max-width:640px;background:var(--card);border-radius:8px;padding:20px;box-shadow:8px 8px 0 rgba(4,8,18,.55)}
+  .panel-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .panel-head strong{font-family:var(--f-display);font-size:19px}
+  .panel-head .label{color:var(--muted)}
+  .panel-bar{height:8px;margin:14px 0 16px;background:var(--line);border-radius:2px;overflow:hidden}
+  .panel-fill{height:100%;background:var(--signal)}
+  .slots{display:grid;gap:10px}
+  .slot{height:var(--rowh);border-radius:6px;background:rgba(255,255,255,.04);outline:1px dashed var(--line);outline-offset:-1px}
+  .panel-foot{margin-top:14px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px 12px;font-size:14px;color:var(--muted)}
+  .panel-foot b{font-family:var(--f-mono);color:var(--fg)}
+
+  .chip{position:relative;display:flex;align-items:center;gap:10px;height:100%;width:100%;padding:0 12px;will-change:transform}
+  .chip>*:not(.bg){position:relative}
+  .chip .bg{position:absolute;inset:0;border-radius:6px}
+  .chip .bg.a{opacity:0;box-shadow:0 8px 18px rgba(0,0,0,.4)}
+  .chip .bg.b{background:var(--row);opacity:1}
+  .chip[data-kind=mail] .bg.a{background:#ffd9d2}
+  .chip[data-kind=xls] .bg.a{background:#cfeedd}
+  .chip[data-kind=note] .bg.a{background:#fff1b0}
+  .chip[data-kind=wa] .bg.a{background:#d3f5d0}
+  .chip[data-kind=pdf] .bg.a{background:#ffd0d0}
+  .chip[data-kind=memo] .bg.a{background:#e0e4ff}
+  .badge{flex:none;width:24px;height:24px;display:grid;place-items:center;background:#2c4472;color:#fff;border-radius:5px;font-family:var(--f-mono);font-size:11px}
+  .lbl{position:relative;flex:1;min-width:0;height:22px}
+  .lbl span{position:absolute;left:0;right:0;top:0;line-height:22px;font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .c-chaos{opacity:0;color:#1b1b2f}
+  .c-order{opacity:1;color:var(--fg)}
+  .state{position:relative;flex:none;width:20px;height:20px;border:2px solid var(--muted);border-radius:4px}
+  .state i{position:absolute;inset:-2px;background:var(--ok);border-radius:4px}
+  .state i::after{content:"";position:absolute;left:6px;top:2px;width:5px;height:10px;border:solid #06210f;border-width:0 2px 2px 0;transform:rotate(45deg)}
+
+  /* Onboarding, Kontakt, Impressum */
+  .link-card{margin-top:24px;display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+  .cta-box{margin-top:20px;padding:28px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--signal);border-radius:4px}
+  .cta-box p{color:var(--muted);max-width:56ch}
+  .cta-box .btn{margin-top:20px}
+  .legal-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:22px}
+  .legal-card{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--signal);border-radius:4px;padding:22px 24px}
+  .legal-card h3{font-size:21px;margin:6px 0 12px}
+  .legal-card p{color:var(--muted);overflow-wrap:anywhere}
+  .legal-card a{color:var(--fg)}
+
+  .site-foot{background:var(--band);color:#b3bccd;padding-block:28px;font-size:15px}
+  .site-foot .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 24px}
+  .site-foot a{color:#f1f2f6}
+  .site-foot nav{display:flex;flex-wrap:wrap;gap:8px 24px}
+
+  @media (max-width:899px){
+    .layout{grid-template-columns:minmax(0,1fr);gap:0;padding-top:0}
+    .side{position:sticky;top:0;z-index:50;margin-inline:calc(-1 * clamp(16px,4vw,40px));padding:10px clamp(16px,4vw,40px);background:rgba(11,20,36,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin-bottom:28px}
+    .side .label{display:none}
+    .side ul{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+    .side li{flex:none}
+    .side a{border-left:0;border-bottom:3px solid var(--line);padding:6px 10px;white-space:nowrap;font-size:14px}
+    .side a.on{border-bottom-color:var(--signal)}
+    .two,.legal-grid{grid-template-columns:minmax(0,1fr)}
+    .zone{height:250px}
+    .stage{padding:12px}
+    .panel{padding:16px}
+  }
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="wrap">
+    <a class="logo" href="index.html">Digitale <span>Ordnung</span></a>
+    <a class="btn small" href="#kontakt">Kontakt</a>
+  </div>
+</div>
+
+<header class="hero" id="start" data-sec>
+  <div class="wrap">
+    <p class="label">Referenzen</p>
+    <h1>Erst Chaos, dann <em>System.</em></h1>
+    <p class="sub">Vier Werkzeuge, die ich selbst gebaut habe. Scrolle runter: Die Zettel, Chats und Dateien sortieren sich von allein ins Dashboard.</p>
+  </div>
+</header>
+
+<div class="wrap layout">
+  <nav class="side" aria-label="Abschnitte">
+    <span class="label">Inhalt</span>
+    <ul><li><a href="#start">Überblick</a></li><li><a href="#gebiete">Gebietsverwaltung</a></li><li><a href="#cockpit">Teamleiter-Cockpit</a></li><li><a href="#zahlungen">Bestell- und Zahlungsübersicht</a></li><li><a href="#tagesstart">Tagesstart-Dashboard</a></li><li><a href="#onboarding">Onboarding-Dashboard</a></li><li><a href="#kontakt">Kontakt</a></li><li><a href="#impressum">Impressum</a></li></ul>
+  </nav>
+
+  <main>
+
+    <section class="ref" id="gebiete" data-sec>
+      <span class="status">In Testphase mit dem Team</span>
+      <h2>Gebietsverwaltung für den Außendienst</h2>
+      <p class="lead">Listen, Gebiete und Sperrfristen, die im Team nicht mehr durcheinandergeraten.</p>
+      <div class="two">
+        <div><h3 class="label">Das Problem</h3><p>Gebietslisten in Tabellen: Mitarbeiter ändern die Struktur, offline wird nichts synchronisiert, und niemand weiß sicher, welcher Ort wann wieder frei ist.</p></div>
+        <div><h3 class="label">Die Lösung</h3><ul class="ticks"><li>Straßenverzeichnis zur Auswahl statt Tippfehlern</li><li>Sperrfrist und Wieder-Freigabe pro Gebiet</li><li>Für Offline-Nutzung ausgelegt, Stand der Daten sichtbar</li><li>Auswertung pro Ort und Mitarbeiter, z. B. Antreffquote</li><li>Zugang per persönlichem Login, Verwaltung zentral</li></ul></div>
+      </div>
+      <div class="stage" data-seed="3" data-done="5" data-total="5">
+        <div class="zone" aria-hidden="true">
+          <p class="zone-cap"><span class="cap-a">Vorher: verstreut in 5 Quellen</span><span class="cap-b">Nachher: 1 Ort statt 5 Quellen</span></p>
+        </div>
+        <div class="panel" role="group" aria-label="Beispielansicht: Gebietsverwaltung für den Außendienst">
+          <div class="panel-head"><strong>Gebiete · Team Nord</strong><span class="label">Beispieldaten</span></div>
+          <div class="panel-bar"><div class="panel-fill" data-to="100" style="width:100%"></div></div>
+          <div class="slots"><div class="slot"><div class="chip" data-kind="mail"><span class="bg a"></span><span class="bg b"></span><span class="badge">@</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Re: Re: wer war wo??</span><span class="c-order">Gebiete zugeordnet</span></span><span class="state"><i></i></span></div></div><div class="slot"><div class="chip" data-kind="xls"><span class="bg a"></span><span class="bg b"></span><span class="badge">X</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Gebiete_neu_FINAL2.xlsx</span><span class="c-order">Straßenverzeichnis</span></span><span class="state"><i></i></span></div></div><div class="slot"><div class="chip" data-kind="note"><span class="bg a"></span><span class="bg b"></span><span class="badge">N</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Sperre bis wann??</span><span class="c-order">Sperrfrist automatisch</span></span><span class="state"><i></i></span></div></div><div class="slot"><div class="chip" data-kind="wa"><span class="bg a"></span><span class="bg b"></span><span class="badge">W</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Liste schon 3x kopiert</span><span class="c-order">Eine Liste für alle</span></span><span class="state"><i></i></span></div></div><div class="slot"><div class="chip" data-kind="memo"><span class="bg a"></span><span class="bg b"></span><span class="badge">!</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Tippfehler im Ortsnamen</span><span class="c-order">Ort aus Verzeichnis</span></span><span class="state"><i></i></span></div></div></div>
+          <div class="panel-foot"><span>Stand: heute, 07:12</span><span>Antreffquote 78 % · <b class="cnt">5</b> von 5 erledigt</span></div>
+        </div>
+      </div>
+      <p class="fine">Beispielhafte Darstellung mit erfundenen Namen, Orten und Zahlen.</p>
+    </section>
+    <section class="ref" id="cockpit" data-sec>
+      <span class="status">Im täglichen Einsatz</span>
+      <h2>Teamleiter-Cockpit</h2>
+      <p class="lead">Provisionen, Ziele und Tagesmeldungen an einem Ort, für Teamleiter und Mitarbeiter.</p>
+      <div class="two">
+        <div><h3 class="label">Das Problem</h3><p>Zahlen stehen in mehreren Dateien und Chats. Mitarbeiter fragen nach ihrem Stand, und die Meldungen werden jeden Tag von Hand zusammengetippt.</p></div>
+        <div><h3 class="label">Die Lösung</h3><ul class="ticks"><li>Provisionsstaffel und Punkteziele auf einen Blick</li><li>Rot/Grün-Anzeige: unter oder über dem Ziel</li><li>Morgen- und Abendmeldung per Klick erzeugt</li><li>Persönlicher Link pro Mitarbeiter, kein Passwort-Chaos</li></ul></div>
+      </div>
+      <div class="stage" data-seed="7" data-done="5" data-total="5">
+        <div class="zone" aria-hidden="true">
+          <p class="zone-cap"><span class="cap-a">Vorher: verstreut in 5 Quellen</span><span class="cap-b">Nachher: 1 Ort statt 5 Quellen</span></p>
+        </div>
+        <div class="panel" role="group" aria-label="Beispielansicht: Teamleiter-Cockpit">
+          <div class="panel-head"><strong>Team Nord · Monatsstand</strong><span class="label">Beispieldaten</span></div>
+          <div class="panel-bar"><div class="panel-fill" data-to="100" style="width:100%"></div></div>
+          <div class="slots"><div class="slot"><div class="chip" data-kind="wa"><span class="bg a"></span><span class="bg b"></span><span class="badge">W</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Wie viele heute??</span><span class="c-order">Tageszahlen</span></span><span class="state"><i></i></span></div></div><div class="slot"><div class="chip" data-kind="xls"><span class="bg a"></span><span class="bg b"></span><span class="badge">X</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Tabelle_Mai_final(3).xlsx</span><span class="c-order">Provisionsstaffel</span></span><span class="state"><i></i></span></div></div><div class="slot"><div class="chip" data-kind="note"><span class="bg a"></span><span class="bg b"></span><span class="badge">N</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Ziel: 4 oder 6 Punkte?</span><span class="c-order">Punkte gegen Ziel</span></span><span class="state"><i></i></span></div></div><div class="slot"><div class="chip" data-kind="pdf"><span class="bg a"></span><span class="bg b"></span><span class="badge">P</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Abendmeldung abtippen</span><span class="c-order">Abendmeldung per Klick</span></span><span class="state"><i></i></span></div></div><div class="slot"><div class="chip" data-kind="memo"><span class="bg a"></span><span class="bg b"></span><span class="badge">!</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Link nochmal schicken</span><span class="c-order">Persönlicher Link</span></span><span class="state"><i></i></span></div></div></div>
+          <div class="panel-foot"><span>Beispielwerte</span><span>2 von 3 über Ziel · <b class="cnt">5</b> von 5 erledigt</span></div>
+        </div>
+      </div>
+      <p class="fine">Beispielhafte Darstellung mit erfundenen Namen, Orten und Zahlen.</p>
+    </section>
+    <section class="ref" id="zahlungen" data-sec>
+      <span class="status">In Aufbau · privat im Test</span>
+      <h2>Bestell- und Zahlungsübersicht</h2>
+      <p class="lead">Wer hat bestellt, wer hat bezahlt, was bleibt als Provision? Für Sammelbestellungen im Direktvertrieb.</p>
+      <div class="two">
+        <div><h3 class="label">Das Problem</h3><p>Bestellungen laufen per Chat, Zahlungen per PayPal und Überweisung. Wer schon bezahlt hat, findet man nur, indem man alles durchsucht.</p></div>
+        <div><h3 class="label">Die Lösung</h3><ul class="ticks"><li>Zahlungen von Hand eintragen, kein Bankzugriff nötig</li><li>Pro Person nur ein Status: bezahlt oder offen</li><li>Provision des Monats sofort sichtbar</li><li>Zugang für zwei Personen, beide sehen denselben Stand</li></ul></div>
+      </div>
+      <div class="stage" data-seed="11" data-done="4" data-total="5">
+        <div class="zone" aria-hidden="true">
+          <p class="zone-cap"><span class="cap-a">Vorher: verstreut in 5 Quellen</span><span class="cap-b">Nachher: 1 Ort statt 5 Quellen</span></p>
+        </div>
+        <div class="panel" role="group" aria-label="Beispielansicht: Bestell- und Zahlungsübersicht">
+          <div class="panel-head"><strong>Sammelbestellung · 9 Personen</strong><span class="label">Beispieldaten</span></div>
+          <div class="panel-bar"><div class="panel-fill" data-to="78" style="width:78%"></div></div>
+          <div class="slots"><div class="slot"><div class="chip" data-kind="wa"><span class="bg a"></span><span class="bg b"></span><span class="badge">W</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Hab ich überwiesen!</span><span class="c-order">Zahlung zugeordnet</span></span><span class="state"><i></i></span></div></div><div class="slot"><div class="chip" data-kind="pdf"><span class="bg a"></span><span class="bg b"></span><span class="badge">P</span><span class="lbl"><span class="c-chaos" aria-hidden="true">PayPal-Screenshot_7.png</span><span class="c-order">Betrag und Datum erfasst</span></span><span class="state"><i></i></span></div></div><div class="slot"><div class="chip" data-kind="xls"><span class="bg a"></span><span class="bg b"></span><span class="badge">X</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Sammelbestellung_neu.xlsx</span><span class="c-order">Bestellung je Person</span></span><span class="state"><i></i></span></div></div><div class="slot"><div class="chip" data-kind="note"><span class="bg a"></span><span class="bg b"></span><span class="badge">N</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Wer fehlt noch??</span><span class="c-order">Offen: 2 Personen</span></span><span class="state"></span></div></div><div class="slot"><div class="chip" data-kind="memo"><span class="bg a"></span><span class="bg b"></span><span class="badge">!</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Provision wie viel?</span><span class="c-order">Provision des Monats</span></span><span class="state"><i></i></span></div></div></div>
+          <div class="panel-foot"><span>Provision: Warenwert × Satz</span><span>Offen: 2 von 9 · <b class="cnt">4</b> von 5 erledigt</span></div>
+        </div>
+      </div>
+      <p class="fine">Beispielhafte Darstellung mit erfundenen Namen, Orten und Zahlen.</p>
+    </section>
+    <section class="ref" id="tagesstart" data-sec>
+      <span class="status">Für den eigenen Alltag gebaut</span>
+      <h2>Tagesstart-Dashboard</h2>
+      <p class="lead">Termine, Mails und Aufgaben aus mehreren Konten auf einer einzigen Seite.</p>
+      <div class="two">
+        <div><h3 class="label">Das Problem</h3><p>Morgens erst der Kalender, dann drei Postfächer, dann die Aufgabenliste. Das kostet Zeit, und Wichtiges rutscht durch.</p></div>
+        <div><h3 class="label">Die Lösung</h3><ul class="ticks"><li>Alles Wichtige des Tages auf einem Bildschirm</li><li>Mehrere Konten zusammengeführt</li><li>Am Mac und am Handy nutzbar</li><li>Bewusst schlicht: nichts, was ablenkt</li></ul></div>
+      </div>
+      <div class="stage" data-seed="5" data-done="4" data-total="4">
+        <div class="zone" aria-hidden="true">
+          <p class="zone-cap"><span class="cap-a">Vorher: verstreut in 4 Quellen</span><span class="cap-b">Nachher: 1 Ort statt 4 Quellen</span></p>
+        </div>
+        <div class="panel" role="group" aria-label="Beispielansicht: Tagesstart-Dashboard">
+          <div class="panel-head"><strong>Heute · Überblick</strong><span class="label">Beispieldaten</span></div>
+          <div class="panel-bar"><div class="panel-fill" data-to="100" style="width:100%"></div></div>
+          <div class="slots"><div class="slot"><div class="chip" data-kind="mail"><span class="bg a"></span><span class="bg b"></span><span class="badge">@</span><span class="lbl"><span class="c-chaos" aria-hidden="true">3 Postfächer öffnen</span><span class="c-order">Mails aus allen Konten</span></span><span class="state"><i></i></span></div></div><div class="slot"><div class="chip" data-kind="memo"><span class="bg a"></span><span class="bg b"></span><span class="badge">!</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Termin? Kalender checken</span><span class="c-order">Termine heute</span></span><span class="state"><i></i></span></div></div><div class="slot"><div class="chip" data-kind="note"><span class="bg a"></span><span class="bg b"></span><span class="badge">N</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Zettel mit Aufgaben</span><span class="c-order">Aufgaben des Tages</span></span><span class="state"><i></i></span></div></div><div class="slot"><div class="chip" data-kind="wa"><span class="bg a"></span><span class="bg b"></span><span class="badge">W</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Rückruf vergessen!</span><span class="c-order">Rückrufe oben</span></span><span class="state"><i></i></span></div></div></div>
+          <div class="panel-foot"><span>3 Konten</span><span>Mac und Handy · <b class="cnt">4</b> von 4 erledigt</span></div>
+        </div>
+      </div>
+      <p class="fine">Beispielhafte Darstellung mit erfundenen Namen, Orten und Zahlen.</p>
+    </section>
+
+    <section class="ref" id="onboarding" data-sec>
+      <span class="status">Angebot</span>
+      <h2>Onboarding-Dashboard</h2>
+      <p class="lead">Neue Mitarbeiter in 90 Tagen produktiv: mit Plan, Mentor und allen Unterlagen an einem Ort. Die Animation dazu läuft auf der Startseite.</p>
+      <div class="link-card">
+        <a class="btn" href="index.html">Zur Startseite</a>
+        <a class="btn ghost" href="#kontakt">Kostenlose Beratung</a>
+      </div>
+    </section>
+
+    <section class="ref" id="kontakt" data-sec>
+      <h2>Schreib mir, wo es bei dir hakt.</h2>
+      <div class="cta-box">
+        <p>Im ersten Gespräch klären wir, ob ein Dashboard oder eine App für dich Sinn ergibt. Kostenlos und ohne Verpflichtung.</p>
+        <a class="btn" href="https://wa.me/4915254160584?text=Hallo%2C%20ich%20m%C3%B6chte%20mehr%20zu%20deinen%20Referenzen%20erfahren." target="_blank" rel="noopener">Per WhatsApp schreiben</a>
+      </div>
+    </section>
+
+    <section class="ref" id="impressum" data-sec>
+      <p class="label">Angaben gemäß § 5 DDG</p>
+      <h2 style="margin-top:10px">Impressum</h2>
+      <div class="legal-grid">
+        <div class="legal-card"><p class="label">Anbieter</p><h3>Diensteanbieter</h3><p><strong style="color:var(--fg)">Kai Kremer</strong><br>Haide 38<br>95233 Helmbrechts</p></div>
+        <div class="legal-card"><p class="label">Direkt erreichbar</p><h3>Kontakt</h3><p>Telefon: Telefonnummer auf Anfrage<br>E-Mail: <a href="mailto:kai@deine-digitale-ordnung.de">kai@deine-digitale-ordnung.de</a></p></div>
+      </div>
+      <p class="fine">Alle Oberflächen auf dieser Seite sind Beispiele mit erfundenen Daten. Es werden keine Daten von Arbeitgebern, Kunden oder Privatpersonen gezeigt.</p>
+    </section>
+  </main>
+</div>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <span>Digitale Ordnung · Kai Kremer</span>
+    <nav aria-label="Rechtliches und weitere Angebote"><a href="referenzen.html">Referenzen</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a><a href="uebersicht.html">Für Privatpersonen: Finanzplaner</a></nav>
+  </div>
+</footer>
+
+<script src="assets/js/gsap.min.js"></script>
+<script src="assets/js/ScrollTrigger.min.js"></script>
+<script>
+(function () {
+  var doc = document;
+  /* Navigation links: aktiven Abschnitt markieren */
+  var links = [].slice.call(doc.querySelectorAll('.side a'));
+  var map = {};
+  links.forEach(function (a) { map[a.getAttribute('href').slice(1)] = a; });
+  var secs = [].slice.call(doc.querySelectorAll('[data-sec]'));
+  function mark() {
+    var y = window.scrollY + window.innerHeight * 0.3, cur = secs[0].id;
+    secs.forEach(function (s) { if (s.getBoundingClientRect().top + window.scrollY <= y) { cur = s.id; } });
+    links.forEach(function (a) { a.classList.remove('on'); });
+    if (map[cur]) { map[cur].classList.add('on'); }
+  }
+  window.addEventListener('scroll', mark, { passive: true });
+  window.addEventListener('resize', mark);
+  mark();
+
+  /* Chaos wird Ordnung: Zettel fliegen beim Scrollen ins Dashboard */
+  var g = window.gsap, ST = window.ScrollTrigger;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!g || !ST || reduce) { return; }
+  g.registerPlugin(ST);
+
+  function rnd(n) { var x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); }
+  var stages = [].slice.call(doc.querySelectorAll('.stage')).map(function (el) {
+    return { el: el, played: false, tl: null };
+  });
+
+  function build(S) {
+    var sc = S.el;
+    if (S.tl) { S.tl.kill(); S.tl = null; }
+    var seed = +sc.getAttribute('data-seed') || 1;
+    var zone = sc.querySelector('.zone');
+    var chips = [].slice.call(sc.querySelectorAll('.chip'));
+    var fill = sc.querySelector('.panel-fill');
+    var cnt = sc.querySelector('.cnt');
+    var capA = sc.querySelector('.cap-a'), capB = sc.querySelector('.cap-b');
+    var total = +sc.getAttribute('data-done');
+    var to = +fill.getAttribute('data-to');
+
+    g.set(chips, { clearProps: 'all' });
+    g.set(zone, { clearProps: 'height' });
+    sc.classList.add('is-anim');
+    var zr = zone.getBoundingClientRect();
+    var n = chips.length;
+    var cw = Math.min(230, zr.width - 16);
+
+    chips.forEach(function (c, i) {
+      var sr = c.parentNode.getBoundingClientRect();
+      var px = (zr.width - cw) * ((i + 0.1 + 0.8 * rnd(seed + i)) / n);
+      var py = (zr.height - 46 - 34) * rnd(seed * 3 + i + 7) + 8;
+      var ang = (rnd(seed + i * 5) * 2 - 1) * 11;
+      if (Math.abs(ang) < 3) { ang = ang < 0 ? -4 : 4; }
+      g.set(c, { x: zr.left + px - sr.left, y: zr.top + py - sr.top, width: cw, rotation: ang });
+      g.set(c.querySelector('.bg.a'), { opacity: 1 });
+      g.set(c.querySelector('.bg.b'), { opacity: 0 });
+      g.set(c.querySelector('.c-chaos'), { opacity: 1 });
+      g.set(c.querySelector('.c-order'), { opacity: 0 });
+      g.set(c.querySelector('.state'), { opacity: 0 });
+      var f = c.querySelector('.state i');
+      if (f) { g.set(f, { scale: 0 }); }
+    });
+    g.set(fill, { width: '0%' });
+    g.set(capA, { opacity: 1 });
+    g.set(capB, { opacity: 0 });
+    cnt.textContent = '0';
+
+    var tl = g.timeline({ paused: true, defaults: { ease: 'power2.inOut' } });
+    chips.forEach(function (c, i) {
+      var t = i * 0.22;
+      tl.to(c, { x: 0, y: 0, rotation: 0, width: function () { return c.parentNode.offsetWidth; }, duration: 1.1, ease: 'power3.inOut' }, t);
+      tl.to(c.querySelector('.bg.a'), { opacity: 0, duration: 0.5 }, t + 0.6);
+      tl.to(c.querySelector('.bg.b'), { opacity: 1, duration: 0.5 }, t + 0.6);
+      tl.to(c.querySelector('.c-chaos'), { opacity: 0, duration: 0.3 }, t + 0.5);
+      tl.to(c.querySelector('.c-order'), { opacity: 1, duration: 0.4 }, t + 0.7);
+      tl.to(c.querySelector('.state'), { opacity: 1, duration: 0.3 }, t + 0.9);
+      var f = c.querySelector('.state i');
+      if (f) { tl.to(f, { scale: 1, duration: 0.4, ease: 'back.out(2)' }, t + 1.05); }
+    });
+    var end = (n - 1) * 0.22 + 1.5;
+    tl.to(fill, { width: to + '%', duration: end - 0.4, ease: 'none' }, 0.4);
+    var o = { v: 0 };
+    tl.to(o, { v: total, duration: end - 0.4, ease: 'none', onUpdate: function () { cnt.textContent = Math.round(o.v); } }, 0.4);
+    tl.to(capA, { opacity: 0, duration: 0.4 }, end - 0.8);
+    tl.to(capB, { opacity: 1, duration: 0.6 }, end - 0.5);
+    tl.to(zone, { height: 46, duration: 0.8, ease: 'power2.inOut' }, end + 0.2);
+    tl.eventCallback('onComplete', function () {
+      chips.forEach(function (c) { g.set(c, { clearProps: 'width,transform' }); });
+      ST.refresh();
+    });
+    S.tl = tl;
+  }
+
+  function play(S) {
+    if (S.played) { return; }
+    S.played = true;
+    S.tl.play();
+  }
+
+  stages.forEach(function (S) {
+    build(S);
+    ST.create({ trigger: S.el, start: 'top 62%', once: true, onEnter: function () { play(S); } });
+  });
+
+  var rt = null;
+  function rebuild() {
+    window.clearTimeout(rt);
+    rt = window.setTimeout(function () {
+      stages.forEach(function (S) { if (!S.played) { build(S); } });
+      ST.refresh();
+    }, 250);
+  }
+  window.addEventListener('resize', rebuild);
+  if (doc.fonts && doc.fonts.ready) { doc.fonts.ready.then(rebuild); }
+  window.addEventListener('load', rebuild);
+
+  /* Sicherheitsnetz: sichtbare, noch nicht gespielte Szenen starten */
+  window.setTimeout(function () {
+    stages.forEach(function (S) {
+      var r = S.el.getBoundingClientRect();
+      if (!S.played && r.top < window.innerHeight * 0.8 && r.bottom > 0) { play(S); }
+    });
+  }, 3500);
+})();
+</script>
+</body>
+</html>
