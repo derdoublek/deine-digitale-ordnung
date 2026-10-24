@@ -2,7 +2,7 @@
    Größen: Seitentitel 40, Abschnittstitel 28, Lead 18, Text 17, Label 12. */
 @font-face{font-family:"Bricolage Grotesque";src:url(../fonts/bricolage-grotesque-latin-wght-normal.woff2) format("woff2");font-weight:200 800;font-display:swap}
 @font-face{font-family:"DM Sans";src:url(../fonts/dm-sans-latin-wght-normal.woff2) format("woff2");font-weight:100 1000;font-display:swap}
-:root{color-scheme:dark;--bg:#0f1a2e;--bg2:#13213a;--band:#0b1424;--card:#172643;--row:#1e3052;--line:#2a3b5a;--fg:#eef1f6;--muted:#a9b4c8;--signal:#e9b44c;--signal-fg:#1b1405;--ok:#3ddc84;--f-display:"Bricolage Grotesque","Arial Black",system-ui,sans-serif;--f-body:"DM Sans",system-ui,-apple-system,sans-serif}
+:root{color-scheme:dark;--bg:#1a2a4a;--bg2:#1e3052;--band:#131f38;--card:#223660;--row:#2a4070;--line:#3a4f7c;--fg:#eef1f6;--muted:#a9b4c8;--signal:#e9b44c;--signal-fg:#1b1405;--ok:#3ddc84;--f-display:"Bricolage Grotesque","Arial Black",system-ui,sans-serif;--f-body:"DM Sans",system-ui,-apple-system,sans-serif}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:20px}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:17px;line-height:1.6;overflow-x:hidden}
@@ -64,7 +64,7 @@ main{min-width:0}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
 .page-head p.label{font-size:12px;color:var(--signal);margin:0;max-width:none}
 
-.quick-wrap{position:sticky;top:0;z-index:10;background:rgba(15,26,46,.96);border-bottom:1px solid var(--line)}
+.quick-wrap{position:sticky;top:0;z-index:10;background:rgba(26,42,74,.96);border-bottom:1px solid var(--line)}
 .quick{display:flex;flex-wrap:wrap;gap:10px;padding-block:12px}
 .quick a{display:inline-block;padding:10px 18px;border:2px solid var(--line);border-radius:6px;background:var(--card);color:var(--fg);font-family:var(--f-display);font-weight:700;font-size:16px;text-decoration:none;transition:transform .15s,border-color .15s,box-shadow .15s}
 .quick a:hover,.quick a.on{border-color:var(--signal);color:var(--signal)}

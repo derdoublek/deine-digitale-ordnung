@@ -1,8 +1,7 @@
 /* Gemeinsames Design für Unterseiten: gleiche Farbwelt wie die Startseite (Nachtblau, Honiggold, Sand). */
 @font-face{font-family:"Bricolage Grotesque";src:url(../fonts/bricolage-grotesque-latin-wght-normal.woff2) format("woff2");font-weight:200 800;font-display:swap}
 @font-face{font-family:"DM Sans";src:url(../fonts/dm-sans-latin-wght-normal.woff2) format("woff2");font-weight:100 1000;font-display:swap}
-:root{color-scheme:dark;--bg:#0f1a2e;--fg:#eef1f6;--muted:#a9b4c8;--line:#2a3b5a;--card:#172643;--row:#1e3052;--brand:#1a2a4a;--signal:#e9b44c;--signal-fg:#1b1405;--signal-text:#e9b44c;--band:#0b1424;--band-fg:#f1f2f6;--band-muted:#b3bccd;--f-display:"Bricolage Grotesque","Arial Black",system-ui,sans-serif;--f-body:"DM Sans",system-ui,-apple-system,sans-serif;--f-mono:var(--f-body)}
-@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0f141c;--fg:#eef1f6;--muted:#9aa5b8;--line:#2a3445;--card:#171e2a;--row:#1d2634;--signal-text:#e9b44c;color-scheme:dark}}
+:root{color-scheme:dark;--bg:#1a2a4a;--fg:#eef1f6;--muted:#a9b4c8;--line:#3a4f7c;--card:#223660;--row:#2a4070;--brand:#1a2a4a;--signal:#e9b44c;--signal-fg:#1b1405;--signal-text:#e9b44c;--band:#131f38;--band-fg:#f1f2f6;--band-muted:#b3bccd;--f-display:"Bricolage Grotesque","Arial Black",system-ui,sans-serif;--f-body:"DM Sans",system-ui,-apple-system,sans-serif;--f-mono:var(--f-body)}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:17px;line-height:1.6;overflow-x:hidden}
 h1,h2,h3,p,ul{margin:0}
@@ -36,7 +35,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var
 .legal-card p,.legal-card li{color:var(--muted)}
 .legal-card a{color:var(--fg);overflow-wrap:anywhere}
 /* Übersicht */
-.hero{background:var(--band);color:var(--band-fg);padding-block:clamp(56px,10vw,120px)}
+.hero{background:var(--bg);color:var(--band-fg);padding-block:clamp(56px,10vw,120px)}
 .hero .label{color:var(--signal)}
 .hero h1{font-size:clamp(38px,7vw,78px);margin-top:16px;max-width:15ch}
 .hero h1 em{font-style:normal;color:var(--signal)}
@@ -62,7 +61,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var
 .price{font-family:var(--f-display);font-size:34px;letter-spacing:-.02em;margin-top:6px}
 .offer small{color:var(--muted)}
 .offer-actions{display:flex;flex-wrap:wrap;align-items:center;gap:16px;margin-top:auto;padding-top:12px}
-.examples{background:var(--band);color:var(--band-fg);padding-block:clamp(48px,8vw,96px)}
+.examples{background:var(--bg);color:var(--band-fg);padding-block:clamp(48px,8vw,96px)}
 .examples .intro p{color:var(--band-muted)}
 .examples .label{color:var(--signal)}
 .cards{display:grid;gap:14px;margin-top:36px}
