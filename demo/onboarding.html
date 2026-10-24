@@ -1,0 +1,559 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Onboarding (Demo)</title>
+<style>
+/* Demo-Stylesheet (Beispieldaten) */
+:root {
+  --bg: #f3f4f1;
+  --ink: #14213a;
+  --ink-2: #33415c;
+  --muted: #5a6478;
+  --line: #dfe2db;
+  --line-2: #cfd4cb;
+  --line-soft: #ebede8;
+  --card: #ffffff;
+  --navy: #14213a;
+  --navy-2: #24345a;
+  --navy-3: #2a3b62;
+  --on-navy: #d6dceb;
+  --green: #7fd8ac;
+  --tab-bg: #e4e7e1;
+  --tab-ink: #4a5468;
+  --soft: #f3f4f1;
+  --link: #14325c;
+  --open-bg: #f6ead8;
+  --open-ink: #7a4a0c;
+  --done-bg: #dff1e7;
+  --done-ink: #155c3c;
+  --done-line: #b9dcc8;
+  --done-soft: #eef8f2;
+  --warn-bg: #fbefdc;
+  --warn-line: #ecd2a8;
+  --warn-ink: #5c3606;
+  --warn-ink-2: #6b4a1a;
+  --bad-bg: #f8e1dc;
+  --bad-ink: #8a2414;
+  --radius: 16px;
+  --font: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font); font-size: 16px; line-height: 1.45; }
+a { color: var(--link); }
+a:hover { color: #0b1f3d; }
+button, input, select, textarea { font-family: inherit; font-size: 16px; color: var(--ink); }
+button { cursor: pointer; }
+button:disabled { cursor: not-allowed; }
+:focus-visible { outline: 3px solid #3b82f6; outline-offset: 2px; }
+h1, h2, h3, p { margin: 0; }
+
+/* ---------- Layout */
+.page { min-height: 100vh; padding: 24px 16px 64px; }
+.wrap { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+.wrap.narrow { max-width: 480px; gap: 18px; }
+.stack { display: flex; flex-direction: column; gap: 12px; }
+.between { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+.baseline { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px; }
+.grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.grid3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.btn-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.loading { color: var(--muted); padding: 40px 0; text-align: center; }
+
+/* ---------- Kopf und Navigation */
+.app-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+.eyebrow { font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.title { font-size: 22px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.2; }
+.title-sm { font-size: 22px; font-weight: 700; }
+.h1 { font-size: 22px; font-weight: 700; }
+.h2 { font-size: 17px; font-weight: 700; }
+.h3 { font-size: 15px; font-weight: 700; }
+.nav { display: flex; flex-wrap: wrap; gap: 4px; background: var(--tab-bg); padding: 4px; border-radius: 12px; }
+.nav a { display: inline-flex; align-items: center; height: 44px; padding: 0 16px; border-radius: 9px; color: var(--tab-ink); font-size: 15px; font-weight: 500; text-decoration: none; }
+.nav a[aria-current="page"] { background: #fff; color: var(--ink); font-weight: 600; }
+.head-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.foot { display: flex; justify-content: center; padding-top: 8px; }
+
+/* ---------- Text */
+.muted { color: var(--muted); }
+.small { font-size: 14px; }
+.tiny { font-size: 12px; }
+.num { font-variant-numeric: tabular-nums; }
+.strong { font-weight: 700; }
+.err { color: var(--bad-ink); }
+
+/* ---------- Knöpfe */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; padding: 0 16px; border-radius: 10px; border: 1px solid var(--line-2); background: #fff; color: var(--ink); font-size: 15px; font-weight: 600; text-decoration: none; }
+.btn:hover { background: #f7f8f5; color: var(--ink); }
+.btn-primary { background: var(--navy); border-color: var(--navy); color: #fff; }
+.btn-primary:hover { background: #0e1830; color: #fff; }
+.btn-danger { background: #fff; border-color: #d9a39b; color: var(--bad-ink); }
+.btn-warn { background: var(--warn-ink); border-color: var(--warn-ink); color: #fff; }
+.btn-warn:hover { background: #4a2c05; color: #fff; }
+.btn-sm { min-height: 44px; padding: 0 12px; font-size: 14px; border-radius: 9px; }
+.btn-block { width: 100%; min-height: 48px; border-radius: 12px; font-size: 16px; }
+.btn-link { background: none; border: none; color: var(--link); text-decoration: underline; min-height: 44px; padding: 0 8px; font-size: 14px; font-weight: 600; }
+.btn:disabled { opacity: 0.55; }
+.btn-done { background: var(--done-soft); border-color: var(--done-line); color: var(--done-ink); }
+.btn-done:hover { background: var(--done-soft); color: var(--done-ink); }
+.btn-ghost-dashed { border-style: dashed; border-color: #c3c8bf; background: #f7f8f5; color: var(--muted); font-weight: 500; }
+
+/* ---------- Karten */
+.card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; display: flex; flex-direction: column; gap: 14px; }
+.card-dark { background: var(--navy); border-color: var(--navy); color: #fff; padding: 20px; }
+.card-dark .on-navy { color: var(--on-navy); }
+.card-warn { background: var(--warn-bg); border-color: var(--warn-line); }
+.card-warn .h2 { color: var(--warn-ink); }
+.card-warn .sub { color: var(--warn-ink-2); font-size: 14px; }
+.card-tight { gap: 4px; }
+.stat { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 14px; display: flex; flex-direction: column; gap: 2px; }
+.stat .v { font-size: 24px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.stat .l { font-size: 13px; color: var(--muted); }
+.big { font-size: 32px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.big-44 { font-size: 34px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.money { font-size: 24px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.inner { background: var(--soft); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 4px; }
+.banner { background: var(--done-soft); border: 1px solid var(--done-line); color: var(--done-ink); border-radius: 14px; padding: 12px 14px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+.banner.info { background: #e8eef9; border-color: #c3d1ea; color: #1d3a6e; }
+.banner.warn { background: var(--warn-bg); border-color: var(--warn-line); color: var(--warn-ink); }
+.banner.bad { background: var(--bad-bg); border-color: #e3b2a9; color: var(--bad-ink); }
+
+/* ---------- Fortschritt */
+.bar { height: 12px; background: var(--navy-3); border-radius: 999px; overflow: hidden; }
+.bar.thin { height: 10px; }
+.bar > span { display: block; height: 100%; background: var(--green); border-radius: 999px; }
+
+/* ---------- Pills */
+.pill { display: inline-block; font-size: 13px; font-weight: 600; padding: 6px 10px; border-radius: 999px; white-space: nowrap; }
+.pill-open { background: var(--open-bg); color: var(--open-ink); }
+.pill-done { background: var(--done-bg); color: var(--done-ink); }
+.pill-warn { background: var(--warn-bg); color: var(--warn-ink); }
+.pill-bad { background: var(--bad-bg); color: var(--bad-ink); }
+.pill-neutral { background: #e7eaf0; color: #33415c; }
+.pill-mini { font-size: 12px; padding: 2px 8px; margin-left: 6px; }
+
+/* ---------- Umschalter */
+.seg { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 6px; }
+.seg button { min-height: 44px; border-radius: 10px; border: 1px solid var(--line-2); background: #fff; font-size: 15px; font-weight: 500; }
+.seg button[aria-pressed="true"] { background: var(--navy); border-color: var(--navy); color: #fff; font-weight: 600; }
+.seg-dark { display: flex; gap: 4px; background: var(--navy-2); padding: 4px; border-radius: 10px; }
+.seg-dark button { min-height: 40px; padding: 0 14px; border-radius: 8px; border: none; background: transparent; color: var(--on-navy); font-size: 15px; font-weight: 500; }
+.seg-dark button[aria-pressed="true"] { background: #fff; color: var(--ink); font-weight: 600; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { min-height: 44px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--line-2); background: #fff; font-size: 14px; font-weight: 500; }
+.chip[aria-pressed="true"] { background: var(--navy); border-color: var(--navy); color: #fff; font-weight: 600; }
+.chip .n { opacity: 0.75; margin-left: 4px; font-variant-numeric: tabular-nums; }
+
+/* ---------- Zähler */
+.counter { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: var(--soft); border-radius: 12px; padding: 8px 8px 8px 14px; }
+.counter .lab { font-size: 16px; font-weight: 600; }
+.counter .hint { font-size: 13px; color: var(--muted); }
+.stepper { display: flex; align-items: center; gap: 6px; }
+.step-btn { width: 44px; height: 44px; border-radius: 10px; border: 1px solid var(--line-2); background: #fff; font-size: 22px; line-height: 1; padding: 0; }
+.step-btn.plus { background: var(--navy); border-color: var(--navy); color: #fff; }
+.step-val { min-width: 32px; text-align: center; font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* ---------- Formulare */
+.field { display: flex; flex-direction: column; gap: 4px; font-size: 13px; font-weight: 600; color: var(--muted); min-width: 0; }
+.field input, .field select, .field textarea, .input { height: 44px; border: 1px solid var(--line-2); border-radius: 10px; padding: 0 12px; background: #fff; color: var(--ink); font-size: 16px; font-weight: 400; width: 100%; min-width: 0; }
+.field textarea, textarea.mono-area { height: auto; min-height: 120px; padding: 10px 12px; width: 100%; border: 1px solid var(--line-2); border-radius: 10px; }
+textarea.mono-area { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 14px; }
+.field-row { display: flex; flex-wrap: wrap; gap: 10px; }
+.field-row > .field { flex: 1 1 150px; }
+.check { display: flex; align-items: center; gap: 10px; min-height: 44px; font-size: 15px; font-weight: 500; color: var(--ink); }
+.check input { width: 22px; height: 22px; flex: none; accent-color: var(--navy); }
+.form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.form-grid .full { grid-column: 1 / -1; }
+
+/* ---------- Aufklappbare Bereiche */
+details.card { padding: 14px 18px; gap: 0; }
+details > summary { font-size: 16px; font-weight: 700; cursor: pointer; padding: 6px 0; min-height: 44px; display: flex; align-items: center; }
+details > summary::-webkit-details-marker { display: none; }
+details > summary::after { content: '+'; margin-left: auto; font-size: 22px; font-weight: 400; color: var(--muted); }
+details[open] > summary::after { content: '–'; }
+details > .details-body { display: flex; flex-direction: column; gap: 14px; padding-top: 10px; }
+.mini-toggle { background: none; border: none; color: var(--link); text-decoration: underline; font-size: 14px; font-weight: 600; min-height: 44px; padding: 0; text-align: left; }
+
+/* ---------- Listen */
+.list { display: flex; flex-direction: column; }
+.row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 0; border-top: 1px solid var(--line-soft); }
+.row:first-child { border-top: none; }
+.row .main { display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1 1 140px; }
+.row .name { font-size: 17px; font-weight: 700; overflow-wrap: anywhere; }
+.row .meta { font-size: 13px; color: var(--muted); overflow-wrap: anywhere; }
+.row .side { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.kv { display: flex; justify-content: space-between; gap: 12px; font-size: 14px; padding: 3px 0; }
+.kv.total { border-top: 1px solid var(--line-soft); margin-top: 4px; padding-top: 8px; font-weight: 700; font-size: 16px; }
+.menu-item { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 0; border-top: 1px solid var(--line-soft); }
+.menu-item:first-child { border-top: none; }
+
+/* ---------- Mitarbeiterkarte (Heute) */
+.person { gap: 14px; }
+.person .name { font-size: 18px; font-weight: 700; }
+.person .sub { font-size: 14px; color: var(--muted); }
+.save-state { font-size: 13px; color: var(--muted); }
+.save-state[data-state="offline"] { color: var(--open-ink); }
+
+/* ---------- Diagramm */
+.chart { display: flex; align-items: flex-end; gap: 3px; height: 190px; }
+.chart-col { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 4px; height: 100%; }
+.chart-bar { width: 100%; max-width: 28px; border-radius: 6px 6px 2px 2px; background: var(--navy); min-height: 3px; }
+.chart-bar.empty { background: #d9ddd5; }
+.chart-val { font-size: 12px; font-weight: 600; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.chart-day { font-size: 12px; color: var(--muted); }
+
+/* ---------- Tabelle */
+.table-box { max-height: 320px; overflow: auto; border: 1px solid var(--line); border-radius: 12px; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; font-variant-numeric: tabular-nums; }
+th, td { padding: 8px 10px; text-align: right; white-space: nowrap; border-bottom: 1px solid var(--line-soft); }
+th:first-child, td:first-child { text-align: left; position: sticky; left: 0; background: #fff; }
+thead th { position: sticky; top: 0; background: #f3f4f1; font-size: 12px; color: var(--muted); z-index: 1; }
+thead th:first-child { z-index: 2; background: #f3f4f1; }
+
+/* ---------- Dialog / Bottom-Sheet */
+dialog.sheet { border: none; padding: 0; background: transparent; width: 100%; max-width: 560px; max-height: 92vh; margin: auto auto 0; color: var(--ink); }
+dialog.sheet::backdrop { background: rgba(20, 33, 58, 0.5); }
+.sheet-body { background: #fff; border-radius: 20px 20px 0 0; padding: 20px 18px 28px; display: flex; flex-direction: column; gap: 14px; max-height: 92vh; overflow: auto; }
+.sheet-text { font-size: 16px; }
+@media (min-width: 600px) {
+  dialog.sheet { margin: auto; }
+  .sheet-body { border-radius: 20px; }
+}
+
+/* ---------- Hinweis-Einblendung */
+.toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px); background: var(--navy); color: #fff; padding: 12px 18px; border-radius: 12px; font-size: 15px; font-weight: 500; opacity: 0; pointer-events: none; transition: opacity 0.2s, transform 0.2s; z-index: 100; max-width: calc(100vw - 32px); text-align: center; }
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+.toast[data-kind="error"] { background: var(--bad-ink); }
+
+/* ---------- Schmale Bildschirme */
+@media (max-width: 420px) {
+  .big, .big-44 { font-size: 28px; }
+  .nav a { padding: 0 12px; }
+  .form-grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .toast { transition: none; }
+}
+
+/* ---------- Gebiete-Zeilen */
+.row.compact .name { font-size: 16px; font-weight: 600; }
+.row.compact { padding: 10px 0; }
+.legal { font-size: 13px; color: var(--muted); }
+progress { width: 100%; height: 12px; accent-color: var(--navy); }
+.install-hint { position: relative; }
+.page { padding-top: max(24px, calc(env(safe-area-inset-top) + 12px)); padding-bottom: max(64px, calc(env(safe-area-inset-bottom) + 40px)); }
+
+/* ---------- Hilfsklassen */
+.stack.tight { gap: 8px; }
+.stack.roomy { gap: 20px; }
+.stack.hair { gap: 2px; }
+.stack.gap-top { margin-top: 6px; }
+.w-date { width: 170px; }
+.btn-row.center { align-items: center; }
+.details-body.flush { gap: 0; }
+.lead { font-size: 15px; font-weight: 500; }
+.mini-toggle.on-dark { color: #fff; }
+.mt { margin-top: 8px; }
+.tabs-inline { display: flex; align-items: center; gap: 6px; }
+.grow2 { flex: 2 1 220px !important; }
+.grow1 { flex: 1 1 160px !important; }
+.card-row { flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+.check.indent { padding-left: 28px; }
+.row .name.sm { font-size: 15px; }
+.meta.selectable { user-select: all; -webkit-user-select: all; }
+.on-navy.t14 { font-size: 14px; }
+.nowrap { flex-wrap: nowrap !important; }
+.accent-green { color: var(--green); }
+.sum-row { border-top: 1px solid var(--line-soft); padding-top: 12px; }
+.month-name { min-width: 110px; text-align: center; }
+
+/* ---------- Onboarding (o.html) */
+.ob-nav { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.ob-nav button { height: 44px; border: none; background: none; border-radius: 9px; color: var(--tab-ink); font-size: 15px; font-weight: 500; padding: 0 4px; }
+.ob-nav button[aria-current="page"] { background: #fff; color: var(--ink); font-weight: 600; }
+details.ob-step { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); }
+details.ob-step > summary { display: flex; align-items: center; gap: 12px; padding: 12px 14px; min-height: 60px; list-style: none; }
+details.ob-step > summary::after { content: none; }
+.ob-num { flex: 0 0 34px; height: 34px; border-radius: 10px; background: var(--soft); border: 1px solid var(--line); display: grid; place-items: center; font-weight: 700; font-size: 15px; font-variant-numeric: tabular-nums; }
+.ob-pdf { font-size: 12px; font-weight: 800; color: var(--muted); }
+.ob-step.done .ob-num { background: var(--done-bg); border-color: var(--done-line); color: var(--done-ink); }
+.ob-nm { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.ob-nm b { font-size: 17px; }
+.ob-nm small { font-size: 13px; font-weight: 400; color: var(--muted); }
+.ob-chev { flex: none; color: var(--muted); transition: transform 0.2s; }
+details[open] > summary .ob-chev { transform: rotate(90deg); }
+.ob-body { padding: 0 14px 16px; display: flex; flex-direction: column; gap: 10px; font-size: 16px; font-weight: 400; }
+.ob-body .say { background: var(--soft); border-radius: 12px; padding: 12px 14px; }
+.ob-body .say p { margin: 0; }
+.ob-body .say.quote p { font-weight: 600; }
+.ob-body .label { display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; }
+.ob-body .note { border-left: 3px solid; border-radius: 0 10px 10px 0; padding: 8px 12px; font-size: 15px; }
+.ob-body .note.bad { border-color: var(--bad-ink); background: var(--bad-bg); }
+.ob-body .note.warn { border-color: var(--open-ink); background: var(--warn-bg); }
+.ob-body .note.info { border-color: #1d3a6e; background: #e8eef9; }
+.ob-body ol.l, .ob-body ul.l { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 6px; }
+.ob-body .row { border: none; padding: 0; }
+.ob-body .sub { color: var(--muted); font-size: 14px; }
+.ob-q { font-size: 20px; font-weight: 700; line-height: 1.3; }
+.ob-opt { text-align: left; min-height: 48px; padding: 10px 14px; border-radius: 12px; border: 1px solid var(--line-2); background: #fff; font-size: 16px; font-weight: 600; }
+.ob-opt.wrong { border-color: var(--bad-ink); background: var(--bad-bg); color: var(--bad-ink); animation: ob-shake 0.3s; }
+.ob-picked { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 12px; background: var(--done-soft); color: var(--done-ink); font-weight: 600; }
+.ob-picked .ob-num { background: transparent; border-color: var(--done-line); }
+.card.ob-card { flex-direction: row; align-items: center; justify-content: space-between; gap: 12px; text-decoration: none; color: var(--ink); }
+.ob-ver { text-align: center; }
+@keyframes ob-shake { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+@media (max-width: 420px) { .ob-nav button { font-size: 14px; } }
+@media (prefers-reduced-motion: reduce) { .ob-opt.wrong { animation: none; } .ob-chev { transition: none; } }
+
+/* ---------- Aufklappbare Zeilen (Gebiete, Team) */
+details.g-fold { border-top: 1px solid var(--line-soft); }
+details.g-fold:first-child { border-top: none; }
+details.g-fold > summary { display: flex; align-items: center; gap: 10px; min-height: 52px; padding: 6px 0; list-style: none; font-weight: 600; }
+details.g-fold > summary::after { content: '\203A'; margin-left: 0; font-size: 22px; color: var(--muted); transition: transform 0.2s; }
+details.g-fold[open] > summary::after { content: '\203A'; transform: rotate(90deg); }
+.g-name { flex: 1; min-width: 0; font-size: 17px; font-weight: 700; overflow-wrap: anywhere; }
+.g-pills { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 4px; }
+.g-pills .pill-mini { margin-left: 0; }
+.g-body { display: flex; flex-direction: column; gap: 8px; padding: 0 0 14px; }
+.t-nums { gap: 20px; }
+.g-stats { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 4px; }
+.g-stats b { color: var(--ink); }
+@media (prefers-reduced-motion: reduce) { details.g-fold > summary::after { transition: none; } }
+.ob-body .ob-img { display: block; margin: 8px 0; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: #fff; }
+.ob-body .ob-img img { display: block; width: 100%; height: auto; }
+
+.update-banner { position: sticky; top: 0; z-index: 50; border-radius: 0; padding-top: max(12px, env(safe-area-inset-top)); }
+.ver { color: var(--muted); font-size: 12px; text-align: center; padding: 4px 0 12px; }
+/* Mitarbeiter-Zeilen in Heute: weiße Karte wie vorher, trotzdem aufklappbar */
+details.g-fold.card { border: 1px solid var(--line); padding: 2px 18px; gap: 0; }
+details.g-fold.card:first-child { border-top: 1px solid var(--line); }
+
+/* Punkte rot/grün gegen das Monatsziel */
+.card-dark .pts.low { color: #ff9a8f; }
+.card-dark .pts.ok { color: #7ee0a8; }
+.bar.low span { background: #ff6b5e; }
+.pts-text.low { color: var(--bad-ink); font-weight: 700; }
+.pts-text.ok { color: var(--done-ink); font-weight: 700; }
+
+/* ---------- Demo */
+.demo-bar { font-size: 13px; color: var(--muted); text-align: center; padding: 6px 16px; background: #eceee9; border-bottom: 1px solid var(--line); }
+.page { padding-top: 16px; }
+.pill, .btn-sm, .chip { max-width: 100%; }
+.nav a, .nav button { white-space: nowrap; }
+
+</style>
+</head>
+<body>
+<div class="demo-bar">Demo mit Beispieldaten</div>
+<div id="app"></div>
+<noscript><p class="loading">Diese Demo braucht JavaScript.</p></noscript>
+<script>
+(function () {
+'use strict';
+
+var esc = function (v) { return String(v == null ? '' : v).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
+
+/* ================================================================ Inhalte (neutral, erfunden) */
+var STEPS = [
+ { t: 'Grundsätze', s: 'Deine Haltung vor jeder Tür', h: '' +
+   '<div class="say"><span class="label">Merksatz</span><p>Zuerst zuhören, dann erklären.</p></div>' +
+   '<div class="say"><span class="label">Merksatz</span><p>Frag, was dem Kunden wichtig ist, bevor du etwas empfiehlst.</p></div>' +
+   '<div class="say"><span class="label">Merksatz</span><p>Beantworte nur Fragen, die dir gestellt werden, und beantworte sie ehrlich.</p></div>' +
+   '<div class="say"><span class="label">Merksatz</span><p>Ein „Nein“ ist eine gültige Antwort. Bedanke dich und geh freundlich weiter.</p></div>' +
+   '<div class="note bad"><b>Wir sind kein Kundenservice.</b> Wir beraten zu Tarifen. Anliegen zu Rechnung oder Konto klärt der Kunde selbst mit seinem Anbieter. Das dürfen wir aus Datenschutzgründen nicht übernehmen.</div>' },
+ { t: 'Ansprache an der Tür', s: 'Vom „Guten Tag“ bis ins Gespräch', h: '' +
+   '<div class="say quote"><span class="label">1 · Begrüßung</span><p>„Guten Tag, mein Name ist Lena, ich berate im Auftrag von Anbieter A zu Stromtarifen.“</p></div>' +
+   '<div class="note bad"><b>Niemals:</b> falsche Angaben zur eigenen Rolle oder zum Auftraggeber machen.</div>' +
+   '<div class="say quote"><span class="label">2 · Grund</span><p>„Ich bin heute in der Straße, weil sich für viele Haushalte die Tarife geändert haben. Haben Sie kurz fünf Minuten?“</p></div>' +
+   '<div class="say quote"><span class="label">3 · Rechnung</span><p>„Bekommen Sie Ihre Jahresabrechnung per Post oder digital?“</p></div>' +
+   '<div class="say quote"><span class="label">4 · Einladung</span><p>„Wenn Sie die Rechnung kurz raussuchen, schauen wir gemeinsam drüber. Das dauert zwei bis drei Minuten. Machen wir das hier an der Tür, oder passt es Ihnen drinnen besser?“</p></div>' +
+   '<div class="note info"><b>Kurze Pause.</b> Lass dem Kunden Zeit zu antworten und akzeptiere seine Entscheidung.</div>' },
+ { t: 'Platz nehmen', s: 'Ruhiger Rahmen für das Gespräch', h: '' +
+   '<ol class="l"><li>Frag, wo ihr in Ruhe sprechen könnt.</li><li>Setz dich so, dass ihr beide die Unterlagen gut sehen könnt.</li><li>Nenne den Zeitrahmen noch einmal und halte ihn ein.</li></ol>' +
+   '<div class="note info"><b>Warum?</b> Ein klarer Rahmen nimmt Druck raus. Der Kunde weiß, was ihn erwartet.</div>' },
+ { t: 'Unterlagen durchsehen', s: '6 Punkte auf der Rechnung', h: '' +
+   '<ol class="l"><li>Nachzahlung / Guthaben</li><li>Abschlag</li><li>Preisgarantie</li><li>Arbeitspreis</li><li>Bonus für mehrere Verträge</li><li>Aktuelle Laufzeit</li></ol>' +
+   '<div class="note warn"><b>Taktik:</b> Such die Punkte aus, die zur Situation des Kunden passen, und sprich sie offen an. Alles Wichtige gehört ins Gespräch.</div>' +
+   '<div class="row"><button class="btn" data-act="go" data-tab="docs">Wo steht was auf der Rechnung?</button></div>' },
+ { t: 'Angebot aufnehmen', s: 'Gemeinsam und transparent', h: '' +
+   '<div class="say quote"><span class="label">Du sagst</span><p>„Wenn Sie möchten, fülle ich das Formular mit Ihnen gemeinsam aus. Sie sehen dabei alles mit.“</p></div>' +
+   '<ol class="l"><li>Formular Schritt für Schritt ausfüllen und die Angaben vorlesen.</li><li>Fragen des Kunden vollständig und richtig beantworten, auch wenn die Antwort nicht angenehm ist.</li><li>Für den Einstieg ins Gespräch: freundlich bleiben und beim Thema.</li></ol>' },
+ { t: 'Details klären', s: 'Werte prüfen, Vor- und Nachteile nennen', h: '' +
+   '<ol class="l"><li>Werte des Kunden auf Richtigkeit prüfen.</li><li>Auf die Punkte eingehen, die für den Kunden wichtig sind.</li><li>Vor- und Nachteile des neuen Tarifs offen nennen, auch Laufzeit und Kündigungsfrist.</li></ol>' },
+ { t: 'Abschluss', s: 'Drei Einverständnisse einzeln einholen', h: '' +
+   '<div class="say quote"><span class="label">Einstieg</span><p>„Dann fasse ich kurz zusammen und frage Sie drei Dinge einzeln.“</p></div>' +
+   '<ol class="l"><li>Sind Sie mit dem Wechsel auf den neuen Tarif einverstanden?</li><li>Dürfen wir den Auftrag so für Sie anlegen?</li><li>Stimmen Ihre Kontaktdaten, damit wir bei Rückfragen anrufen dürfen?</li></ol>' +
+   '<div class="note warn"><b>Wichtig:</b> Jede Frage wird einzeln und verständlich gestellt. Die Entscheidung liegt beim Kunden.</div>' +
+   '<div class="say quote"><span class="label">Zum Schluss</span><p>„Sie erhalten die Unterlagen schriftlich. Bei Fragen melden Sie sich gern bei mir.“</p></div>' },
+ { t: 'Empfehlung', s: 'Höflich nachfragen', h: '' +
+   '<ol class="l"><li>Bedanke dich für das Gespräch.</li><li>Sprich den Kunden mit Namen an.</li><li>Frag einmal, ohne zu drängen.</li></ol>' +
+   '<div class="say quote"><span class="label">Variante A · Kunden</span><p>„Frau Muster, kennen Sie jemanden, für den das Thema ebenfalls interessant sein könnte?“</p></div>' +
+   '<div class="say quote"><span class="label">Variante B · Mitarbeiter</span><p>„Frau Muster, kennen Sie jemanden, der sich beruflich verändern möchte?“</p></div>' }
+];
+
+var CARDS = [
+ ['Wie lautet dein erster Satz an der Tür?', '„Guten Tag, mein Name ist …, ich berate im Auftrag von … zu Tarifen.“'],
+ ['Was behauptest du niemals?', 'Falsche Angaben zu deiner Rolle oder zum Auftraggeber.'],
+ ['Mit welchem Grund bist du da, und wie lange brauchst du?', 'Weil sich für viele Haushalte die Tarife geändert haben. Rund fünf Minuten.'],
+ ['Wie fragst du nach der Rechnung?', '„Bekommen Sie Ihre Jahresabrechnung per Post oder digital?“'],
+ ['Wie kommst du ins Gespräch?', 'Mit einer Einladung: hier an der Tür oder drinnen, wie es dem Kunden passt. Ein Nein wird akzeptiert.'],
+ ['Wo setzt du dich hin?', 'Dahin, wo ihr in Ruhe sprechen und die Unterlagen gemeinsam sehen könnt.'],
+ ['Welche 6 Punkte prüfst du auf der Rechnung?', 'Nachzahlung/Guthaben, Abschlag, Preisgarantie, Arbeitspreis, Bonus für mehrere Verträge, aktuelle Laufzeit.'],
+ ['Was machst du mit Punkten, die für den Kunden nicht wichtig sind?', 'Du lässt sie nicht weg, wenn sie relevant sind, sondern nennst sie knapp.'],
+ ['Wie gehst du beim Ausfüllen vor?', 'Gemeinsam mit dem Kunden, Angaben vorlesen, Fragen ehrlich beantworten.'],
+ ['Welche drei Einverständnisse holst du im Abschluss?', '1. Wechsel auf den neuen Tarif. 2. Auftrag so anlegen. 3. Kontaktdaten stimmen, Rückruf bei Fragen erlaubt.'],
+ ['Welche Regel gilt für Fragen vom Kunden?', 'Beantworte die Fragen, die gestellt werden, vollständig und ehrlich.'],
+ ['Der Kunde will, dass du etwas bei seinem Anbieter klärst. Was tust du?', 'Nicht übernehmen. Wir sind kein Kundenservice, das verbietet der Datenschutz. Der Kunde klärt es selbst.'],
+ ['Was fragst du an der Tür zum Schluss?', 'Mit Namen: ob er jemanden kennt, für den das Thema interessant sein könnte.'],
+ ['Was ist der Arbeitspreis?', 'Der Preis pro verbrauchter Kilowattstunde (kWh). Auf der Rechnung netto, also ohne Mehrwertsteuer.', 'Rechnung'],
+ ['Was ist der Grundpreis?', 'Kosten unabhängig vom Verbrauch, zum Beispiel für Messung und Zähler. Anteilig nach Zeitraum, netto.', 'Rechnung'],
+ ['Wann gibt es Gutschrift, wann Restbetrag?', 'Gutschrift: Die Abschläge waren höher als die Energiekosten. Restbetrag: Die Energiekosten waren höher als die Abschläge.', 'Rechnung'],
+ ['Wo stehen Tarifname und Laufzeit?', 'Auf der letzten Seite im Jahresplan. Dort auch neuer Abschlag und Zahlungstermine.', 'Rechnung'],
+ ['Wie viele Stellen hat die Zähler-ID und wo steht sie?', '11 Ziffern. Sie steht auf der letzten Jahresabrechnung.', 'Zähler-ID'],
+ ['Ändert sich die Zähler-ID beim Zählerwechsel?', 'Nein. Sie bleibt gleich, die Zählernummer nicht.', 'Zähler-ID'],
+ ['Wie viele IDs hat ein Haus mit Solaranlage?', 'Zwei: eine für den Verbrauch, eine für die Einspeisung.', 'Zähler-ID'],
+ ['Wer kann Verträge bündeln?', 'Nur Privatkunden (Beispielregel).', 'Bündeln'],
+ ['Wie viel bringt das Bündeln im Beispiel?', 'Bis zu 50 € pro Vertrag, also bis zu 100 € im Jahr. Die Höhe hängt vom Vorjahresverbrauch ab.', 'Bündeln'],
+ ['Was beendet den Bündel-Vorteil?', 'Umzug oder Kündigung eines Vertrags. Ein Tarifwechsel ohne Unterbrechung nicht.', 'Bündeln'],
+ ['Was braucht der Kunde für Tarif B (E-Auto)?', 'Ein geeignetes E-Auto, eine eigene Wallbox und die Tarif-App.', 'Tarif B'],
+ ['Wie setzt sich der Bonus bei Tarif B zusammen?', '5 € pro Monat fürs Verbinden in der App, plus 5 € pro Monat bei 6 Nachtladungen. Je 60 € im Jahr.', 'Tarif B'],
+ ['Was zählt als Nachtladung?', 'Mindestens 4 Stunden angesteckt zwischen 0 und 6 Uhr.', 'Tarif B']
+];
+var ORDER = ['Ansprache an der Tür', 'Platz nehmen', 'Unterlagen durchsehen', 'Angebot aufnehmen', 'Details klären', 'Abschluss', 'Empfehlung'];
+
+var DOCS = [
+ { t: 'Rechnung lesen', s: 'Musterrechnung Tarif A, Seite für Seite', h: '' +
+   '<p class="sub" style="margin:0">Die Nummern unten gehören zu einer fiktiven Musterrechnung.</p>' +
+   '<div class="say"><span class="label">Seite 1 · Überblick</span><ol class="l"><li>Kontaktdaten des Anbieters.</li><li><b>Vertragsnummer:</b> Alle Vertragsdaten hängen daran. Bei Anfragen immer angeben.</li><li><b>Rechnungsnummer</b> und Abrechnungszeitraum.</li><li><b>Kunde, Verbrauchsstelle, Zähler.</b></li><li><b>„Ihr Verbrauch“:</b> Energiekosten minus Zahlungen. Mehr gezahlt = Gutschrift, weniger = Restbetrag.</li><li><b>Neuer Abschlag.</b></li></ol></div>' +
+   '<div class="say"><span class="label">Seite 2 · Rückblick</span><ol class="l"><li>Alle Details zu Zahlungen, Verbrauch und Energiekosten.</li><li>Verbrauch = Differenz der Zählerstände.</li><li><b>Zähler-ID</b> und Netzbetreiber.</li><li><b>Arbeitspreis</b> = Preis pro kWh. <b>Grundpreis</b> = verbrauchsunabhängig. Beides netto.</li></ol></div>' +
+   '<div class="say"><span class="label">Seite 3 · Grafiken</span><ol class="l"><li>Entwicklung des eigenen Verbrauchs.</li><li>Vergleich mit dem Durchschnitt.</li><li>Zusammensetzung der Kosten.</li></ol></div>' +
+   '<div class="say"><span class="label">Seite 4 · Jahresplan</span><ol class="l"><li><b>Neuer Abschlag</b>, berechnet aus Verbrauch und aktuellen Preisen.</li><li><b>Tarifname und Vertragslaufzeit.</b></li><li>Zahlungstermine der nächsten Abschläge.</li><li><b>„Ihre Preise“:</b> aktueller Arbeits- und Grundpreis.</li></ol></div>' +
+   '<div class="note warn"><b>Für dein Gespräch:</b> Nachzahlung/Guthaben (S. 1), Abschlag (S. 1 + 4), Arbeitspreis (S. 2 + 4), Laufzeit (S. 4).</div>' },
+ { t: 'Zähler-ID', s: 'Pflichtangabe in jedem Auftrag', h: '' +
+   '<div class="note bad"><b>Bei jedem Auftrag:</b> Zählernummer <b>und</b> Zähler-ID erfassen.</div>' +
+   '<ul class="l"><li><b>11 Ziffern,</b> steht auf der letzten Jahresabrechnung.</li><li>Gibt es bei Strom und Gas.</li><li>Bleibt beim Zählerwechsel gleich, die Zählernummer nicht.</li><li>Mit Solaranlage: <b>zwei</b> IDs (Verbrauch und Einspeisung).</li></ul>' +
+   '<div class="note bad"><b>Ohne Zähler-ID</b> ist im Beispielprozess keine Anmeldung möglich. Eine falsche ID führt in der Regel zum Storno.</div>' },
+ { t: 'Verträge bündeln', s: 'Zwei Verträge, bis zu 100 € Vorteil im Jahr', h: '' +
+   '<ul class="l"><li><b>Nur für Privatkunden</b> (Beispielregel).</li><li>Möglich: Strom + Strom, Strom + Gas, Gas + Gas.</li><li>Verträge bleiben unabhängig, es gibt weiter getrennte Rechnungen.</li><li><b>Bis zu 50 € pro Vertrag,</b> zusammen bis zu 100 € im Jahr. Die Höhe hängt vom Vorjahresverbrauch ab.</li></ul>' +
+   '<div class="note warn"><b>Umzug oder Kündigung</b> beendet den Vorteil, dann neu bündeln. Ein Tarifwechsel ohne Unterbrechung ändert nichts.</div>' +
+   '<div class="say"><span class="label">Mit anderen Personen bündeln</span><p>Familie, Freunde und Bekannte gehen auch. Jeder bleibt eigener Vertragspartner und meldet sich selbst beim Anbieter.</p></div>' },
+ { t: 'Tarif B für E-Auto', s: 'Beispiel-Tarif mit Nachtladebonus', h: '' +
+   '<div class="say"><span class="label">Für wen?</span><p>Kunden mit E-Auto oder Hybrid und eigener Wallbox. Das Auto muss mit der Tarif-App kompatibel sein.</p></div>' +
+   '<ul class="l"><li>100 % Ökostrom für E-Auto und Zuhause.</li><li><b>2 Jahre Preisgarantie</b> (Beispiel).</li><li>Bis zu <b>120 € Nachtladebonus pro Jahr</b>.</li></ul>' +
+   '<div class="say"><span class="label">So setzt sich der Bonus zusammen</span><ul class="l"><li>Auto in der App verbunden: <b>5 € pro Monat</b> = 60 € im Jahr.</li><li>Zusätzlich <b>6× im Monat nachts laden</b>: weitere 5 € pro Monat = bis zu 60 €.</li></ul></div>' +
+   '<div class="note warn"><b>Nachts laden heißt:</b> mindestens 4 Stunden angesteckt zwischen 0 und 6 Uhr.</div>' }
+];
+
+var STEP_COUNT = STEPS.length;
+
+/* ================================================================ Zustand */
+var root = document.getElementById('app');
+var TABS = [['lernen', 'Lernen'], ['ueben', 'Üben'], ['docs', 'Unterlagen'], ['stand', 'Fortschritt']];
+var p = { done: [0, 1, 2], known: [0, 1, 4, 13, 14, 17], best: 48 };
+var state = { tab: 'lernen', mode: 'cards', card: 0, shown: false, picked: [], pool: shuffle(ORDER), t0: 0, lastTime: null, resetAsk: false };
+var NAME = 'Lena';
+
+function shuffle(a) { var x = a.slice(); for (var i = x.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = x[i]; x[i] = x[j]; x[j] = t; } return x; }
+var chev = '<svg class="ob-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
+
+function kpis() {
+  var n = p.done.length;
+  return '<section class="card card-dark" aria-label="Dein Stand"><div class="grid3 num">' +
+    '<div><div class="money">' + n + '/' + STEP_COUNT + '</div><div class="on-navy small">Schritte sitzen</div></div>' +
+    '<div><div class="money">' + p.known.length + '/' + CARDS.length + '</div><div class="on-navy small">Karten gewusst</div></div>' +
+    '<div><div class="money">' + (p.best ? p.best + ' s' : '–') + '</div><div class="on-navy small">Bestzeit Reihenfolge</div></div></div>' +
+    '<div class="bar thin" role="img" aria-label="' + n + ' von ' + STEP_COUNT + ' Schritten"><span style="width:' + Math.round((n / STEP_COUNT) * 100) + '%"></span></div></section>';
+}
+function viewLernen() {
+  return kpis() + '<div class="stack hair"><h2 class="h2">Das Gespräch in ' + STEPS.length + ' Schritten</h2><p class="muted small">Von oben nach unten durchgehen. Aufklappen, laut mitsprechen, dann „Sitzt“ antippen.</p></div><div class="stack tight">' +
+    STEPS.map(function (s, i) {
+      var d = p.done.indexOf(i) >= 0;
+      return '<details class="ob-step' + (d ? ' done' : '') + '" data-i="' + i + '"><summary><span class="ob-num">' + (d ? '✓' : i + 1) + '</span><span class="ob-nm"><b>' + esc(s.t) + '</b><small>' + esc(s.s) + '</small></span>' + chev + '</summary>' +
+        '<div class="ob-body">' + s.h + '<div class="btn-row"><button type="button" class="btn ' + (d ? 'btn-done' : 'btn-primary') + '" data-act="done" data-i="' + i + '">' + (d ? 'Sitzt ✓' : 'Sitzt') + '</button>' +
+        (i < STEPS.length - 1 ? '<button type="button" class="btn" data-act="next" data-i="' + i + '">Nächster Schritt</button>' : '') + '</div></div></details>';
+    }).join('') + '</div>';
+}
+function viewCards() {
+  var i = state.card, c = CARDS[i], known = p.known.indexOf(i) >= 0;
+  return '<section class="card"><div class="between small muted num"><span>Karte ' + (i + 1) + ' von ' + CARDS.length + ' · ' + esc(c[2] || 'Ansprache') + '</span>' + (known ? '<span class="pill pill-done">gewusst</span>' : '') + '</div>' +
+    '<div class="ob-q">' + esc(c[0]) + '</div>' +
+    (state.shown ? '<div class="inner">' + esc(c[1]) + '</div><div class="btn-row"><button type="button" class="btn btn-done" data-act="yes">Gewusst</button><button type="button" class="btn" data-act="no">Nochmal üben</button></div>'
+      : '<div class="btn-row"><button type="button" class="btn btn-primary" data-act="show">Antwort aufdecken</button><button type="button" class="btn" data-act="skip">Überspringen</button></div>') + '</section>';
+}
+function viewOrder() {
+  var fin = state.picked.length === ORDER.length;
+  return '<section class="card"><div class="ob-q">' + (fin ? 'Geschafft in ' + state.lastTime + ' s' : 'Tippe die Schritte in der richtigen Reihenfolge') + '</div>' +
+    (state.picked.length ? '<div class="stack tight">' + state.picked.map(function (x, i) { return '<div class="ob-picked"><span class="ob-num">' + (i + 1) + '</span>' + esc(x) + '</div>'; }).join('') + '</div>' : '') +
+    (fin ? '<div class="muted small num">Bestzeit: ' + p.best + ' s</div><div class="btn-row"><button type="button" class="btn btn-primary" data-act="again">Nochmal</button></div>'
+      : '<div class="stack tight">' + state.pool.filter(function (x) { return state.picked.indexOf(x) < 0; }).map(function (x) { return '<button type="button" class="ob-opt" data-act="pick" data-v="' + esc(x) + '">' + esc(x) + '</button>'; }).join('') + '</div>') + '</section>';
+}
+function viewUeben() {
+  return '<div class="stack hair"><h2 class="h2">Üben</h2><p class="muted small">Erst Karteikarten, dann die Reihenfolge auf Zeit.</p></div>' +
+    '<div class="seg" role="group" aria-label="Übungsart"><button type="button" data-act="mode" data-m="cards" aria-pressed="' + (state.mode === 'cards') + '">Karteikarten</button><button type="button" data-act="mode" data-m="order" aria-pressed="' + (state.mode === 'order') + '">Reihenfolge</button></div>' +
+    (state.mode === 'cards' ? viewCards() : viewOrder());
+}
+function viewDocs() {
+  return '<div class="stack hair"><h2 class="h2">Schulungsunterlagen</h2><p class="muted small">Das Fachwissen hinter dem Gespräch. Abgefragt wird es unter „Üben“.</p></div>' +
+    '<div class="banner bad small">Dieses Wissen ist für deine Beratung. Anliegen des Kunden zu Rechnung und Konto klärt er selbst mit seinem Anbieter, wir übernehmen keinen Kundenservice (Datenschutz).</div>' +
+    '<div class="stack tight">' + DOCS.map(function (d) {
+      return '<details class="ob-step"><summary><span class="ob-num ob-pdf">PDF</span><span class="ob-nm"><b>' + esc(d.t) + '</b><small>' + esc(d.s) + '</small></span>' + chev + '</summary><div class="ob-body">' + d.h + '</div></details>';
+    }).join('') + '</div>';
+}
+function viewStand() {
+  return kpis() + '<section class="card card-tight"><h2 class="h2">Schritte</h2><div class="list">' + STEPS.map(function (s, i) {
+    var d = p.done.indexOf(i) >= 0;
+    return '<div class="row compact"><div class="main"><div class="name">' + (i + 1) + '. ' + esc(s.t) + '</div></div><span class="pill ' + (d ? 'pill-done' : 'pill-open') + '">' + (d ? 'sitzt' : 'offen') + '</span></div>';
+  }).join('') + '</div></section><p class="muted small">Dein Teamleiter sieht, wie weit du bist.</p>' +
+    (state.resetAsk ? '<section class="card"><p class="sheet-text">Wirklich alles zurücksetzen?</p><div class="btn-row"><button type="button" class="btn btn-danger" data-act="reset-yes">Ja, zurücksetzen</button><button type="button" class="btn" data-act="reset-no">Abbrechen</button></div></section>'
+      : '<div class="btn-row"><button type="button" class="btn" data-act="reset">Fortschritt zurücksetzen</button></div>');
+}
+function render(keepOpen) {
+  var open = keepOpen ? [].slice.call(root.querySelectorAll('details.ob-step')).map(function (d) { return d.open; }) : null;
+  var views = { lernen: viewLernen, ueben: viewUeben, docs: viewDocs, stand: viewStand };
+  root.innerHTML = '<main class="page"><div class="wrap narrow"><header class="app-head"><div><div class="eyebrow">Onboarding · Team Nord</div><h1 class="title-sm">Hallo ' + esc(NAME) + '</h1></div></header>' +
+    '<nav class="nav ob-nav" aria-label="Bereiche">' + TABS.map(function (t) { return '<button type="button" data-act="tab" data-tab="' + t[0] + '" ' + (state.tab === t[0] ? 'aria-current="page"' : '') + '>' + t[1] + '</button>'; }).join('') + '</nav>' +
+    views[state.tab]() + '<p class="muted tiny ob-ver">Onboarding v1.0 · Demo</p></div></main>';
+  if (open) [].slice.call(root.querySelectorAll('details.ob-step')).forEach(function (d, j) { d.open = !!open[j]; });
+}
+function go(tab) { state.tab = tab; state.resetAsk = false; render(); try { window.scrollTo(0, 0); } catch (e) { /* egal */ } }
+
+root.addEventListener('click', function (ev) {
+  var t = ev.target.closest('[data-act]'); if (!t) return;
+  var i = Number(t.dataset.i);
+  switch (t.dataset.act) {
+    case 'tab': case 'go': go(t.dataset.tab); break;
+    case 'done': p.done = p.done.indexOf(i) >= 0 ? p.done.filter(function (x) { return x !== i; }) : p.done.concat([i]).sort(function (a, b) { return a - b; }); render(true); break;
+    case 'next': { var all = root.querySelectorAll('details.ob-step'); all[i].open = false; all[i + 1].open = true; try { all[i + 1].scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) { /* egal */ } break; }
+    case 'mode': state.mode = t.dataset.m; if (state.mode === 'order' && !state.picked.length) state.t0 = Date.now(); render(); break;
+    case 'show': state.shown = true; render(); break;
+    case 'skip': state.shown = false; state.card = (state.card + 1) % CARDS.length; render(); break;
+    case 'yes': case 'no': {
+      var c = state.card;
+      p.known = t.dataset.act === 'yes' ? p.known.filter(function (x) { return x !== c; }).concat([c]).sort(function (a, b) { return a - b; }) : p.known.filter(function (x) { return x !== c; });
+      state.shown = false; state.card = (c + 1) % CARDS.length; render(); break;
+    }
+    case 'pick':
+      if (t.dataset.v === ORDER[state.picked.length]) {
+        if (!state.picked.length && !state.t0) state.t0 = Date.now();
+        state.picked.push(t.dataset.v);
+        if (state.picked.length === ORDER.length) { state.lastTime = Math.max(1, Math.round((Date.now() - state.t0) / 1000)); if (!p.best || state.lastTime < p.best) p.best = state.lastTime; }
+        render();
+      } else { t.classList.remove('wrong'); void t.offsetWidth; t.classList.add('wrong'); }
+      break;
+    case 'again': state.picked = []; state.pool = shuffle(ORDER); state.t0 = Date.now(); render(); break;
+    case 'reset': state.resetAsk = true; render(); break;
+    case 'reset-no': state.resetAsk = false; render(); break;
+    case 'reset-yes': p.done = []; p.known = []; p.best = null; state.resetAsk = false; render(); break;
+  }
+});
+render();
+})();
+
+</script>
+</body>
+</html>
