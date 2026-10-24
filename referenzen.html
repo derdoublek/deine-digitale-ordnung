@@ -148,6 +148,9 @@
     .panel{padding:16px}
   }
   @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  [hidden]{display:none!important}
+  .side a.grp{pointer-events:none;margin-top:14px}
+  .top .wrap{height:56px}
 </style>
 </head>
 <body>
@@ -159,35 +162,30 @@
   </div>
 </div>
 
-<header class="hero" id="start" data-sec>
-  <div class="wrap">
-    <p class="label">Referenzen</p>
-    <h1>Erst Chaos, dann <em>System.</em></h1>
-    <p class="sub">Beispiele für Betriebe und für Familien, alle aus dem eigenen Alltag. Scrolle runter: Die Zettel, Chats und Dateien sortieren sich von allein ins Dashboard.</p>
-  </div>
-</header>
-
 <div class="wrap layout">
-  <nav class="side" aria-label="Abschnitte">
-    <span class="label">Inhalt</span>
-    <ul><li><a href="index.html#wege">← Zur Auswahl</a></li><li><a href="#start">Überblick</a></li><li><a class="grp" href="#betriebe">Firma</a></li><li><a class="sub" href="#cockpit">Teamleiter-Cockpit</a></li><li><a class="sub" href="#gebiete">Nachläufer-App</a></li><li><a class="sub" href="#onboarding">Onboarding-Dashboard</a></li><li><a class="sub" href="#zahlungen">Umsatz- und Zahlungsübersicht</a></li><li><a class="grp" href="#familien">Privat</a></li><li><a class="sub" href="#finanzplaner">Finanzplaner</a></li><li><a class="sub" href="#tagesstart">Tagesstart-Dashboard</a></li><li><a href="#kontakt">Kontakt</a></li><li><a href="#impressum">Impressum</a></li><li><a href="#datenschutz">Datenschutz</a></li></ul>
+  <nav class="side" aria-label="Projekte">
+    <span class="label">Projekte</span>
+    <ul>
+      <li><a href="index.html#wege">← Zur Auswahl</a></li>
+      <li data-g="firma"><a class="grp" href="#cockpit">Firma</a></li>
+      <li data-g="firma"><a class="sub" href="#cockpit">Teamleiter-Cockpit</a></li>
+      <li data-g="firma"><a class="sub" href="#gebiete">Nachläufer-App</a></li>
+      <li data-g="firma"><a class="sub" href="#onboarding">Onboarding-Dashboard</a></li>
+      <li data-g="firma"><a class="sub" href="#zahlungen">Umsatz- und Zahlungsübersicht</a></li>
+      <li data-g="privat"><a class="grp" href="#finanzplaner">Privat</a></li>
+      <li data-g="privat"><a class="sub" href="#finanzplaner">Finanzplaner</a></li>
+      <li data-g="privat"><a class="sub" href="#tagesstart">Tagesstart-Dashboard</a></li>
+      <li><a href="#kontakt">Kontakt</a></li>
+    </ul>
   </nav>
 
   <main>
-
-
-
-    <section class="ref group" id="betriebe" data-sec>
-      <p class="label">Firma</p>
-      <h2>Weniger Zettel im Team.</h2>
-      <p class="lead">Zahlen, Gebiete, Zahlungen und neue Mitarbeiter an einem Ort, passend zum Ablauf im Betrieb.</p>
-    </section>
     <section class="ref" id="cockpit" data-sec>
       <span class="status">Im täglichen Einsatz</span>
       <h2>Teamleiter-Cockpit</h2>
       <p class="lead">Provisionen, Ziele und Tagesmeldungen an einem Ort, für Teamleiter und Mitarbeiter.</p>
       <div class="two">
-        <div><h3 class="label">Das Problem</h3><p>Zahlen stehen in mehreren Dateien und Chats. Mitarbeiter fragen nach ihrem Stand, und die Meldungen werden jeden Tag von Hand zusammengetippt.</p></div>
+        <div><h3 class="label">Warum es entstanden ist</h3><p>Zahlen stehen in mehreren Dateien und Chats. Mitarbeiter fragen nach ihrem Stand, und die Meldungen werden jeden Tag von Hand zusammengetippt.</p></div>
         <div><h3 class="label">Die Lösung</h3><ul class="ticks"><li>Provisionsstaffel und Punkteziele auf einen Blick</li><li>Rot/Grün-Anzeige: unter oder über dem Ziel</li><li>Morgen- und Abendmeldung per Klick erzeugt</li><li>Persönlicher Link pro Mitarbeiter, kein Passwort-Chaos</li></ul></div>
       </div>
       <div class="stage" data-fx="chat" data-seed="7" data-done="5" data-total="5">
@@ -208,7 +206,7 @@
       <h2>Nachläufer-App: Gebiete im Außendienst</h2>
       <p class="lead">Listen, Gebiete und Sperrfristen, die im Team nicht mehr durcheinandergeraten.</p>
       <div class="two">
-        <div><h3 class="label">Das Problem</h3><p>Gebietslisten in Tabellen: Mitarbeiter ändern die Struktur, offline wird nichts synchronisiert, und niemand weiß sicher, welcher Ort wann wieder frei ist.</p></div>
+        <div><h3 class="label">Warum es entstanden ist</h3><p>Gebietslisten in Tabellen: Mitarbeiter ändern die Struktur, offline wird nichts synchronisiert, und niemand weiß sicher, welcher Ort wann wieder frei ist.</p></div>
         <div><h3 class="label">Die Lösung</h3><ul class="ticks"><li>Straßenverzeichnis zur Auswahl statt Tippfehlern</li><li>Sperrfrist und Wieder-Freigabe pro Gebiet</li><li>Für Offline-Nutzung ausgelegt, Stand der Daten sichtbar</li><li>Auswertung pro Ort und Mitarbeiter, z. B. Antreffquote</li><li>Zugang per persönlichem Login, Verwaltung zentral</li></ul></div>
       </div>
       <div class="stage" data-fx="grid" data-seed="3" data-done="5" data-total="5">
@@ -225,20 +223,33 @@
       <p class="fine">Beispielhafte Darstellung mit erfundenen Namen, Orten und Zahlen.</p>
     </section>
     <section class="ref" id="onboarding" data-sec>
-      <span class="status">Angebot</span>
+      <span class="status">Aus dem Teamleiter-Cockpit entstanden</span>
       <h2>Onboarding-Dashboard</h2>
-      <p class="lead">Neue Mitarbeiter in 90 Tagen produktiv: mit Plan, Mentor und allen Unterlagen an einem Ort. Das Beispiel im Detail, mit 90-Tage-Plan, steht auf einer eigenen Seite.</p>
-      <div class="link-card">
-        <a class="btn" href="onboarding.html">Onboarding im Detail</a>
-        <a class="btn ghost" href="#kontakt">Kostenlose Beratung</a>
+      <p class="lead">Neue Mitarbeiter in 90 Tagen produktiv: mit Plan, Mentor und allen Unterlagen an einem Ort.</p>
+      <div class="two">
+        <div><h3 class="label">Warum es entstanden ist</h3><p>Neue Mitarbeiter bekommen Schulungen als PDF, Zugänge per Mail und Tipps mündlich. Am ersten Tag weiß niemand, wo er anfangen soll.</p></div>
+        <div><h3 class="label">Die Lösung</h3><ul class="ticks"><li>Klarer 90-Tage-Plan, Woche für Woche</li><li>Mentor und Ansprechpartner sofort sichtbar</li><li>Schulungen und Unterlagen an einem Ort</li><li>Fortschritt für den Teamleiter auf einen Blick</li></ul></div>
       </div>
+      <div class="stage" data-fx="drift" data-seed="13" data-done="5" data-total="5">
+        <div class="zone" aria-hidden="true">
+          <p class="zone-cap"><span class="cap-a">Vorher: PDFs, Mails und Zettel</span><span class="cap-b">Nachher: 1 Plan statt 5 Quellen</span></p>
+        </div>
+        <div class="panel" role="group" aria-label="Beispielansicht: Onboarding-Dashboard">
+          <div class="panel-head"><strong>Neuer Mitarbeiter · Woche 1</strong><span class="label">Beispieldaten</span></div>
+          <div class="panel-bar"><div class="panel-fill" data-to="100" style="width:100%"></div></div>
+          <div class="slots"><div class="slot"><div class="chip" data-kind="pdf"><span class="bg a"></span><span class="bg b"></span><span class="badge">P</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Schulung_final_v2.pdf</span><span class="c-order">Woche 1: Plan</span></span><span class="state"><i></i></span></div></div><div class="slot"><div class="chip" data-kind="mail"><span class="bg a"></span><span class="bg b"></span><span class="badge">@</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Mail vom Mentor, irgendwo</span><span class="c-order">Mentor zugeordnet</span></span><span class="state"><i></i></span></div></div><div class="slot"><div class="chip" data-kind="note"><span class="bg a"></span><span class="bg b"></span><span class="badge">N</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Zugangsdaten auf Zettel</span><span class="c-order">Zugänge gebündelt</span></span><span class="state"><i></i></span></div></div><div class="slot"><div class="chip" data-kind="pdf"><span class="bg a"></span><span class="bg b"></span><span class="badge">P</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Ordner „Neu“ im Drive</span><span class="c-order">Alle Unterlagen</span></span><span class="state"><i></i></span></div></div><div class="slot"><div class="chip" data-kind="memo"><span class="bg a"></span><span class="bg b"></span><span class="badge">!</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Wer zeigt mir das?</span><span class="c-order">90-Tage-Plan</span></span><span class="state"><i></i></span></div></div></div>
+          <div class="panel-foot"><span>Beispielwerte</span><span>Tag 1 bereit · <b class="cnt">5</b> von 5 erledigt</span></div>
+        </div>
+      </div>
+      <p class="fine">Beispielhafte Darstellung mit erfundenen Namen und Inhalten.</p>
+      <div class="link-card"><a class="btn ghost" href="onboarding.html">Onboarding im Detail</a></div>
     </section>
     <section class="ref" id="zahlungen" data-sec>
       <span class="status">In Aufbau · privat im Test</span>
       <h2>Umsatz- und Zahlungsübersicht</h2>
       <p class="lead">Wer hat bestellt, wer hat bezahlt, was bleibt als Provision? Für Sammelbestellungen im Direktvertrieb.</p>
       <div class="two">
-        <div><h3 class="label">Das Problem</h3><p>Bestellungen laufen per Chat, Zahlungen per PayPal und Überweisung. Wer schon bezahlt hat, findet man nur, indem man alles durchsucht.</p></div>
+        <div><h3 class="label">Warum es entstanden ist</h3><p>Bestellungen laufen per Chat, Zahlungen per PayPal und Überweisung. Wer schon bezahlt hat, findet man nur, indem man alles durchsucht.</p></div>
         <div><h3 class="label">Die Lösung</h3><ul class="ticks"><li>Zahlungen von Hand eintragen, kein Bankzugriff nötig</li><li>Pro Person nur ein Status: bezahlt oder offen</li><li>Provision des Monats sofort sichtbar</li><li>Zugang für zwei Personen, beide sehen denselben Stand</li></ul></div>
       </div>
       <div class="stage" data-fx="stamp" data-seed="11" data-done="4" data-total="5">
@@ -254,17 +265,12 @@
       </div>
       <p class="fine">Beispielhafte Darstellung mit erfundenen Namen, Orten und Zahlen.</p>
     </section>
-    <section class="ref group" id="familien" data-sec>
-      <p class="label">Privat</p>
-      <h2>Weniger Kopfrechnen zu Hause.</h2>
-      <p class="lead">Geld und Tagesplanung auf einen Blick, ohne Tabellen und Chatverläufe.</p>
-    </section>
     <section class="ref" id="finanzplaner" data-sec>
       <span class="status">Als Produkt verfügbar</span>
       <h2>Finanzplaner für Familien</h2>
       <p class="lead">Das Gehalt kommt rein und wird fest auf die Konten verteilt: Alltag, Versicherungen, Auto, Raten, Rücklage.</p>
       <div class="two">
-        <div><h3 class="label">Das Problem</h3><p>Das Gehalt geht ein, die Rechnungen kommen verteilt über den Monat. Am Ende weiß niemand, wohin das Geld gegangen ist und ob für alles genug da war.</p></div>
+        <div><h3 class="label">Warum es entstanden ist</h3><p>Das Gehalt geht ein, die Rechnungen kommen verteilt über den Monat. Am Ende weiß niemand, wohin das Geld gegangen ist und ob für alles genug da war.</p></div>
         <div><h3 class="label">Die Lösung</h3><ul class="ticks"><li>Feste Verteilung vom Gehalt auf einzelne Konten</li><li>Verteilter Betrag gegen den tatsächlichen Bedarf</li><li>Am Monatsende sichtbar, was auf welches Konto ging</li><li>Einmal einrichten, danach läuft es von allein</li></ul></div>
       </div>
       <div class="stage" data-fx="split" data-seed="9" data-done="5" data-total="5">
@@ -286,7 +292,7 @@
       <h2>Tagesstart-Dashboard</h2>
       <p class="lead">Termine, Mails und Aufgaben aus mehreren Konten auf einer einzigen Seite.</p>
       <div class="two">
-        <div><h3 class="label">Das Problem</h3><p>Morgens erst der Kalender, dann drei Postfächer, dann die Aufgabenliste. Das kostet Zeit, und Wichtiges rutscht durch.</p></div>
+        <div><h3 class="label">Warum es entstanden ist</h3><p>Morgens erst der Kalender, dann drei Postfächer, dann die Aufgabenliste. Das kostet Zeit, und Wichtiges rutscht durch.</p></div>
         <div><h3 class="label">Die Lösung</h3><ul class="ticks"><li>Alles Wichtige des Tages auf einem Bildschirm</li><li>Mehrere Konten zusammengeführt</li><li>Am Mac und am Handy nutzbar</li><li>Bewusst schlicht: nichts, was ablenkt</li></ul></div>
       </div>
       <div class="stage" data-fx="streams" data-seed="5" data-done="4" data-total="4">
@@ -330,7 +336,7 @@
 <footer class="site-foot">
   <div class="wrap">
     <span>Digitale Ordnung · Kai Kremer</span>
-    <nav aria-label="Rechtliches und weitere Angebote"><a href="index.html#wege">Zur Auswahl</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a><a href="uebersicht.html">Für Privatpersonen: Finanzplaner</a></nav>
+    <nav aria-label="Rechtliches und weitere Angebote"><a href="index.html#wege">Zur Auswahl</a><a href="#impressum">Impressum</a><a href="#datenschutz">Datenschutz</a></nav>
   </div>
 </footer>
 
@@ -340,19 +346,32 @@
 (function () {
   var doc = document;
   /* Navigation links: aktiven Abschnitt markieren */
-  var links = [].slice.call(doc.querySelectorAll('.side a'));
-  var map = {};
-  links.forEach(function (a) { map[a.getAttribute('href').slice(1)] = a; });
+  /* Es wird immer nur ein Projekt gezeigt (Firma und Privat getrennt). */
+  var PROJ = { cockpit: 'firma', gebiete: 'firma', onboarding: 'firma', zahlungen: 'firma', finanzplaner: 'privat', tagesstart: 'privat' };
+  var LEGAL = { impressum: 1, datenschutz: 1 };
+  var cur = null;
   var secs = [].slice.call(doc.querySelectorAll('[data-sec]'));
-  function mark() {
-    var y = window.scrollY + window.innerHeight * 0.3, cur = secs[0].id;
-    secs.forEach(function (s) { if (s.getBoundingClientRect().top + window.scrollY <= y) { cur = s.id; } });
-    links.forEach(function (a) { a.classList.remove('on'); });
-    if (map[cur]) { map[cur].classList.add('on'); }
+  var navLinks = [].slice.call(doc.querySelectorAll('.side a'));
+  var navItems = [].slice.call(doc.querySelectorAll('.side li[data-g]'));
+  var routeHook = function () {};
+  function route() {
+    var id = (location.hash || '').slice(1);
+    if (id === 'kontakt' && cur) { return; }
+    if (!PROJ[id] && !LEGAL[id]) {
+      if (cur) { return; }
+      location.replace('index.html#wege'); return;
+    }
+    cur = id;
+    var grp = PROJ[id] || null;
+    secs.forEach(function (s) { s.hidden = !(s.id === id || s.id === 'kontakt'); });
+    navItems.forEach(function (li) { li.hidden = !grp || li.getAttribute('data-g') !== grp; });
+    navLinks.forEach(function (a) { a.classList.toggle('on', a.getAttribute('href') === '#' + id && !a.classList.contains('grp')); });
+    window.scrollTo(0, 0);
+    routeHook();
   }
-  window.addEventListener('scroll', mark, { passive: true });
-  window.addEventListener('resize', mark);
-  mark();
+  window.addEventListener('hashchange', route);
+  route();
+  window.addEventListener('load', function () { window.setTimeout(function () { window.scrollTo(0, 0); }, 50); });
 
   /* Chaos wird Ordnung: Der Effekt hängt direkt am Scrollen.
      Weiter scrollen = es sortiert sich ein, anhalten = es bleibt stehen,
@@ -360,6 +379,7 @@
   var g = window.gsap, ST = window.ScrollTrigger;
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (!g || !ST || reduce) { return; }
+  /* ohne Bewegung: alles direkt im Endzustand lassen */
   g.registerPlugin(ST);
 
   function rnd(n) { var x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); }
@@ -508,13 +528,24 @@
     S.st = ST.create({ trigger: sc, start: 'top 36%', end: function () { return S.pin.end; }, animation: tl, scrub: 0.8 });
   }
 
-  stages.forEach(build);
+  function buildVisible() {
+    stages.forEach(function (S) {
+      if (S.el.offsetParent !== null) { build(S); }
+      else {
+        if (S.st) { S.st.kill(); S.st = null; }
+        if (S.pin) { S.pin.kill(true); S.pin = null; }
+        if (S.tl) { S.tl.kill(); S.tl = null; }
+      }
+    });
+  }
+  buildVisible();
+  routeHook = function () { buildVisible(); ST.refresh(); };
 
   var rt = null;
   function rebuild() {
     window.clearTimeout(rt);
     rt = window.setTimeout(function () {
-      stages.forEach(build);
+      buildVisible();
       ST.refresh();
     }, 250);
   }

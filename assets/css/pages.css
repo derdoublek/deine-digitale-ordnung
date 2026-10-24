@@ -1,7 +1,7 @@
 /* Gemeinsames Design für Unterseiten: gleiche Farbwelt wie die Startseite (Nachtblau, Honiggold, Sand). */
 @font-face{font-family:"Bricolage Grotesque";src:url(../fonts/bricolage-grotesque-latin-wght-normal.woff2) format("woff2");font-weight:200 800;font-display:swap}
 @font-face{font-family:"DM Sans";src:url(../fonts/dm-sans-latin-wght-normal.woff2) format("woff2");font-weight:100 1000;font-display:swap}
-:root{color-scheme:light;--bg:#f4ecdd;--fg:#162036;--muted:#4f586b;--line:#ddd2bd;--card:#fffaf1;--row:#f4ecdd;--brand:#162036;--signal:#e9b44c;--signal-fg:#1b1405;--signal-text:#8a5a00;--band:#101a2e;--band-fg:#f1f2f6;--band-muted:#b3bccd;--f-display:"Bricolage Grotesque","Arial Black",system-ui,sans-serif;--f-body:"DM Sans",system-ui,-apple-system,sans-serif;--f-mono:var(--f-body)}
+:root{color-scheme:dark;--bg:#0f1a2e;--fg:#eef1f6;--muted:#a9b4c8;--line:#2a3b5a;--card:#172643;--row:#1e3052;--brand:#1a2a4a;--signal:#e9b44c;--signal-fg:#1b1405;--signal-text:#e9b44c;--band:#0b1424;--band-fg:#f1f2f6;--band-muted:#b3bccd;--f-display:"Bricolage Grotesque","Arial Black",system-ui,sans-serif;--f-body:"DM Sans",system-ui,-apple-system,sans-serif;--f-mono:var(--f-body)}
 @media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0f141c;--fg:#eef1f6;--muted:#9aa5b8;--line:#2a3445;--card:#171e2a;--row:#1d2634;--signal-text:#e9b44c;color-scheme:dark}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:17px;line-height:1.6;overflow-x:hidden}
