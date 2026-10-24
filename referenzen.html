@@ -9,7 +9,6 @@
 <style>
   @font-face { font-family: "Bricolage Grotesque"; font-weight: 200 800; font-style: normal; font-display: swap; src: url("assets/fonts/bricolage-grotesque-latin-wght-normal.woff2") format("woff2"); }
   @font-face { font-family: "DM Sans"; font-weight: 100 1000; font-style: normal; font-display: swap; src: url("assets/fonts/dm-sans-latin-wght-normal.woff2") format("woff2"); }
-  @font-face { font-family: "JetBrains Mono"; font-weight: 500; font-style: normal; font-display: swap; src: url("assets/fonts/jetbrains-mono-latin-500-normal.woff2") format("woff2"); }
   :root{
     color-scheme: dark;
     --rowh: 46px;
@@ -20,7 +19,7 @@
     --ok: #3ddc84;
     --f-display: "Bricolage Grotesque", "Arial Black", system-ui, sans-serif;
     --f-body: "DM Sans", system-ui, -apple-system, sans-serif;
-    --f-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+    --f-mono: var(--f-body);
   }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth;scroll-padding-top:20px}

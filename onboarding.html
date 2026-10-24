@@ -8,7 +8,6 @@
 <style>
   @font-face { font-family: "Bricolage Grotesque"; font-weight: 200 800; font-style: normal; font-display: swap; src: url("assets/fonts/bricolage-grotesque-latin-wght-normal.woff2") format("woff2"); }
   @font-face { font-family: "DM Sans"; font-weight: 100 1000; font-style: normal; font-display: swap; src: url("assets/fonts/dm-sans-latin-wght-normal.woff2") format("woff2"); }
-  @font-face { font-family: "JetBrains Mono"; font-weight: 500; font-style: normal; font-display: swap; src: url("assets/fonts/jetbrains-mono-latin-500-normal.woff2") format("woff2"); }
   body { margin: 0; }
   .site-foot { background: var(--band); color: var(--band-muted); padding-block: 28px; font-size: 15px; }
   .site-foot .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; }
@@ -39,7 +38,7 @@
 
     --f-display: "Bricolage Grotesque", "Arial Black", system-ui, sans-serif;
     --f-body: "DM Sans", system-ui, -apple-system, sans-serif;
-    --f-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+    --f-mono: var(--f-body);
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
