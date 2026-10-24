@@ -72,3 +72,13 @@ main{min-width:0}
 main.solo{max-width:880px;margin-inline:auto;padding-block:clamp(28px,5vw,48px)}
 html{scroll-padding-top:90px}
 @media (max-width:640px){.quick{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}.quick a{flex:none;white-space:nowrap}}
+
+/* Alles mittig, Fließtext in Kästen bleibt linksbündig (Lesbarkeit) */
+.page-head,.ref{text-align:center}
+.page-head p,.ref .lead{margin-inline:auto}
+.why{margin-inline:auto;text-align:left}
+.pains{margin-inline:auto}
+.pains li{border-left:1px solid var(--line);border-top:4px solid var(--signal);text-align:center}
+.link-card{justify-content:center}
+.quick{justify-content:safe center}
+.demo{text-align:left}

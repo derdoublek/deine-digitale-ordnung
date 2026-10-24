@@ -106,3 +106,9 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var
 @media(max-width:820px){.compare,.offers,.steps,.case-body{grid-template-columns:1fr}.original-preview iframe{height:380px}}
 @media(prefers-reduced-motion:reduce){.btn{transition:none}}
 .legal-card,.legal-card p,.legal-card a{overflow-wrap:anywhere}
+
+/* Alles mittig, Fließtext in Kästen bleibt linksbündig */
+.legal{text-align:center}
+.legal .sub{margin-inline:auto}
+.legal-list{margin-inline:auto}
+.legal-card{text-align:left}
