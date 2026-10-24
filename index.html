@@ -238,7 +238,10 @@
   .pain-list { list-style: none; margin: 0; padding: 0; }
   .pain-list li + li { border-top: 1px solid var(--line); }
   .pain-list a { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 18px 4px; color: var(--fg); text-decoration: none; font-family: var(--f-display); font-weight: 700; font-size: clamp(19px, 2.4vw, 25px); line-height: 1.2; }
-  .pain-list a:hover span { text-decoration: underline; text-underline-offset: 4px; }
+  .pq { display: block; }
+  .pq small { display: block; margin-bottom: 6px; font-family: var(--f-mono); font-size: 12px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--signal-text); }
+  .pq b { font-weight: inherit; }
+  .pain-list a:hover .pq b { text-decoration: underline; text-underline-offset: 4px; }
   .pain-list a:focus-visible { outline: 3px solid var(--signal); outline-offset: 2px; }
   .pain-list i { flex: none; font-style: normal; }
   @keyframes painIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
@@ -327,11 +330,11 @@
     </div>
     <div class="pain" id="pain-betriebe" hidden>
       <p class="label">Welche Frage kennst du?</p>
-      <ul class="pain-list"><li><a href="referenzen.html#gebiete"><span>Weißt du sicher, wer in welchem Gebiet war und wann es wieder frei ist?</span><i aria-hidden="true">→</i></a></li><li><a href="referenzen.html#cockpit"><span>Tippst du jeden Abend die Zahlen deines Teams von Hand zusammen?</span><i aria-hidden="true">→</i></a></li><li><a href="onboarding.html"><span>Weiß dein neuer Mitarbeiter am ersten Tag, wo er anfangen soll?</span><i aria-hidden="true">→</i></a></li></ul>
+      <ul class="pain-list"><li><a href="referenzen.html#gebiete"><span class="pq"><small>Gebietsverwaltung für den Außendienst</small><b>Weißt du sicher, wer in welchem Gebiet war und wann es wieder frei ist?</b></span><i aria-hidden="true">→</i></a></li><li><a href="referenzen.html#cockpit"><span class="pq"><small>Teamleiter-Cockpit</small><b>Tippst du jeden Abend die Zahlen deines Teams von Hand zusammen?</b></span><i aria-hidden="true">→</i></a></li><li><a href="onboarding.html"><span class="pq"><small>Onboarding-Dashboard</small><b>Weiß dein neuer Mitarbeiter am ersten Tag, wo er anfangen soll?</b></span><i aria-hidden="true">→</i></a></li></ul>
     </div>
     <div class="pain" id="pain-familien" hidden>
       <p class="label">Welche Frage kennst du?</p>
-      <ul class="pain-list"><li><a href="referenzen.html#finanzplaner"><span>Weißt du am Monatsende, wohin das Gehalt gegangen ist?</span><i aria-hidden="true">→</i></a></li><li><a href="referenzen.html#zahlungen"><span>Suchst du in Chats und Screenshots, wer schon bezahlt hat?</span><i aria-hidden="true">→</i></a></li><li><a href="referenzen.html#tagesstart"><span>Wie viele Postfächer öffnest du, bevor dein Tag überhaupt anfängt?</span><i aria-hidden="true">→</i></a></li></ul>
+      <ul class="pain-list"><li><a href="referenzen.html#finanzplaner"><span class="pq"><small>Finanzplaner</small><b>Weißt du am Monatsende, wohin das Gehalt gegangen ist?</b></span><i aria-hidden="true">→</i></a></li><li><a href="referenzen.html#zahlungen"><span class="pq"><small>Bestell- und Zahlungsübersicht</small><b>Suchst du in Chats und Screenshots, wer schon bezahlt hat?</b></span><i aria-hidden="true">→</i></a></li><li><a href="referenzen.html#tagesstart"><span class="pq"><small>Tagesstart-Dashboard</small><b>Wie viele Postfächer öffnest du, bevor dein Tag überhaupt anfängt?</b></span><i aria-hidden="true">→</i></a></li></ul>
     </div>
     <noscript><style>.pain[hidden]{display:block !important}.pick{display:none}</style></noscript>
   </div>
