@@ -304,7 +304,9 @@
   window.addEventListener('resize', mark);
   mark();
 
-  /* Chaos wird Ordnung: Zettel fliegen beim Scrollen ins Dashboard */
+  /* Chaos wird Ordnung: Der Effekt hängt direkt am Scrollen.
+     Weiter scrollen = es sortiert sich ein, anhalten = es bleibt stehen,
+     zurückscrollen = es läuft rückwärts und wird wieder Chaos. */
   var g = window.gsap, ST = window.ScrollTrigger;
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (!g || !ST || reduce) { return; }
@@ -312,11 +314,12 @@
 
   function rnd(n) { var x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); }
   var stages = [].slice.call(doc.querySelectorAll('.stage')).map(function (el) {
-    return { el: el, played: false, tl: null };
+    return { el: el, tl: null, st: null };
   });
 
   function build(S) {
     var sc = S.el;
+    if (S.st) { S.st.kill(); S.st = null; }
     if (S.tl) { S.tl.kill(); S.tl = null; }
     var seed = +sc.getAttribute('data-seed') || 1;
     var zone = sc.querySelector('.zone');
@@ -328,7 +331,6 @@
     var to = +fill.getAttribute('data-to');
 
     g.set(chips, { clearProps: 'all' });
-    g.set(zone, { clearProps: 'height' });
     sc.classList.add('is-anim');
     var zr = zone.getBoundingClientRect();
     var n = chips.length;
@@ -372,44 +374,25 @@
     tl.to(o, { v: total, duration: end - 0.4, ease: 'none', onUpdate: function () { cnt.textContent = Math.round(o.v); } }, 0.4);
     tl.to(capA, { opacity: 0, duration: 0.4 }, end - 0.8);
     tl.to(capB, { opacity: 1, duration: 0.6 }, end - 0.5);
-    tl.to(zone, { height: 46, duration: 0.8, ease: 'power2.inOut' }, end + 0.2);
-    tl.eventCallback('onComplete', function () {
-      chips.forEach(function (c) { g.set(c, { clearProps: 'width,transform' }); });
-      ST.refresh();
-    });
     S.tl = tl;
+
+    /* Die Höhe der Szene bleibt gleich, sonst würde sich die Scroll-Strecke beim Abspielen verschieben. */
+    S.st = ST.create({ trigger: sc, start: 'top 72%', end: 'top 22%', animation: tl, scrub: 0.6 });
   }
 
-  function play(S) {
-    if (S.played) { return; }
-    S.played = true;
-    S.tl.play();
-  }
-
-  stages.forEach(function (S) {
-    build(S);
-    ST.create({ trigger: S.el, start: 'top 62%', once: true, onEnter: function () { play(S); } });
-  });
+  stages.forEach(build);
 
   var rt = null;
   function rebuild() {
     window.clearTimeout(rt);
     rt = window.setTimeout(function () {
-      stages.forEach(function (S) { if (!S.played) { build(S); } });
+      stages.forEach(build);
       ST.refresh();
     }, 250);
   }
   window.addEventListener('resize', rebuild);
   if (doc.fonts && doc.fonts.ready) { doc.fonts.ready.then(rebuild); }
   window.addEventListener('load', rebuild);
-
-  /* Sicherheitsnetz: sichtbare, noch nicht gespielte Szenen starten */
-  window.setTimeout(function () {
-    stages.forEach(function (S) {
-      var r = S.el.getBoundingClientRect();
-      if (!S.played && r.top < window.innerHeight * 0.8 && r.bottom > 0) { play(S); }
-    });
-  }, 3500);
 })();
 </script>
 </body>
