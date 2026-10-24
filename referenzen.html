@@ -96,6 +96,14 @@
   .chip[data-kind=wa] .bg.a{background:#d3f5d0}
   .chip[data-kind=pdf] .bg.a{background:#ffd0d0}
   .chip[data-kind=memo] .bg.a{background:#e0e4ff}
+
+  /* Eigene Optik je Herkunft der Daten */
+  .stage[data-fx=grid] .chip .bg.a{border-radius:2px;box-shadow:none;outline:1px solid rgba(0,0,0,.28)}
+  .stage[data-fx=chat] .chip .bg.a{border-radius:16px 16px 16px 4px}
+  .stage[data-fx=chat] .chip.right .bg.a{border-radius:16px 16px 4px 16px}
+  .stage[data-fx=stamp] .chip .bg.a{border-radius:2px;border-bottom:3px dotted rgba(0,0,0,.3)}
+  .stage[data-fx=split] .chip .bg.a{border-radius:6px}
+  .stage[data-fx=stamp] .state{transform-origin:50% 50%}
   .badge{flex:none;width:24px;height:24px;display:grid;place-items:center;background:#2c4472;color:#fff;border-radius:5px;font-family:var(--f-mono);font-size:11px}
   .lbl{position:relative;flex:1;min-width:0;height:22px}
   .lbl span{position:absolute;left:0;right:0;top:0;line-height:22px;font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -150,14 +158,14 @@
   <div class="wrap">
     <p class="label">Referenzen</p>
     <h1>Erst Chaos, dann <em>System.</em></h1>
-    <p class="sub">Vier Werkzeuge, die ich selbst gebaut habe. Scrolle runter: Die Zettel, Chats und Dateien sortieren sich von allein ins Dashboard.</p>
+    <p class="sub">Fünf Werkzeuge, die ich selbst gebaut habe. Scrolle runter: Die Zettel, Chats und Dateien sortieren sich von allein ins Dashboard.</p>
   </div>
 </header>
 
 <div class="wrap layout">
   <nav class="side" aria-label="Abschnitte">
     <span class="label">Inhalt</span>
-    <ul><li><a href="#start">Überblick</a></li><li><a href="#gebiete">Gebietsverwaltung</a></li><li><a href="#cockpit">Teamleiter-Cockpit</a></li><li><a href="#zahlungen">Bestell- und Zahlungsübersicht</a></li><li><a href="#tagesstart">Tagesstart-Dashboard</a></li><li><a href="#onboarding">Onboarding-Dashboard</a></li><li><a href="#kontakt">Kontakt</a></li><li><a href="#impressum">Impressum</a></li></ul>
+    <ul><li><a href="#start">Überblick</a></li><li><a href="#gebiete">Gebietsverwaltung</a></li><li><a href="#cockpit">Teamleiter-Cockpit</a></li><li><a href="#zahlungen">Bestell- und Zahlungsübersicht</a></li><li><a href="#finanzplaner">Finanzplaner</a></li><li><a href="#tagesstart">Tagesstart-Dashboard</a></li><li><a href="#onboarding">Onboarding-Dashboard</a></li><li><a href="#kontakt">Kontakt</a></li><li><a href="#impressum">Impressum</a></li></ul>
   </nav>
 
   <main>
@@ -170,14 +178,14 @@
         <div><h3 class="label">Das Problem</h3><p>Gebietslisten in Tabellen: Mitarbeiter ändern die Struktur, offline wird nichts synchronisiert, und niemand weiß sicher, welcher Ort wann wieder frei ist.</p></div>
         <div><h3 class="label">Die Lösung</h3><ul class="ticks"><li>Straßenverzeichnis zur Auswahl statt Tippfehlern</li><li>Sperrfrist und Wieder-Freigabe pro Gebiet</li><li>Für Offline-Nutzung ausgelegt, Stand der Daten sichtbar</li><li>Auswertung pro Ort und Mitarbeiter, z. B. Antreffquote</li><li>Zugang per persönlichem Login, Verwaltung zentral</li></ul></div>
       </div>
-      <div class="stage" data-seed="3" data-done="5" data-total="5">
+      <div class="stage" data-fx="grid" data-seed="3" data-done="5" data-total="5">
         <div class="zone" aria-hidden="true">
-          <p class="zone-cap"><span class="cap-a">Vorher: verstreut in 5 Quellen</span><span class="cap-b">Nachher: 1 Ort statt 5 Quellen</span></p>
+          <p class="zone-cap"><span class="cap-a">Vorher: Excel-Listen und Notizen</span><span class="cap-b">Nachher: 1 Ort statt 5 Listen</span></p>
         </div>
         <div class="panel" role="group" aria-label="Beispielansicht: Gebietsverwaltung für den Außendienst">
           <div class="panel-head"><strong>Gebiete · Team Nord</strong><span class="label">Beispieldaten</span></div>
           <div class="panel-bar"><div class="panel-fill" data-to="100" style="width:100%"></div></div>
-          <div class="slots"><div class="slot"><div class="chip" data-kind="mail"><span class="bg a"></span><span class="bg b"></span><span class="badge">@</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Re: Re: wer war wo??</span><span class="c-order">Gebiete zugeordnet</span></span><span class="state"><i></i></span></div></div><div class="slot"><div class="chip" data-kind="xls"><span class="bg a"></span><span class="bg b"></span><span class="badge">X</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Gebiete_neu_FINAL2.xlsx</span><span class="c-order">Straßenverzeichnis</span></span><span class="state"><i></i></span></div></div><div class="slot"><div class="chip" data-kind="note"><span class="bg a"></span><span class="bg b"></span><span class="badge">N</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Sperre bis wann??</span><span class="c-order">Sperrfrist automatisch</span></span><span class="state"><i></i></span></div></div><div class="slot"><div class="chip" data-kind="wa"><span class="bg a"></span><span class="bg b"></span><span class="badge">W</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Liste schon 3x kopiert</span><span class="c-order">Eine Liste für alle</span></span><span class="state"><i></i></span></div></div><div class="slot"><div class="chip" data-kind="memo"><span class="bg a"></span><span class="bg b"></span><span class="badge">!</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Tippfehler im Ortsnamen</span><span class="c-order">Ort aus Verzeichnis</span></span><span class="state"><i></i></span></div></div></div>
+          <div class="slots"><div class="slot"><div class="chip" data-kind="xls"><span class="bg a"></span><span class="bg b"></span><span class="badge">X</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Re: Re: wer war wo??</span><span class="c-order">Gebiete zugeordnet</span></span><span class="state"><i></i></span></div></div><div class="slot"><div class="chip" data-kind="xls"><span class="bg a"></span><span class="bg b"></span><span class="badge">X</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Gebiete_neu_FINAL2.xlsx</span><span class="c-order">Straßenverzeichnis</span></span><span class="state"><i></i></span></div></div><div class="slot"><div class="chip" data-kind="note"><span class="bg a"></span><span class="bg b"></span><span class="badge">N</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Sperre bis wann??</span><span class="c-order">Sperrfrist automatisch</span></span><span class="state"><i></i></span></div></div><div class="slot"><div class="chip" data-kind="xls"><span class="bg a"></span><span class="bg b"></span><span class="badge">X</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Liste schon 3x kopiert</span><span class="c-order">Eine Liste für alle</span></span><span class="state"><i></i></span></div></div><div class="slot"><div class="chip" data-kind="memo"><span class="bg a"></span><span class="bg b"></span><span class="badge">!</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Tippfehler im Ortsnamen</span><span class="c-order">Ort aus Verzeichnis</span></span><span class="state"><i></i></span></div></div></div>
           <div class="panel-foot"><span>Stand: heute, 07:12</span><span>Antreffquote 78 % · <b class="cnt">5</b> von 5 erledigt</span></div>
         </div>
       </div>
@@ -191,14 +199,14 @@
         <div><h3 class="label">Das Problem</h3><p>Zahlen stehen in mehreren Dateien und Chats. Mitarbeiter fragen nach ihrem Stand, und die Meldungen werden jeden Tag von Hand zusammengetippt.</p></div>
         <div><h3 class="label">Die Lösung</h3><ul class="ticks"><li>Provisionsstaffel und Punkteziele auf einen Blick</li><li>Rot/Grün-Anzeige: unter oder über dem Ziel</li><li>Morgen- und Abendmeldung per Klick erzeugt</li><li>Persönlicher Link pro Mitarbeiter, kein Passwort-Chaos</li></ul></div>
       </div>
-      <div class="stage" data-seed="7" data-done="5" data-total="5">
+      <div class="stage" data-fx="chat" data-seed="7" data-done="5" data-total="5">
         <div class="zone" aria-hidden="true">
-          <p class="zone-cap"><span class="cap-a">Vorher: verstreut in 5 Quellen</span><span class="cap-b">Nachher: 1 Ort statt 5 Quellen</span></p>
+          <p class="zone-cap"><span class="cap-a">Vorher: Chats und Tabellen</span><span class="cap-b">Nachher: 1 Ort statt 5 Quellen</span></p>
         </div>
         <div class="panel" role="group" aria-label="Beispielansicht: Teamleiter-Cockpit">
           <div class="panel-head"><strong>Team Nord · Monatsstand</strong><span class="label">Beispieldaten</span></div>
           <div class="panel-bar"><div class="panel-fill" data-to="100" style="width:100%"></div></div>
-          <div class="slots"><div class="slot"><div class="chip" data-kind="wa"><span class="bg a"></span><span class="bg b"></span><span class="badge">W</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Wie viele heute??</span><span class="c-order">Tageszahlen</span></span><span class="state"><i></i></span></div></div><div class="slot"><div class="chip" data-kind="xls"><span class="bg a"></span><span class="bg b"></span><span class="badge">X</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Tabelle_Mai_final(3).xlsx</span><span class="c-order">Provisionsstaffel</span></span><span class="state"><i></i></span></div></div><div class="slot"><div class="chip" data-kind="note"><span class="bg a"></span><span class="bg b"></span><span class="badge">N</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Ziel: 4 oder 6 Punkte?</span><span class="c-order">Punkte gegen Ziel</span></span><span class="state"><i></i></span></div></div><div class="slot"><div class="chip" data-kind="pdf"><span class="bg a"></span><span class="bg b"></span><span class="badge">P</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Abendmeldung abtippen</span><span class="c-order">Abendmeldung per Klick</span></span><span class="state"><i></i></span></div></div><div class="slot"><div class="chip" data-kind="memo"><span class="bg a"></span><span class="bg b"></span><span class="badge">!</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Link nochmal schicken</span><span class="c-order">Persönlicher Link</span></span><span class="state"><i></i></span></div></div></div>
+          <div class="slots"><div class="slot"><div class="chip" data-kind="wa"><span class="bg a"></span><span class="bg b"></span><span class="badge">W</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Wie viele heute??</span><span class="c-order">Tageszahlen</span></span><span class="state"><i></i></span></div></div><div class="slot"><div class="chip" data-kind="xls"><span class="bg a"></span><span class="bg b"></span><span class="badge">X</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Tabelle_Mai_final(3).xlsx</span><span class="c-order">Provisionsstaffel</span></span><span class="state"><i></i></span></div></div><div class="slot"><div class="chip" data-kind="wa"><span class="bg a"></span><span class="bg b"></span><span class="badge">W</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Ziel: 4 oder 6 Punkte?</span><span class="c-order">Punkte gegen Ziel</span></span><span class="state"><i></i></span></div></div><div class="slot"><div class="chip" data-kind="wa"><span class="bg a"></span><span class="bg b"></span><span class="badge">W</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Abendmeldung abtippen</span><span class="c-order">Abendmeldung per Klick</span></span><span class="state"><i></i></span></div></div><div class="slot"><div class="chip" data-kind="wa"><span class="bg a"></span><span class="bg b"></span><span class="badge">W</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Link nochmal schicken</span><span class="c-order">Persönlicher Link</span></span><span class="state"><i></i></span></div></div></div>
           <div class="panel-foot"><span>Beispielwerte</span><span>2 von 3 über Ziel · <b class="cnt">5</b> von 5 erledigt</span></div>
         </div>
       </div>
@@ -212,9 +220,9 @@
         <div><h3 class="label">Das Problem</h3><p>Bestellungen laufen per Chat, Zahlungen per PayPal und Überweisung. Wer schon bezahlt hat, findet man nur, indem man alles durchsucht.</p></div>
         <div><h3 class="label">Die Lösung</h3><ul class="ticks"><li>Zahlungen von Hand eintragen, kein Bankzugriff nötig</li><li>Pro Person nur ein Status: bezahlt oder offen</li><li>Provision des Monats sofort sichtbar</li><li>Zugang für zwei Personen, beide sehen denselben Stand</li></ul></div>
       </div>
-      <div class="stage" data-seed="11" data-done="4" data-total="5">
+      <div class="stage" data-fx="stamp" data-seed="11" data-done="4" data-total="5">
         <div class="zone" aria-hidden="true">
-          <p class="zone-cap"><span class="cap-a">Vorher: verstreut in 5 Quellen</span><span class="cap-b">Nachher: 1 Ort statt 5 Quellen</span></p>
+          <p class="zone-cap"><span class="cap-a">Vorher: Chat und Screenshots</span><span class="cap-b">Nachher: 1 Übersicht statt 5 Quellen</span></p>
         </div>
         <div class="panel" role="group" aria-label="Beispielansicht: Bestell- und Zahlungsübersicht">
           <div class="panel-head"><strong>Sammelbestellung · 9 Personen</strong><span class="label">Beispieldaten</span></div>
@@ -225,6 +233,28 @@
       </div>
       <p class="fine">Beispielhafte Darstellung mit erfundenen Namen, Orten und Zahlen.</p>
     </section>
+    <section class="ref" id="finanzplaner" data-sec>
+      <span class="status">Als Produkt verfügbar</span>
+      <h2>Finanzplaner für Familien</h2>
+      <p class="lead">Das Gehalt kommt rein und wird fest auf die Konten verteilt: Alltag, Versicherungen, Auto, Raten, Rücklage.</p>
+      <div class="two">
+        <div><h3 class="label">Das Problem</h3><p>Das Gehalt geht ein, die Rechnungen kommen verteilt über den Monat. Am Ende weiß niemand, wohin das Geld gegangen ist und ob für alles genug da war.</p></div>
+        <div><h3 class="label">Die Lösung</h3><ul class="ticks"><li>Feste Verteilung vom Gehalt auf einzelne Konten</li><li>Verteilter Betrag gegen den tatsächlichen Bedarf</li><li>Am Monatsende sichtbar, was auf welches Konto ging</li><li>Einmal einrichten, danach läuft es von allein</li></ul></div>
+      </div>
+      <div class="stage" data-fx="split" data-seed="9" data-done="5" data-total="5">
+        <div class="zone" aria-hidden="true">
+          <p class="zone-cap"><span class="cap-a">Vorher: Kontoauszüge und Kopfrechnen</span><span class="cap-b">Nachher: 1 Plan für alle Konten</span></p>
+        </div>
+        <div class="panel" role="group" aria-label="Beispielansicht: Finanzplaner für Familien">
+          <div class="panel-head"><strong>Monatsverteilung · Gehalt 1.700 €</strong><span class="label">Beispieldaten</span></div>
+          <div class="panel-bar"><div class="panel-fill" data-to="100" style="width:100%"></div></div>
+          <div class="slots"><div class="slot"><div class="chip" data-kind="pdf"><span class="bg a"></span><span class="bg b"></span><span class="badge">P</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Kontoauszug_Okt.pdf</span><span class="c-order">Alltag · 900 €</span></span><span class="state"><i></i></span></div></div><div class="slot"><div class="chip" data-kind="memo"><span class="bg a"></span><span class="bg b"></span><span class="badge">!</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Versicherung: wann fällig?</span><span class="c-order">Versicherungen · 180 €</span></span><span class="state"><i></i></span></div></div><div class="slot"><div class="chip" data-kind="note"><span class="bg a"></span><span class="bg b"></span><span class="badge">N</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Rate Auto vergessen?</span><span class="c-order">Auto · 220 €</span></span><span class="state"><i></i></span></div></div><div class="slot"><div class="chip" data-kind="xls"><span class="bg a"></span><span class="bg b"></span><span class="badge">X</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Schulden_Liste_neu.xlsx</span><span class="c-order">Raten · 150 €</span></span><span class="state"><i></i></span></div></div><div class="slot"><div class="chip" data-kind="wa"><span class="bg a"></span><span class="bg b"></span><span class="badge">W</span><span class="lbl"><span class="c-chaos" aria-hidden="true">Gehalt da, wohin damit??</span><span class="c-order">Rücklage · 250 €</span></span><span class="state"><i></i></span></div></div></div>
+          <div class="panel-foot"><span>Verteilt: 1.700 € von 1.700 €</span><span>Alle Konten gedeckt · <b class="cnt">5</b> von 5 erledigt</span></div>
+        </div>
+      </div>
+      <p class="fine">Beispielhafte Darstellung mit erfundenen Konten und Beträgen.</p>
+      <div class="link-card"><a class="btn ghost" href="uebersicht.html">Zum Finanzplaner</a></div>
+    </section>
     <section class="ref" id="tagesstart" data-sec>
       <span class="status">Für den eigenen Alltag gebaut</span>
       <h2>Tagesstart-Dashboard</h2>
@@ -233,9 +263,9 @@
         <div><h3 class="label">Das Problem</h3><p>Morgens erst der Kalender, dann drei Postfächer, dann die Aufgabenliste. Das kostet Zeit, und Wichtiges rutscht durch.</p></div>
         <div><h3 class="label">Die Lösung</h3><ul class="ticks"><li>Alles Wichtige des Tages auf einem Bildschirm</li><li>Mehrere Konten zusammengeführt</li><li>Am Mac und am Handy nutzbar</li><li>Bewusst schlicht: nichts, was ablenkt</li></ul></div>
       </div>
-      <div class="stage" data-seed="5" data-done="4" data-total="4">
+      <div class="stage" data-fx="streams" data-seed="5" data-done="4" data-total="4">
         <div class="zone" aria-hidden="true">
-          <p class="zone-cap"><span class="cap-a">Vorher: verstreut in 4 Quellen</span><span class="cap-b">Nachher: 1 Ort statt 4 Quellen</span></p>
+          <p class="zone-cap"><span class="cap-a">Vorher: 3 Postfächer, Kalender, Zettel</span><span class="cap-b">Nachher: 1 Ort statt 4 Quellen</span></p>
         </div>
         <div class="panel" role="group" aria-label="Beispielansicht: Tagesstart-Dashboard">
           <div class="panel-head"><strong>Heute · Überblick</strong><span class="label">Beispieldaten</span></div>
@@ -336,20 +366,57 @@
     var n = chips.length;
     var cw = Math.min(230, zr.width - 16);
 
+    var fx = sc.getAttribute('data-fx') || 'drift';
     chips.forEach(function (c, i) {
       var sr = c.parentNode.getBoundingClientRect();
-      var px = (zr.width - cw) * ((i + 0.1 + 0.8 * rnd(seed + i)) / n);
-      var py = (zr.height - 46 - 34) * rnd(seed * 3 + i + 7) + 8;
-      var ang = (rnd(seed + i * 5) * 2 - 1) * 11;
-      if (Math.abs(ang) < 3) { ang = ang < 0 ? -4 : 4; }
-      g.set(c, { x: zr.left + px - sr.left, y: zr.top + py - sr.top, width: cw, rotation: ang });
+      var X, Y, w = cw, ang = 0;
+      if (fx === 'grid') {
+        /* Tabellenzellen, sauber in Zeilen und Spalten */
+        var cols = zr.width > 520 ? 3 : 2;
+        w = Math.min(210, (zr.width - 32 - (cols - 1) * 8) / cols);
+        X = 16 + (i % cols) * (w + 8);
+        Y = 12 + Math.floor(i / cols) * 54;
+      } else if (fx === 'chat') {
+        /* Sprechblasen abwechselnd links und rechts */
+        var right = i % 2 === 1;
+        w = Math.min(230, zr.width * 0.62);
+        X = right ? zr.width - w - 12 : 12;
+        Y = 6 + i * ((zr.height - 46 - 40) / Math.max(1, n - 1));
+        if (right) { c.classList.add('right'); }
+      } else if (fx === 'stamp') {
+        /* Belege, die oben liegen und gleich herunterfallen */
+        X = (zr.width - cw) * ((i + 0.1 + 0.8 * rnd(seed + i)) / n);
+        Y = 6 + 26 * rnd(seed + i * 3);
+        ang = (rnd(seed + i * 5) * 2 - 1) * 7;
+      } else if (fx === 'split') {
+        /* Ein Stapel: das Gehalt, das gleich verteilt wird */
+        w = Math.min(260, zr.width - 40);
+        X = (zr.width - w) / 2 + (i - (n - 1) / 2) * 3;
+        Y = 30 + i * 5;
+        ang = (rnd(seed + i * 5) * 2 - 1) * 2;
+      } else if (fx === 'streams') {
+        /* Vier Quellen: links, rechts, oben, unten */
+        w = Math.min(210, zr.width * 0.5);
+        var side = i % 4;
+        if (side === 0) { X = 8; Y = 22 + i * 6; }
+        else if (side === 1) { X = zr.width - w - 8; Y = 54 + i * 6; }
+        else if (side === 2) { X = (zr.width - w) / 2; Y = 6; }
+        else { X = (zr.width - w) / 2; Y = zr.height - 46 - 40; }
+      } else {
+        X = (zr.width - cw) * ((i + 0.1 + 0.8 * rnd(seed + i)) / n);
+        Y = (zr.height - 46 - 34) * rnd(seed * 3 + i + 7) + 8;
+        ang = (rnd(seed + i * 5) * 2 - 1) * 11;
+        if (Math.abs(ang) < 3) { ang = ang < 0 ? -4 : 4; }
+      }
+      g.set(c, { x: zr.left + X - sr.left, y: zr.top + Y - sr.top, width: w, rotation: ang });
+      if (fx === 'chat') { g.set(c, { opacity: 0, scale: 0.6, transformOrigin: (i % 2 ? '100% 100%' : '0% 100%') }); }
       g.set(c.querySelector('.bg.a'), { opacity: 1 });
       g.set(c.querySelector('.bg.b'), { opacity: 0 });
       g.set(c.querySelector('.c-chaos'), { opacity: 1 });
       g.set(c.querySelector('.c-order'), { opacity: 0 });
       g.set(c.querySelector('.state'), { opacity: 0 });
       var f = c.querySelector('.state i');
-      if (f) { g.set(f, { scale: 0 }); }
+      if (f) { g.set(f, { scale: fx === 'stamp' ? 1 : 0 }); }
     });
     g.set(fill, { width: '0%' });
     g.set(capA, { opacity: 1 });
@@ -357,18 +424,54 @@
     cnt.textContent = '0';
 
     var tl = g.timeline({ paused: true, defaults: { ease: 'power2.inOut' } });
+    function slotW(c) { return function () { return c.parentNode.offsetWidth; }; }
     chips.forEach(function (c, i) {
-      var t = i * 0.22;
-      tl.to(c, { x: 0, y: 0, rotation: 0, width: function () { return c.parentNode.offsetWidth; }, duration: 1.1, ease: 'power3.inOut' }, t);
-      tl.to(c.querySelector('.bg.a'), { opacity: 0, duration: 0.5 }, t + 0.6);
-      tl.to(c.querySelector('.bg.b'), { opacity: 1, duration: 0.5 }, t + 0.6);
-      tl.to(c.querySelector('.c-chaos'), { opacity: 0, duration: 0.3 }, t + 0.5);
-      tl.to(c.querySelector('.c-order'), { opacity: 1, duration: 0.4 }, t + 0.7);
-      tl.to(c.querySelector('.state'), { opacity: 1, duration: 0.3 }, t + 0.9);
-      var f = c.querySelector('.state i');
-      if (f) { tl.to(f, { scale: 1, duration: 0.4, ease: 'back.out(2)' }, t + 1.05); }
+      var t, land;
+      if (fx === 'grid') {
+        /* Import: erst in die Spalte einrasten, dann Zeile für Zeile einfallen */
+        t = i * 0.26;
+        tl.to(c, { x: 0, width: slotW(c), duration: 0.5, ease: 'power2.out' }, t);
+        tl.to(c, { y: 0, duration: 0.7, ease: 'power2.in' }, t + 0.45);
+        land = t + 1.15;
+      } else if (fx === 'chat') {
+        /* Nachrichten trudeln ein, dann gleiten alle zusammen */
+        tl.to(c, { opacity: 1, scale: 1, duration: 0.3, ease: 'back.out(2)' }, i * 0.14);
+        t = 0.14 * n + 0.25 + i * 0.12;
+        tl.to(c, { x: 0, y: 0, width: slotW(c), duration: 0.9, ease: 'power3.inOut' }, t);
+        land = t + 0.9;
+      } else if (fx === 'stamp') {
+        /* Belege fallen herunter, dann kommt der Stempel */
+        t = i * 0.24;
+        tl.to(c, { x: 0, y: 0, rotation: 0, width: slotW(c), duration: 0.9, ease: 'power2.in' }, t);
+        land = t + 0.9;
+      } else if (fx === 'split') {
+        /* Karten austeilen: vom Stapel auf die Konten */
+        t = i * 0.28;
+        tl.to(c, { x: 0, y: 0, rotation: 0, width: slotW(c), duration: 0.8, ease: 'power3.out' }, t);
+        land = t + 0.8;
+      } else if (fx === 'streams') {
+        /* Vier Ströme laufen gleichzeitig zusammen */
+        t = i * 0.1;
+        tl.to(c, { x: 0, y: 0, width: slotW(c), duration: 1.2, ease: 'power2.inOut' }, t);
+        land = t + 1.2;
+      } else {
+        t = i * 0.22;
+        tl.to(c, { x: 0, y: 0, rotation: 0, width: slotW(c), duration: 1.1, ease: 'power3.inOut' }, t);
+        land = t + 1.1;
+      }
+      tl.to(c.querySelector('.bg.a'), { opacity: 0, duration: 0.4 }, land - 0.5);
+      tl.to(c.querySelector('.bg.b'), { opacity: 1, duration: 0.4 }, land - 0.5);
+      tl.to(c.querySelector('.c-chaos'), { opacity: 0, duration: 0.3 }, land - 0.6);
+      tl.to(c.querySelector('.c-order'), { opacity: 1, duration: 0.4 }, land - 0.4);
+      var st = c.querySelector('.state'), f = c.querySelector('.state i');
+      if (fx === 'stamp') {
+        tl.fromTo(st, { scale: 2.6, opacity: 0, rotation: -18 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.3, ease: 'power4.in' }, land);
+      } else {
+        tl.to(st, { opacity: 1, duration: 0.3 }, land - 0.2);
+        if (f) { tl.to(f, { scale: 1, duration: 0.4, ease: 'back.out(2)' }, land - 0.05); }
+      }
     });
-    var end = (n - 1) * 0.22 + 1.5;
+    var end = tl.duration();
     tl.to(fill, { width: to + '%', duration: end - 0.4, ease: 'none' }, 0.4);
     var o = { v: 0 };
     tl.to(o, { v: total, duration: end - 0.4, ease: 'none', onUpdate: function () { cnt.textContent = Math.round(o.v); } }, 0.4);
