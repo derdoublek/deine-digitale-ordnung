@@ -197,12 +197,6 @@
   .steps p { margin-top: 8px; color: var(--muted); font-size: 16px; }
 
   /* Kontakt */
-  .cta { background: var(--signal); color: var(--signal-fg); padding-block: clamp(48px, 8vw, 96px); }
-  .cta h2 { font-size: clamp(34px, 6.4vw, 72px); font-weight: 800; line-height: 1; max-width: 16ch; }
-  .cta p { margin-top: 18px; max-width: 44ch; font-size: 20px; }
-  .cta .btn { background: var(--signal-fg); color: #fff; }
-  .cta .btn:hover { box-shadow: 4px 4px 0 rgba(27, 20, 5, .35); }
-  .cta .wa-number { margin-top: 14px; font-family: var(--f-mono); font-size: 14px; }
 
   /* Referenzen */
   .proof { padding-block: clamp(40px, 6vw, 72px); }
@@ -224,30 +218,16 @@
   @media (max-width: 480px) { .steps { grid-template-columns: minmax(0, 1fr); } }
   /* Auswahl: Firma oder Privat, klein und ruhig; danach die nummerierten Projekte */
   .choose { padding-block: clamp(40px, 6vw, 72px); }
-  .choose .sec-head { font-size: clamp(28px, 4vw, 40px); }
-  .pick { margin-top: 22px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; max-width: 760px; }
-  .pick-btn { font: inherit; color: var(--fg); text-align: left; cursor: pointer; display: flex; flex-direction: column; gap: 2px; padding: 12px 16px; background: var(--card); border: 2px solid var(--line); border-radius: 8px; transition: border-color .15s ease, box-shadow .15s ease; }
-  .pick-btn .label { color: var(--signal-text); }
-  .pick-btn strong { font-family: var(--f-display); font-size: clamp(16px, 1.8vw, 19px); font-weight: 700; line-height: 1.25; }
-  .pick-btn:hover { border-color: var(--signal); }
-  .pick-btn:focus-visible { outline: 3px solid var(--signal); outline-offset: 3px; }
-  .pick-btn[aria-expanded="true"] { border-color: var(--signal); box-shadow: 3px 3px 0 var(--signal); }
-  .pain { margin-top: 14px; max-width: 760px; padding: 6px 20px; background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--signal); border-radius: 8px; }
-  .pain[hidden] { display: none; }
-  .pain:not([hidden]) { animation: painIn .3s ease both; }
-  .pain-list { list-style: none; margin: 0; padding: 0; }
-  .pain-list li + li { border-top: 1px solid var(--line); }
-  .pain-list a { display: flex; align-items: center; gap: 16px; padding: 14px 0; color: var(--fg); text-decoration: none; font-family: var(--f-display); font-weight: 700; font-size: clamp(17px, 2vw, 21px); line-height: 1.25; }
-  .pain-list a:focus-visible { outline: 3px solid var(--signal); outline-offset: 2px; }
-  .pain-list a:hover .pq b { text-decoration: underline; text-underline-offset: 4px; }
-  .no { flex: none; width: 1.4em; font-family: var(--f-mono); font-size: 15px; font-weight: 500; color: var(--signal-text); }
-  .pq { flex: 1; min-width: 0; display: block; }
-  .pq small { display: block; margin-bottom: 3px; font-family: var(--f-mono); font-size: 12px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--signal-text); }
-  .pq b { font-weight: inherit; }
-  .pain-list i { flex: none; font-style: normal; }
-  @keyframes painIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-  @media (max-width: 899px) { .pick { grid-template-columns: minmax(0, 1fr); } .pain { padding: 4px 16px; } .pain-list a { gap: 12px; } }
-  @media (prefers-reduced-motion: reduce) { .pain:not([hidden]) { animation: none; } .pick-btn { transition: none; } }
+  .choose { padding-block: clamp(40px, 7vw, 72px); }
+  .pick { margin-inline: auto; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; max-width: 720px; }
+  .pick-card { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; padding: 28px 20px; background: var(--card); border: 1px solid var(--line); border-radius: 6px; color: var(--fg); text-decoration: none; transition: transform .2s, border-color .2s, box-shadow .2s; }
+  .pick-card .label { color: var(--signal-text); }
+  .pick-card strong { font-family: var(--f-display); font-size: 22px; font-weight: 700; line-height: 1.2; text-wrap: balance; }
+  .pick-card i { font-style: normal; color: var(--signal); font-size: 20px; }
+  .pick-card:hover { transform: translate(-2px, -2px); border-color: var(--signal); box-shadow: 4px 4px 0 var(--signal); }
+  .pick-card:focus-visible { outline: 3px solid var(--signal); outline-offset: 3px; }
+  @media (max-width: 640px) { .pick { grid-template-columns: minmax(0, 1fr); } }
+  @media (prefers-reduced-motion: reduce) { .pick-card { transition: none; } }
   @media (max-width: 899px) {
     :root { --rowh: 42px; }
     .chip { width: 190px; }
@@ -274,7 +254,7 @@
 <div class="top">
   <div class="wrap">
     <span class="logo">Digitale Ordnung</span>
-    <a class="top-cta" href="#kontakt">Kontakt</a>
+    <a class="top-cta" href="https://wa.me/4915254160584?text=Hallo%2C%20ich%20m%C3%B6chte%20mehr%20zu%20deinem%20Angebot%20erfahren." target="_blank" rel="noopener">Kontakt</a>
   </div>
 </div>
 
@@ -296,7 +276,7 @@
         <h1 class="h-b">Ordnung statt Chaos. <em>Klarheit</em> statt Durcheinander.</h1>
       </div>
       <p class="sub">Dashboards und Apps, in denen alles an einem Ort liegt. Für Teams, Betriebe und Familien.</p>
-      <a class="btn" href="#kontakt">Kostenlose Beratung</a>
+      <a class="btn" href="https://wa.me/4915254160584?text=Hallo%2C%20ich%20m%C3%B6chte%20mehr%20zu%20deinem%20Angebot%20erfahren." target="_blank" rel="noopener">Kostenlose Beratung</a>
     </div>
 
     <div class="panel" aria-label="Beispielansicht eines Dashboards">
@@ -315,37 +295,19 @@
   </div>
 </header>
 
-<section class="choose" id="wege">
+<section class="choose" id="wege" aria-label="Bereich wählen">
   <div class="wrap">
-    <h2 class="sec-head">Wo brauchst du Ordnung?</h2>
-    <div class="pick" role="group" aria-label="Bereich wählen">
-      <button type="button" class="pick-btn" aria-expanded="false" aria-controls="pain-betriebe">
-        <span class="label">Firma</span>
-        <strong>Ich führe ein Team oder einen Betrieb.</strong>
-      </button>
-      <button type="button" class="pick-btn" aria-expanded="false" aria-controls="pain-familien">
-        <span class="label">Privat</span>
-        <strong>Ich will zu Hause Ordnung.</strong>
-      </button>
+    <div class="pick">
+      <a class="pick-card" href="geschaeft.html"><span class="label">Firma</span><strong>Überblick im Geschäftsalltag</strong><i aria-hidden="true">→</i></a>
+      <a class="pick-card" href="zuhause.html"><span class="label">Privat</span><strong>Übersicht Zuhause</strong><i aria-hidden="true">→</i></a>
     </div>
-    <div class="pain" id="pain-betriebe" hidden><ol class="pain-list"><li><a href="referenzen.html#cockpit"><span class="no">1</span><span class="pq"><small>Teamleiter-Cockpit</small><b>Tippst du jeden Abend die Zahlen deines Teams von Hand zusammen?</b></span><i aria-hidden="true">→</i></a></li><li><a href="referenzen.html#gebiete"><span class="no">2</span><span class="pq"><small>Nachläufer-App</small><b>Weißt du sicher, wer in welchem Gebiet war und wann es wieder frei ist?</b></span><i aria-hidden="true">→</i></a></li><li><a href="referenzen.html#onboarding"><span class="no">3</span><span class="pq"><small>Onboarding-Dashboard</small><b>Weiß dein neuer Mitarbeiter am ersten Tag, wo er anfangen soll?</b></span><i aria-hidden="true">→</i></a></li><li><a href="referenzen.html#zahlungen"><span class="no">4</span><span class="pq"><small>Umsatz- und Zahlungsübersicht</small><b>Suchst du in Chats und Screenshots, wer schon bezahlt hat?</b></span><i aria-hidden="true">→</i></a></li></ol></div>
-    <div class="pain" id="pain-familien" hidden><ol class="pain-list"><li><a href="referenzen.html#finanzplaner"><span class="no">1</span><span class="pq"><small>Finanzplaner</small><b>Weißt du am Monatsende, wohin das Gehalt gegangen ist?</b></span><i aria-hidden="true">→</i></a></li><li><a href="referenzen.html#tagesstart"><span class="no">2</span><span class="pq"><small>Tagesstart-Dashboard</small><b>Wie viele Postfächer öffnest du, bevor dein Tag überhaupt anfängt?</b></span><i aria-hidden="true">→</i></a></li></ol></div>
-    <noscript><style>.pain[hidden]{display:block !important}.pick{display:none}</style></noscript>
-  </div>
-</section>
-
-<section class="cta" id="kontakt">
-  <div class="wrap">
-    <h2>Schreib mir, wo es bei dir hakt.</h2>
-    <p>Im ersten Gespräch klären wir, ob ein Dashboard oder eine App für dich Sinn ergibt. Kostenlos und ohne Verpflichtung.</p>
-    <a class="btn" href="https://wa.me/4915254160584?text=Hallo%2C%20ich%20m%C3%B6chte%20mehr%20zu%20deinem%20Angebot%20erfahren." target="_blank" rel="noopener">Per WhatsApp schreiben</a>
   </div>
 </section>
 
 <footer class="site-foot">
   <div class="wrap">
     <span>Digitale Ordnung · Kai Kremer</span>
-    <nav aria-label="Rechtliches und weitere Angebote"><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a><a href="uebersicht.html">Für Privatpersonen: Finanzplaner</a></nav>
+    <nav aria-label="Rechtliches und weitere Angebote"><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></nav>
   </div>
 </footer>
 
@@ -385,21 +347,6 @@
       });
     });
   }
-
-  /* Auswahl: entweder Betriebe oder Familie, danach die passenden Fragen */
-  var picks = [].slice.call(doc.querySelectorAll('.pick-btn'));
-  picks.forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      picks.forEach(function (b) {
-        var on = b === btn;
-        b.setAttribute('aria-expanded', on ? 'true' : 'false');
-        doc.getElementById(b.getAttribute('aria-controls')).hidden = !on;
-      });
-      var panel = doc.getElementById(btn.getAttribute('aria-controls'));
-      if (window.ScrollTrigger) { window.ScrollTrigger.refresh(); }
-      if (!reduce && panel.scrollIntoView) { panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
-    });
-  });
 
   var g = window.gsap, ST = window.ScrollTrigger;
   if (!g || !ST || reduce) { return; }

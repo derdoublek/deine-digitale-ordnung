@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Persönliche Übersichten für zuhause: Tagesstart-Dashboard und Finanzplaner.">
+<link rel="canonical" href="https://deine-digitale-ordnung.de/zuhause.html">
+<title>Übersicht Zuhause | Digitale Ordnung</title>
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<div class="top"><div class="wrap"><a class="logo" href="index.html">Digitale <span>Ordnung</span></a><a class="btn small" href="https://wa.me/4915254160584?text=Hallo%2C%20ich%20m%C3%B6chte%20mehr%20zu%20deinem%20Angebot%20erfahren." target="_blank" rel="noopener">Kontakt</a></div></div>
+<div class="wrap layout">
+  <nav class="side" aria-label="Abschnitte"><span class="label">Inhalt</span><ul><li><a href="index.html">← Zur Auswahl</a></li><li><a href="#schmerz">Kennst du das?</a></li><li><a href="#tagesstart">Tagesstart-Dashboard</a></li><li><a href="#finanzplaner">Finanzplaner</a></li><li><a href="https://wa.me/4915254160584?text=Hallo%2C%20ich%20m%C3%B6chte%20mehr%20zu%20deinem%20Angebot%20erfahren." target="_blank" rel="noopener">Kontakt</a></li></ul></nav>
+  <main>
+    <header class="page-head"><p class="label">Privat</p><h1>Übersicht Zuhause</h1><p>Ordnung für Alltag und Geld, aus meinem eigenen Leben: mit der Geschichte, warum es entstanden ist.</p></header>
+    <section class="ref" id="schmerz">
+      <h2>Kennst du das?</h2>
+      <ol class="pains">
+        <li>Weißt du am Monatsende, wohin das Gehalt gegangen ist?</li>
+        <li>Wie viele Postfächer öffnest du, bevor dein Tag überhaupt anfängt?</li>
+        <li>Stehen Termine, Aufgaben und Einkäufe deiner Familie in fünf verschiedenen Chats?</li>
+        <li>Suchst du Rechnungen und Fristen, wenn sie schon fällig sind?</li>
+      </ol>
+    </section>
+    <section class="ref" id="tagesstart">
+      <span class="status">Für den eigenen Alltag gebaut</span>
+      <h2>Tagesstart-Dashboard</h2>
+      <p class="lead">Termine, Mails und Aufgaben aus mehreren Konten auf einer einzigen Seite.</p>
+      <div class="why"><h3>Warum ich es gebaut habe</h3><p>Morgens erst der Kalender, dann drei Postfächer, dann die Aufgabenliste. Das kostete Zeit, und Wichtiges rutschte durch.</p><p>Das Dashboard zeigt alles Wichtige des Tages auf einem Bildschirm, am Mac und am Handy. Ein Morgen-Tor mit Routinen öffnet erst danach den Rest des Tages.</p></div>
+      <div class="demo">
+        <div class="demo-bar"><span>Demo mit Beispieldaten, zum Ausprobieren</span><a href="demo/dashboard.html" target="_blank" rel="noopener">In groß öffnen</a></div>
+        <iframe src="demo/dashboard.html" title="Demo: Tagesstart-Dashboard" loading="lazy"></iframe>
+      </div>
+      <p class="fine">Alle Namen, Orte und Zahlen in der Demo sind erfunden.</p>
+    </section>
+    <section class="ref" id="finanzplaner">
+      <span class="status">Als Produkt verfügbar</span>
+      <h2>Finanzplaner</h2>
+      <p class="lead">Das Gehalt kommt rein und wird fest auf die Konten verteilt: Alltag, Versicherungen, Auto, Raten, Rücklage.</p>
+      <div class="why"><h3>Warum ich ihn gebaut habe</h3><p>Das Gehalt geht ein, die Rechnungen kommen verteilt über den Monat. Am Ende wusste niemand, wohin das Geld gegangen ist und ob für alles genug da war.</p><p>Der Finanzplaner verteilt das Gehalt einmal fest auf einzelne Konten. Am Monatsende sieht man, was wohin ging, und danach läuft es von allein.</p></div>
+      <div class="link-card"><a class="btn" href="https://finanzielle-ordnung.de" target="_blank" rel="noopener">Zum Finanzplaner</a></div>
+    </section>
+  </main>
+</div>
+<footer class="site-foot"><div class="wrap"><span>Digitale Ordnung · Kai Kremer</span><nav aria-label="Rechtliches"><a href="index.html">Zur Auswahl</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></nav></div></footer>
+<script>
+(function(){var l=[].slice.call(document.querySelectorAll('.side a[href^="#"]')),s=l.map(function(a){return document.getElementById(a.getAttribute('href').slice(1))}).filter(Boolean);
+function m(){var y=window.scrollY+innerHeight*0.3,c=s[0]&&s[0].id;s.forEach(function(e){if(e.getBoundingClientRect().top+scrollY<=y)c=e.id});l.forEach(function(a){a.classList.toggle('on',a.getAttribute('href')==='#'+c)})}
+addEventListener('scroll',m,{passive:true});addEventListener('resize',m);m()})();
+</script>
+</body>
+</html>
