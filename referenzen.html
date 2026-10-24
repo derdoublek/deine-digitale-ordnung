@@ -123,6 +123,8 @@
   .cta-box p{color:var(--muted);max-width:56ch}
   .cta-box .btn{margin-top:20px}
   .legal-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:22px}
+  .legal-one{grid-template-columns:minmax(0,1fr)}
+  .legal-card p+p{margin-top:10px}
   .legal-card{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--signal);border-radius:4px;padding:22px 24px}
   .legal-card h3{font-size:21px;margin:6px 0 12px}
   .legal-card p{color:var(--muted);overflow-wrap:anywhere}
@@ -169,7 +171,7 @@
 <div class="wrap layout">
   <nav class="side" aria-label="Abschnitte">
     <span class="label">Inhalt</span>
-    <ul><li><a href="#start">Überblick</a></li><li><a class="grp" href="#betriebe">Für Betriebe</a></li><li><a class="sub" href="#gebiete">Gebietsverwaltung</a></li><li><a class="sub" href="#cockpit">Teamleiter-Cockpit</a></li><li><a class="sub" href="#onboarding">Onboarding-Dashboard</a></li><li><a class="grp" href="#familien">Für Familien</a></li><li><a class="sub" href="#finanzplaner">Finanzplaner</a></li><li><a class="sub" href="#zahlungen">Bestell- und Zahlungsübersicht</a></li><li><a class="sub" href="#tagesstart">Tagesstart-Dashboard</a></li><li><a href="#kontakt">Kontakt</a></li><li><a href="#impressum">Impressum</a></li></ul>
+    <ul><li><a href="index.html#wege">← Zur Auswahl</a></li><li><a href="#start">Überblick</a></li><li><a class="grp" href="#betriebe">Für Betriebe</a></li><li><a class="sub" href="#gebiete">Gebietsverwaltung</a></li><li><a class="sub" href="#cockpit">Teamleiter-Cockpit</a></li><li><a class="sub" href="#onboarding">Onboarding-Dashboard</a></li><li><a class="grp" href="#familien">Für Familien</a></li><li><a class="sub" href="#finanzplaner">Finanzplaner</a></li><li><a class="sub" href="#zahlungen">Bestell- und Zahlungsübersicht</a></li><li><a class="sub" href="#tagesstart">Tagesstart-Dashboard</a></li><li><a href="#kontakt">Kontakt</a></li><li><a href="#impressum">Impressum</a></li><li><a href="#datenschutz">Datenschutz</a></li></ul>
   </nav>
 
   <main>
@@ -226,9 +228,9 @@
     <section class="ref" id="onboarding" data-sec>
       <span class="status">Angebot</span>
       <h2>Onboarding-Dashboard</h2>
-      <p class="lead">Neue Mitarbeiter in 90 Tagen produktiv: mit Plan, Mentor und allen Unterlagen an einem Ort. Das Beispiel im Detail, mit 90-Tage-Plan, steht auf der Startseite.</p>
+      <p class="lead">Neue Mitarbeiter in 90 Tagen produktiv: mit Plan, Mentor und allen Unterlagen an einem Ort. Das Beispiel im Detail, mit 90-Tage-Plan, steht auf einer eigenen Seite.</p>
       <div class="link-card">
-        <a class="btn" href="index.html#onboarding">Beispiel auf der Startseite</a>
+        <a class="btn" href="onboarding.html">Onboarding im Detail</a>
         <a class="btn ghost" href="#kontakt">Kostenlose Beratung</a>
       </div>
     </section>
@@ -318,13 +320,18 @@
       </div>
       <p class="fine">Alle Oberflächen auf dieser Seite sind Beispiele mit erfundenen Daten. Es werden keine Daten von Arbeitgebern, Kunden oder Privatpersonen gezeigt.</p>
     </section>
+    <section class="ref" id="datenschutz" data-sec>
+      <p class="label">Stand: Oktober 2026</p>
+      <h2 style="margin-top:10px">Datenschutzerklärung</h2>
+      <div class="legal-grid legal-one"><div class="legal-card"><p class="label">1</p><h3>Verantwortlicher</h3><p>Kai Kremer, Haide 38, 95233 Helmbrechts<br>E-Mail: <a href="mailto:kai@deine-digitale-ordnung.de">kai@deine-digitale-ordnung.de</a></p></div><div class="legal-card"><p class="label">2</p><h3>Hosting über GitHub Pages</h3><p>Diese Website wird über GitHub Pages betrieben (GitHub Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA; für den EWR: GitHub B.V., Prins Bernhardplein 200, 1097 JB Amsterdam, Niederlande). Beim Aufruf der Seite verarbeitet GitHub technisch notwendige Daten, vor allem Ihre IP-Adresse, Datum und Uhrzeit, aufgerufene Seite sowie Browser- und Geräteinformationen, um die Seite auszuliefern und abzusichern. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (sicherer und effizienter Betrieb der Website). Eine Übermittlung in die USA kann dabei nicht ausgeschlossen werden. GitHub ist nach dem EU-US Data Privacy Framework zertifiziert. Mehr dazu in der Datenschutzerklärung von GitHub.</p></div><div class="legal-card"><p class="label">3</p><h3>Schriften und Skripte</h3><p>Alle Schriften und Skripte dieser Seite liegen auf dem eigenen Server. Es werden keine Daten an Google Fonts oder andere Content-Delivery-Netzwerke übertragen.</p></div><div class="legal-card"><p class="label">4</p><h3>Cookies und Tracking</h3><p>Diese Website setzt keine Cookies und verwendet keine Analyse- oder Tracking-Werkzeuge.</p></div><div class="legal-card"><p class="label">5</p><h3>Kontakt per WhatsApp</h3><p>Die Seite enthält einen Link zu WhatsApp. Erst wenn Sie darauf klicken, öffnet sich WhatsApp, und es gelten die Datenschutzbestimmungen von WhatsApp (WhatsApp Ireland Limited). Wenn Sie mir schreiben, verarbeite ich Ihre Nachricht und Ihre Nummer, um Ihre Anfrage zu beantworten (Art. 6 Abs. 1 lit. b oder f DSGVO). Ich lösche die Daten, sobald die Anfrage erledigt ist und keine gesetzlichen Aufbewahrungspflichten entgegenstehen.</p></div><div class="legal-card"><p class="label">6</p><h3>Kontakt per E-Mail</h3><p>Wenn Sie mir eine E-Mail schreiben, speichere ich Ihre Angaben zur Bearbeitung der Anfrage und für mögliche Anschlussfragen. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b oder f DSGVO. Ich gebe diese Daten nicht ohne Ihre Einwilligung weiter.</p></div><div class="legal-card"><p class="label">7</p><h3>Anfrageformular (Seite „Für Privatpersonen“)</h3><p>Auf der Seite für Privatpersonen können Sie eine Anfrage über ein Formular senden. Dabei werden Name, E-Mail-Adresse und Ihre Nachricht über den Dienst FormSubmit (formsubmit.co) an mich weitergeleitet, inklusive Spamprüfung. Die Daten verwende ich nur, um Ihre Anfrage zu beantworten (Art. 6 Abs. 1 lit. b oder f DSGVO). Mehr dazu in der <a href="https://formsubmit.co/privacy.pdf" target="_blank" rel="noopener noreferrer">Datenschutzerklärung von FormSubmit</a>.</p></div><div class="legal-card"><p class="label">8</p><h3>Digistore24</h3><p>Wenn Sie den Finanzplaner kaufen, werden Sie zu Digistore24 weitergeleitet. Bestellung, Zahlung und Abwicklung laufen dort. Verantwortlich dafür ist Digistore24, es gelten deren Datenschutzbestimmungen.</p></div><div class="legal-card"><p class="label">9</p><h3>Ihre Rechte</h3><p>Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch gegen die Verarbeitung auf Grundlage berechtigter Interessen. Eine erteilte Einwilligung können Sie jederzeit widerrufen. Schreiben Sie dazu einfach an die E-Mail-Adresse oben. Außerdem können Sie sich bei einer Datenschutz-Aufsichtsbehörde beschweren, in Bayern beim Bayerischen Landesamt für Datenschutzaufsicht (BayLDA), Ansbach.</p></div></div>
+    </section>
   </main>
 </div>
 
 <footer class="site-foot">
   <div class="wrap">
     <span>Digitale Ordnung · Kai Kremer</span>
-    <nav aria-label="Rechtliches und weitere Angebote"><a href="referenzen.html">Referenzen</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a><a href="uebersicht.html">Für Privatpersonen: Finanzplaner</a></nav>
+    <nav aria-label="Rechtliches und weitere Angebote"><a href="index.html#wege">Zur Auswahl</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a><a href="uebersicht.html">Für Privatpersonen: Finanzplaner</a></nav>
   </div>
 </footer>
 
@@ -358,12 +365,13 @@
 
   function rnd(n) { var x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); }
   var stages = [].slice.call(doc.querySelectorAll('.stage')).map(function (el) {
-    return { el: el, tl: null, st: null };
+    return { el: el, tl: null, st: null, pin: null };
   });
 
   function build(S) {
     var sc = S.el;
     if (S.st) { S.st.kill(); S.st = null; }
+    if (S.pin) { S.pin.kill(true); S.pin = null; }
     if (S.tl) { S.tl.kill(); S.tl = null; }
     var seed = +sc.getAttribute('data-seed') || 1;
     var zone = sc.querySelector('.zone');
@@ -494,7 +502,11 @@
     S.tl = tl;
 
     /* Die Höhe der Szene bleibt gleich, sonst würde sich die Scroll-Strecke beim Abspielen verschieben. */
-    S.st = ST.create({ trigger: sc, start: 'top 36%', end: 'top 3%', animation: tl, scrub: 0.6 });
+    /* Langsamer: Der Effekt startet wie gehabt bei 36 %, die Szene bleibt dann oben stehen
+       und der Rest läuft über eine längere Scroll-Strecke (Handy kürzer). */
+    var hold = window.innerWidth < 900 ? 420 : 700;
+    S.pin = ST.create({ trigger: sc, start: 'top 3%', end: '+=' + hold, pin: true, pinSpacing: true, anticipatePin: 1 });
+    S.st = ST.create({ trigger: sc, start: 'top 36%', end: function () { return S.pin.end; }, animation: tl, scrub: 0.8 });
   }
 
   stages.forEach(build);

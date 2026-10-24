@@ -223,17 +223,27 @@
     .proof-row { grid-template-columns: minmax(0, 1fr); }
   }
   @media (max-width: 480px) { .steps { grid-template-columns: minmax(0, 1fr); } }
-  /* Zwei Einstiege: Betriebe und Familien */
-  .path-grid { margin-top: 48px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
-  .path { display: flex; flex-direction: column; padding: 32px; background: var(--card); border: 1px solid var(--line); border-top: 4px solid var(--signal); border-radius: 8px; }
-  .path .label { color: var(--signal-text); margin-bottom: 12px; }
-  .path h3 { font-size: clamp(24px, 3.2vw, 34px); font-weight: 800; line-height: 1.08; }
-  .path > p { margin-top: 12px; color: var(--muted); max-width: 44ch; }
-  .path ul { margin: 18px 0 26px; padding: 0; list-style: none; display: grid; gap: 8px; }
-  .path li { position: relative; padding-left: 22px; }
-  .path li::before { content: ""; position: absolute; left: 2px; top: .62em; width: 8px; height: 8px; border-radius: 2px; background: var(--signal); }
-  .path-link { margin-top: auto; font-family: var(--f-display); font-weight: 700; font-size: 18px; color: var(--fg); text-underline-offset: 4px; }
-  @media (max-width: 899px) { .path-grid { grid-template-columns: minmax(0, 1fr); } .path { padding: 24px; } }
+  /* Auswahl: entweder Betriebe oder Familie, danach die passenden Fragen */
+  .pick { margin-top: 40px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .pick-btn { font: inherit; color: var(--fg); text-align: left; cursor: pointer; display: flex; flex-direction: column; gap: 12px; padding: 28px; background: var(--card); border: 2px solid var(--line); border-radius: 8px; transition: border-color .15s ease, transform .15s ease, box-shadow .15s ease; }
+  .pick-btn .label { color: var(--signal-text); }
+  .pick-btn strong { font-family: var(--f-display); font-size: clamp(24px, 3.2vw, 34px); font-weight: 800; line-height: 1.08; }
+  .pick-btn:hover { border-color: var(--signal); transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--fg); }
+  .pick-btn:focus-visible { outline: 3px solid var(--signal); outline-offset: 3px; }
+  .pick-btn[aria-expanded="true"] { border-color: var(--signal); box-shadow: 4px 4px 0 var(--signal); }
+  .pain { margin-top: 28px; padding: 28px; background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--signal); border-radius: 8px; }
+  .pain[hidden] { display: none; }
+  .pain:not([hidden]) { animation: painIn .35s ease both; }
+  .pain > .label { color: var(--signal-text); margin-bottom: 6px; }
+  .pain-list { list-style: none; margin: 0; padding: 0; }
+  .pain-list li + li { border-top: 1px solid var(--line); }
+  .pain-list a { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 18px 4px; color: var(--fg); text-decoration: none; font-family: var(--f-display); font-weight: 700; font-size: clamp(19px, 2.4vw, 25px); line-height: 1.2; }
+  .pain-list a:hover span { text-decoration: underline; text-underline-offset: 4px; }
+  .pain-list a:focus-visible { outline: 3px solid var(--signal); outline-offset: 2px; }
+  .pain-list i { flex: none; font-style: normal; }
+  @keyframes painIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+  @media (max-width: 899px) { .pick { grid-template-columns: minmax(0, 1fr); } .pick-btn, .pain { padding: 22px; } }
+  @media (prefers-reduced-motion: reduce) { .pain:not([hidden]) { animation: none; } .pick-btn { transition: none; } }
   @media (max-width: 899px) {
     :root { --rowh: 42px; }
     .chip { width: 190px; }
@@ -301,137 +311,29 @@
   </div>
 </header>
 
-<section class="paths" id="wege">
+<section class="choose" id="wege">
   <div class="wrap">
-    <p class="label kicker" data-reveal>Wofür ich das baue</p>
-    <h2 class="sec-head" data-reveal>Zwei Wege zu mehr Klarheit.</h2>
-    <div class="path-grid">
-      <article class="path" data-reveal>
-        <p class="label">Für Betriebe und Teams</p>
-        <h3>Weniger Zettel im Team.</h3>
-        <p>Gebiete, Zahlen und neue Mitarbeiter an einem Ort, passend zu deinem Ablauf.</p>
-        <ul><li>Gebietsverwaltung für den Außendienst</li><li>Teamleiter-Cockpit mit Provisionen und Zielen</li><li>Onboarding-Dashboard für neue Mitarbeiter</li></ul>
-        <a class="path-link" href="referenzen.html#betriebe">Beispiele für Betriebe →</a>
-      </article>
-      <article class="path" data-reveal>
-        <p class="label">Für Familien und Privat</p>
-        <h3>Weniger Kopfrechnen zu Hause.</h3>
-        <p>Geld, Bestellungen und Tagesplanung auf einen Blick, ohne Tabellen und Chatverläufe.</p>
-        <ul><li>Finanzplaner für die Monatsverteilung</li><li>Bestell- und Zahlungsübersicht</li><li>Tagesstart-Dashboard für Termine, Mails und Aufgaben</li></ul>
-        <a class="path-link" href="referenzen.html#familien">Beispiele für Familien →</a>
-      </article>
+    <p class="label kicker">Wo fängst du an?</p>
+    <h2 class="sec-head">Wo brauchst du Ordnung?</h2>
+    <div class="pick" role="group" aria-label="Bereich wählen">
+      <button type="button" class="pick-btn" aria-expanded="false" aria-controls="pain-betriebe">
+        <span class="label">Für Betriebe und Teams</span>
+        <strong>Ich führe ein Team oder einen Betrieb.</strong>
+      </button>
+      <button type="button" class="pick-btn" aria-expanded="false" aria-controls="pain-familien">
+        <span class="label">Für Familien und Privat</span>
+        <strong>Ich will zu Hause Ordnung.</strong>
+      </button>
     </div>
-  </div>
-</section>
-
-<section id="onboarding">
-  <div class="wrap">
-    <p class="label kicker" data-reveal>Beispiel für Betriebe: Onboarding</p>
-    <h2 class="sec-head" data-reveal>Der erste Tag entscheidet, ob jemand bleibt.</h2>
-    <div class="problems">
-      <div class="problem" data-reveal>
-        <h3>Niemand weiß, wo er anfangen soll.</h3>
-        <p>Unterlagen liegen in Mails, Ordnern und Köpfen. Der Neue fragt sich durch, und das Team wird bei jeder Frage unterbrochen.</p>
-      </div>
-      <div class="problem" data-reveal>
-        <h3>Schlechtes Onboarding kostet Geld.</h3>
-        <p>Wer sich in den ersten Wochen allein gelassen fühlt, macht mehr Fehler und kündigt früher. Dann beginnt die Suche von vorn.</p>
-      </div>
-      <div class="problem" data-reveal>
-        <h3>Die Standard-Tools sind zu groß.</h3>
-        <p>HR-Software kostet pro Kopf, will gepflegt werden und kann viel mehr, als ein kleines Team braucht.</p>
-      </div>
+    <div class="pain" id="pain-betriebe" hidden>
+      <p class="label">Welche Frage kennst du?</p>
+      <ul class="pain-list"><li><a href="referenzen.html#gebiete"><span>Weißt du sicher, wer in welchem Gebiet war und wann es wieder frei ist?</span><i aria-hidden="true">→</i></a></li><li><a href="referenzen.html#cockpit"><span>Tippst du jeden Abend die Zahlen deines Teams von Hand zusammen?</span><i aria-hidden="true">→</i></a></li><li><a href="onboarding.html"><span>Weiß dein neuer Mitarbeiter am ersten Tag, wo er anfangen soll?</span><i aria-hidden="true">→</i></a></li></ul>
     </div>
-  </div>
-</section>
-
-<section class="story">
-  <div class="wrap story-grid">
-    <div>
-      <p class="label kicker" data-reveal>Warum ich das mache</p>
-      <h2 class="story-head" data-reveal>Ich sehe das Problem jeden Tag.</h2>
+    <div class="pain" id="pain-familien" hidden>
+      <p class="label">Welche Frage kennst du?</p>
+      <ul class="pain-list"><li><a href="referenzen.html#finanzplaner"><span>Weißt du am Monatsende, wohin das Gehalt gegangen ist?</span><i aria-hidden="true">→</i></a></li><li><a href="referenzen.html#zahlungen"><span>Suchst du in Chats und Screenshots, wer schon bezahlt hat?</span><i aria-hidden="true">→</i></a></li><li><a href="referenzen.html#tagesstart"><span>Wie viele Postfächer öffnest du, bevor dein Tag überhaupt anfängt?</span><i aria-hidden="true">→</i></a></li></ul>
     </div>
-    <div class="story-body" data-reveal>
-      <p>Ich bin selbst Teamleiter und bringe immer wieder neue Mitarbeiter ins Team. Dabei sehe ich, woran es hakt: Oft ist unklar, welche Informationen ein Neuer braucht und wie er sich möglichst schnell zurechtfindet.</p>
-      <p>Deshalb habe ich für mein Team ein Onboarding aufgebaut, das ab der Vertragsunterschrift bereitsteht: ein Board mit Schulungsunterlagen und einem Leitfaden für den Alltag. Dieses Wissen baue ich jetzt auch für andere Betriebe.</p>
-      <p class="story-sign">Kai · Digitale Ordnung</p>
-    </div>
-  </div>
-</section>
-
-<section class="tl-scene">
-  <div class="wrap">
-    <p class="label kicker">Die Lösung</p>
-    <h2 class="sec-head">90 Tage, die einen Plan haben.</h2>
-    <div class="tl-day"><b id="day">90</b><span>von 90 Tagen</span></div>
-    <div class="tl-track"><div class="tl-fill"></div><div class="tl-dot"></div></div>
-    <div class="tl-ticks" aria-hidden="true"><span style="left:0">Tag 1</span><span style="left:32.6%">Tag 30</span><span style="left:66.3%">Tag 60</span><span style="left:100%">Tag 90</span></div>
-    <div class="phases">
-      <div class="phase-card">
-        <p class="label">Tag 1–30</p>
-        <h3>Orientierung</h3>
-        <ul><li>Zugänge und Ausstattung</li><li>Team und Mentor kennenlernen</li><li>Erste Schulungen</li></ul>
-      </div>
-      <div class="phase-card">
-        <p class="label">Tag 31–60</p>
-        <h3>Beitrag</h3>
-        <ul><li>Erste eigene Aufgaben</li><li>Wöchentliches Gespräch</li><li>Feedback in beide Richtungen</li></ul>
-      </div>
-      <div class="phase-card">
-        <p class="label">Tag 61–90</p>
-        <h3>Autonomie</h3>
-        <ul><li>Eigenverantwortlich arbeiten</li><li>Zielgespräch</li><li>Rückblick auf die ersten 90 Tage</li></ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <p class="label kicker" data-reveal>Was du bekommst</p>
-    <h2 class="sec-head" data-reveal>Ein Dashboard, das deinen Ablauf abbildet.</h2>
-    <div class="features">
-      <div class="feature" data-reveal>
-        <p class="label">Struktur</p>
-        <h3>30-60-90-Tage-Plan</h3>
-        <p>Orientierung, Beitrag, Autonomie. Jede Phase hat klare Ziele und Checkpunkte.</p>
-      </div>
-      <div class="feature" data-reveal>
-        <p class="label">Maßarbeit</p>
-        <h3>Gebaut für deinen Betrieb</h3>
-        <p>Deine Prozesse, deine Begriffe, deine Unterlagen. Keine Vorlage von der Stange.</p>
-      </div>
-      <div class="feature" data-reveal>
-        <p class="label">Überblick</p>
-        <h3>Alles an einem Ort</h3>
-        <p>Schulungen, Leitfäden und Aufgaben in einer Ansicht. Du siehst sofort, wo der Neue steht.</p>
-      </div>
-      <div class="feature" data-reveal>
-        <p class="label">Tempo</p>
-        <h3>In wenigen Stunden startklar</h3>
-        <p>Keine monatelange Einführung und keine Lizenz pro Mitarbeiter.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="marquee" aria-hidden="true">
-  <div class="marquee-track">
-    <span>Zugänge</span><span>Mentor</span><span>Checkliste</span><span>Schulung</span><span>Leitfaden</span><span>Feedback</span><span>30-Tage-Gespräch</span><span>Team</span>
-    <span>Zugänge</span><span>Mentor</span><span>Checkliste</span><span>Schulung</span><span>Leitfaden</span><span>Feedback</span><span>30-Tage-Gespräch</span><span>Team</span>
-  </div>
-</div>
-
-<section>
-  <div class="wrap">
-    <p class="label kicker" data-reveal>So läuft es ab</p>
-    <h2 class="sec-head" data-reveal>Vier Schritte bis zum ersten Neuen.</h2>
-    <ol class="steps">
-      <li data-reveal><h3>Analyse</h3><p>Wir schauen uns an, wie bei dir heute eingearbeitet wird.</p></li>
-      <li data-reveal><h3>Aufbau</h3><p>Ich baue Dashboard, Schulungsunterlagen und Leitfäden.</p></li>
-      <li data-reveal><h3>Einsatz</h3><p>Dein nächster Mitarbeiter startet damit.</p></li>
-      <li data-reveal><h3>Feinschliff</h3><p>Wir passen nach, was im Alltag nicht passt.</p></li>
-    </ol>
+    <noscript><style>.pain[hidden]{display:block !important}.pick{display:none}</style></noscript>
   </div>
 </section>
 
@@ -443,22 +345,10 @@
   </div>
 </section>
 
-<section class="proof">
-  <div class="wrap">
-    <p class="label">Selbst gebaut und im Alltag im Einsatz</p>
-    <div class="proof-row">
-      <div data-reveal><h3>Nachläufer-App</h3><p>Listen und Gebiete für ein Außendienst-Team.</p></div>
-      <div data-reveal><h3>Teamleiter-Cockpit</h3><p>Zahlen und Tabellen für Mitarbeiter auf einen Blick.</p></div>
-      <div data-reveal><h3>Finanzplaner</h3><p>Haushaltsübersicht für Familien.</p></div>
-    </div>
-    <p class="proof-more"><a href="referenzen.html">Alle Beispiele ansehen: erst Chaos, dann System →</a></p>
-  </div>
-</section>
-
 <footer class="site-foot">
   <div class="wrap">
     <span>Digitale Ordnung · Kai Kremer</span>
-    <nav aria-label="Rechtliches und weitere Angebote"><a href="referenzen.html">Referenzen</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a><a href="uebersicht.html">Für Privatpersonen: Finanzplaner</a></nav>
+    <nav aria-label="Rechtliches und weitere Angebote"><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a><a href="uebersicht.html">Für Privatpersonen: Finanzplaner</a></nav>
   </div>
 </footer>
 
@@ -498,6 +388,21 @@
       });
     });
   }
+
+  /* Auswahl: entweder Betriebe oder Familie, danach die passenden Fragen */
+  var picks = [].slice.call(doc.querySelectorAll('.pick-btn'));
+  picks.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      picks.forEach(function (b) {
+        var on = b === btn;
+        b.setAttribute('aria-expanded', on ? 'true' : 'false');
+        doc.getElementById(b.getAttribute('aria-controls')).hidden = !on;
+      });
+      var panel = doc.getElementById(btn.getAttribute('aria-controls'));
+      if (window.ScrollTrigger) { window.ScrollTrigger.refresh(); }
+      if (!reduce && panel.scrollIntoView) { panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+    });
+  });
 
   var g = window.gsap, ST = window.ScrollTrigger;
   if (!g || !ST || reduce) { return; }
@@ -596,34 +501,6 @@
     tl.to({}, { duration: 0.5 });
 
     return function () { scene.classList.remove('is-anim', 'settled'); cnt.textContent = '5'; };
-  });
-
-  /* 90-Tage-Szene: Desktop fixiert, Handy läuft beim Scrollen mit */
-  mm.add(MQ, function (ctx) {
-    var mobile = ctx.conditions.mobile;
-    var sc = doc.querySelector('.tl-scene');
-    var phases = g.utils.toArray('.phase-card');
-    var dayEl = doc.getElementById('day');
-    if (!mobile) { sc.classList.add('is-anim'); }
-    g.set(phases, { '--on': 0 });
-    g.set('.tl-fill', { scaleX: 0 });
-    g.set('.tl-dot', { left: '0%' });
-    dayEl.textContent = '1';
-
-    var day = { d: 1 };
-    var trig = mobile
-      ? { trigger: sc, start: 'top 60%', end: 'bottom 85%', scrub: 0.5 }
-      : { trigger: sc, start: 'top top', end: '+=1500', pin: true, scrub: 0.7, anticipatePin: 1 };
-    var tl2 = g.timeline({ scrollTrigger: trig });
-    tl2.to('.tl-fill', { scaleX: 1, ease: 'none', duration: 3 }, 0)
-       .to('.tl-dot', { left: '100%', ease: 'none', duration: 3 }, 0)
-       .to(day, { d: 90, ease: 'none', duration: 3, onUpdate: function () { dayEl.textContent = Math.round(day.d); } }, 0)
-       .to(phases[0], { '--on': 1, duration: 0.5 }, 0)
-       .to(phases[1], { '--on': 1, duration: 0.5 }, 0.98)
-       .to(phases[2], { '--on': 1, duration: 0.5 }, 1.99)
-       .to({}, { duration: 0.4 });
-
-    return function () { sc.classList.remove('is-anim'); dayEl.textContent = '90'; };
   });
 
   function refresh() { ST.refresh(); }
