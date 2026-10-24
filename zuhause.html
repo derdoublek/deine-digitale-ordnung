@@ -10,9 +10,9 @@
 </head>
 <body>
 <div class="top"><div class="wrap"><a class="logo" href="index.html">Digitale <span>Ordnung</span></a><a class="btn small" href="https://wa.me/4915254160584?text=Hallo%2C%20ich%20m%C3%B6chte%20mehr%20zu%20deinem%20Angebot%20erfahren." target="_blank" rel="noopener">Kontakt</a></div></div>
-<div class="wrap layout">
-  <nav class="side" aria-label="Abschnitte"><span class="label">Inhalt</span><ul><li><a href="index.html">← Zur Auswahl</a></li><li><a href="#schmerz">Kennst du das?</a></li><li><a href="#tagesstart">Tagesstart-Dashboard</a></li><li><a href="#finanzplaner">Finanzplaner</a></li><li><a href="https://wa.me/4915254160584?text=Hallo%2C%20ich%20m%C3%B6chte%20mehr%20zu%20deinem%20Angebot%20erfahren." target="_blank" rel="noopener">Kontakt</a></li></ul></nav>
-  <main>
+<div class="quick-wrap"><div class="wrap"><nav class="quick" aria-label="Schnellauswahl"><a href="#schmerz">Kennst du das?</a><a href="#tagesstart">Tagesstart-Dashboard</a><a href="#finanzplaner">Finanzplaner</a></nav></div></div>
+<div class="wrap">
+  <main class="solo">
     <header class="page-head"><p class="label">Privat</p><h1>Übersicht Zuhause</h1><p>Ordnung für Alltag und Geld, aus meinem eigenen Leben: mit der Geschichte, warum es entstanden ist.</p></header>
     <section class="ref" id="schmerz">
       <h2>Kennst du das?</h2>
@@ -45,7 +45,7 @@
 </div>
 <footer class="site-foot"><div class="wrap"><span>Digitale Ordnung · Kai Kremer</span><nav aria-label="Rechtliches"><a href="index.html">Zur Auswahl</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></nav></div></footer>
 <script>
-(function(){var l=[].slice.call(document.querySelectorAll('.side a[href^="#"]')),s=l.map(function(a){return document.getElementById(a.getAttribute('href').slice(1))}).filter(Boolean);
+(function(){var l=[].slice.call(document.querySelectorAll('.quick a')),s=l.map(function(a){return document.getElementById(a.getAttribute('href').slice(1))}).filter(Boolean);
 function m(){var y=window.scrollY+innerHeight*0.3,c=s[0]&&s[0].id;s.forEach(function(e){if(e.getBoundingClientRect().top+scrollY<=y)c=e.id});l.forEach(function(a){a.classList.toggle('on',a.getAttribute('href')==='#'+c)})}
 addEventListener('scroll',m,{passive:true});addEventListener('resize',m);m()})();
 </script>

@@ -63,3 +63,12 @@ main{min-width:0}
 }
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
 .page-head p.label{font-size:12px;color:var(--signal);margin:0;max-width:none}
+
+.quick-wrap{position:sticky;top:0;z-index:10;background:rgba(15,26,46,.96);border-bottom:1px solid var(--line)}
+.quick{display:flex;flex-wrap:wrap;gap:10px;padding-block:12px}
+.quick a{display:inline-block;padding:10px 18px;border:2px solid var(--line);border-radius:6px;background:var(--card);color:var(--fg);font-family:var(--f-display);font-weight:700;font-size:16px;text-decoration:none;transition:transform .15s,border-color .15s,box-shadow .15s}
+.quick a:hover,.quick a.on{border-color:var(--signal);color:var(--signal)}
+.quick a:hover{transform:translate(-2px,-2px);box-shadow:3px 3px 0 var(--signal)}
+main.solo{max-width:880px;margin-inline:auto;padding-block:clamp(28px,5vw,48px)}
+html{scroll-padding-top:90px}
+@media (max-width:640px){.quick{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}.quick a{flex:none;white-space:nowrap}}
